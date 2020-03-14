@@ -56,6 +56,12 @@ Tuple operator-(const Tuple &t1, const Tuple &t2) {
   return Tuple(t1[0] - t2[0], t1[1] - t2[1], t1[2] - t2[2], t1[3] - t2[3]);
 }
 
+raytracer::Tuple operator*(const raytracer::Tuple &t1,
+                           const raytracer::Tuple &t2) {
+  return raytracer::Tuple(t1.e[0] * t2.e[0], t1.e[1] * t2.e[1],
+                          t1.e[2] * t2.e[2], t1.e[3] * t2.e[3]);
+}
+
 raytracer::Tuple operator*(const raytracer::Tuple &t, double d) {
   return raytracer::Tuple(d * t[0], d * t[1], d * t[2], d * t[3]);
 };

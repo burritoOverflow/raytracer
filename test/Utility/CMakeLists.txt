@@ -3,6 +3,7 @@ add_library( UtilityTests SHARED "")
 target_sources(
     UtilityTests
     PRIVATE
+        ColorTests.cpp
         PointTests.cpp
         TupleTests.cpp
         VectorTests.cpp

@@ -23,9 +23,6 @@ public:
   inline double y() const { return e[1]; }
   inline double z() const { return e[2]; }
   inline double w() const { return e[3]; }
-  inline double r() const { return e[0]; }
-  inline double g() const { return e[1]; }
-  inline double b() const { return e[2]; }
 
   inline const Tuple &operator+() const { return *this; }
   inline Tuple operator-() const { return Tuple(-e[0], -e[1], -e[2], -e[3]); }
@@ -64,6 +61,8 @@ bool operator!=(const raytracer::Tuple &t1, const raytracer::Tuple &t2);
 raytracer::Tuple operator+(const raytracer::Tuple &t1,
                            const raytracer::Tuple &t2);
 raytracer::Tuple operator-(const raytracer::Tuple &t1,
+                           const raytracer::Tuple &t2);
+raytracer::Tuple operator*(const raytracer::Tuple &t1,
                            const raytracer::Tuple &t2);
 raytracer::Tuple operator*(const raytracer::Tuple &t, double d);
 raytracer::Tuple operator*(double d, const raytracer::Tuple &t);
