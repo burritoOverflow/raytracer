@@ -1,0 +1,11 @@
+#pragma once
+
+#include "Tuple.h"
+
+namespace raytracer {
+class Point : public Tuple {
+public:
+  Point() : Tuple() {}
+  Point(double e0, double e1, double e2) : Tuple(e0, e1, e2, 1.0) {}
+};
+} // namespace raytracer

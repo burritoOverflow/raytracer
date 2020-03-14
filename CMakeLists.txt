@@ -8,15 +8,10 @@ set(ENABLE_PRECOMPILED_HEADERS OFF)
 include(CTest)
 enable_testing()
 
-include_directories(
-    src,
-    3rdparty/stb
-    3rdparty/eigen
-)
-
-add_subdirectory(src)
-add_subdirectory(test)
 add_subdirectory(3rdparty)
+add_subdirectory(libraries)
+add_subdirectory(app)
+add_subdirectory(test)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
