@@ -7,6 +7,7 @@ class Vector : public Tuple {
 public:
   Vector() : Tuple() {}
   Vector(double e0, double e1, double e2) : Tuple(e0, e1, e2, 0.0) {}
+  Vector(const Tuple &t) : Tuple(t) {}
 
   inline Vector cross(const Vector &v) {
     return Vector(this->y() * v.z() - this->z() * v.y(),
