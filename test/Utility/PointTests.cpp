@@ -1,6 +1,6 @@
-#include <gtest/gtest.h>
-
 #include "Point.h"
+
+#include <gtest/gtest.h>
 
 TEST(PointTests, PointCreatesAPointTuple) {
   raytracer::Tuple a(4, -4, 3, 1);

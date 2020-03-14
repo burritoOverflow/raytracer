@@ -1,6 +1,6 @@
-#include <gtest/gtest.h>
-
 #include "Color.h"
+
+#include <gtest/gtest.h>
 
 TEST(ColorTests, ColorsAreTuples) {
   raytracer::Color c(-0.5, 0.4, 0.7);

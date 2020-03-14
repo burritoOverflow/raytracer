@@ -1,7 +1,8 @@
+#include "Tuple.h"
+
 #include <gtest/gtest.h>
 
 #include "Point.h"
-#include "Tuple.h"
 #include "Vector.h"
 
 TEST(TupleTests, PointTupleIsAPoint) {

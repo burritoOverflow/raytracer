@@ -1,6 +1,6 @@
-#include <gtest/gtest.h>
-
 #include "Vector.h"
+
+#include <gtest/gtest.h>
 
 TEST(VectorTests, VectorCreatesAVectorTuple) {
   raytracer::Tuple a(4, -4, 3, 0);

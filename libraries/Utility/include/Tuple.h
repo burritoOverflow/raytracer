@@ -32,8 +32,8 @@ public:
   Tuple &operator+=(const Tuple &t);
   Tuple &operator-=(const Tuple &t);
 
-  inline bool IsPoint() { return fabs(this->w() - 1.0) < 0.00001; };
-  inline bool IsVector() { return fabs(this->w()) < 0.00001; }
+  inline bool IsPoint() { return fabs(w() - 1.0) < 0.00001; };
+  inline bool IsVector() { return fabs(w()) < 0.00001; }
 
   inline double magnitude() {
     return sqrt(e[0] * e[0] + e[1] * e[1] + e[2] * e[2] + e[3] * e[3]);
