@@ -38,6 +38,14 @@ public:
 
   Matrix Transpose();
 
+  double Determinant();
+  Matrix Submatrix(size_t row, size_t column);
+  double Minor(size_t row, size_t column);
+  double Cofactor(size_t row, size_t column);
+
+  bool IsInvertible();
+  Matrix Inverse();
+
   size_t rows_;
   size_t columns_;
   std::vector<std::vector<double>> matrix_;
