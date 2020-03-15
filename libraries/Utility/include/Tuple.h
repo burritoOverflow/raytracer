@@ -1,13 +1,8 @@
 #pragma once
 
-#include <cmath>
-#include <cstdlib>
 #include <iostream>
 
-auto AlmostEquals = [](float a, float b,
-                       float epsilon = std::numeric_limits<float>::epsilon()) {
-  return (std::fabs(a - b) <= epsilon);
-};
+#include "AlmostEquals.h"
 
 namespace raytracer {
 class Tuple {
@@ -35,17 +30,17 @@ public:
   inline bool IsPoint() { return fabs(w() - 1.0) < 0.00001; };
   inline bool IsVector() { return fabs(w()) < 0.00001; }
 
-  inline double magnitude() {
+  inline double Magnitude() {
     return sqrt(e[0] * e[0] + e[1] * e[1] + e[2] * e[2] + e[3] * e[3]);
   };
 
-  inline Tuple normalize() {
-    double magnitude = this->magnitude();
+  inline Tuple Normalize() {
+    double magnitude = this->Magnitude();
     return Tuple(e[0] / magnitude, e[1] / magnitude, e[2] / magnitude,
                  e[3] / magnitude);
   }
 
-  inline double dot(const Tuple &t) {
+  inline double Dot(const Tuple &t) {
     return e[0] * t.e[0] + e[1] * t.e[1] + e[2] * t.e[2] + e[3] * t.e[3];
   }
 

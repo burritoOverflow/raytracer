@@ -12,9 +12,7 @@ target_sources(
 target_link_libraries(
   LibraryTests
   PRIVATE
-    Canvas
-    CanvasTests
-    Utility
+    # CanvasTests
     UtilityTests
     gmock
 )

@@ -39,14 +39,7 @@ bool operator==(const Tuple &t1, const Tuple &t2) {
   return true;
 }
 
-bool operator!=(const Tuple &t1, const Tuple &t2) {
-  for (size_t i = 0; i < 4; ++i) {
-    if (AlmostEquals(t1[i], t2[i])) {
-      return true;
-    };
-  }
-  return false;
-}
+bool operator!=(const Tuple &t1, const Tuple &t2) { return !(t1 == t2); }
 
 Tuple operator+(const Tuple &t1, const Tuple &t2) {
   return Tuple(t1[0] + t2[0], t1[1] + t2[1], t1[2] + t2[2], t1[3] + t2[3]);

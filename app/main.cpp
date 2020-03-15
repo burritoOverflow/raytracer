@@ -33,7 +33,7 @@ Projectile tick(Environment environment, Projectile projectile) {
 int main(void) {
   // Projectile starts one unit above the origin
   raytracer::Point start(0, 1, 0);
-  raytracer::Vector velocity = raytracer::Vector(1, 1.8, 0).normalize() * 11.25;
+  raytracer::Vector velocity = raytracer::Vector(1, 1.8, 0).Normalize() * 11.25;
   Projectile projectile(start, velocity);
 
   // Gravity is -0.1 unit/tick, and wind is -0.01 unit/tick

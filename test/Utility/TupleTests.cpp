@@ -83,36 +83,36 @@ TEST(TupleTests, DivideTupleByScalar) {
 
 TEST(TupleTests, ComputeMagnitudeOfVector) {
   raytracer::Vector v1(1, 0, 0);
-  ASSERT_DOUBLE_EQ(1, v1.magnitude());
+  ASSERT_DOUBLE_EQ(1, v1.Magnitude());
 
   raytracer::Vector v2(1, 0, 0);
-  ASSERT_DOUBLE_EQ(1, v2.magnitude());
+  ASSERT_DOUBLE_EQ(1, v2.Magnitude());
 
   raytracer::Vector v3(1, 0, 0);
-  ASSERT_DOUBLE_EQ(1, v3.magnitude());
+  ASSERT_DOUBLE_EQ(1, v3.Magnitude());
 
   raytracer::Vector v4(1, 2, 3);
-  ASSERT_DOUBLE_EQ(sqrt(14), v4.magnitude());
+  ASSERT_DOUBLE_EQ(sqrt(14), v4.Magnitude());
 
   raytracer::Vector v5(-1, -2, -3);
-  ASSERT_DOUBLE_EQ(sqrt(14), v5.magnitude());
+  ASSERT_DOUBLE_EQ(sqrt(14), v5.Magnitude());
 }
 
 TEST(TupleTests, NormalizeVector) {
   raytracer::Vector v1(4, 0, 0);
   raytracer::Vector v1_normalized(1, 0, 0);
-  EXPECT_TRUE(v1_normalized == v1.normalize());
+  EXPECT_TRUE(v1_normalized == v1.Normalize());
 
   raytracer::Vector v2(1, 2, 3);
   raytracer::Vector v2_normalized(1 / sqrt(14), 2 / sqrt(14), 3 / sqrt(14));
-  EXPECT_TRUE(v2_normalized == v2.normalize());
+  EXPECT_TRUE(v2_normalized == v2.Normalize());
 
   raytracer::Vector v3(1, 2, 3);
-  ASSERT_DOUBLE_EQ(1, v3.normalize().magnitude());
+  ASSERT_DOUBLE_EQ(1, v3.Normalize().Magnitude());
 }
 
 TEST(TupleTests, DotProductOfTwoVectors) {
   raytracer::Vector a(1, 2, 3);
   raytracer::Vector b(2, 3, 4);
-  ASSERT_DOUBLE_EQ(20, a.dot(b));
+  ASSERT_DOUBLE_EQ(20, a.Dot(b));
 }
