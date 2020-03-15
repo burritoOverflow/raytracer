@@ -31,7 +31,7 @@ std::ostream &operator<<(std::ostream &os, const Tuple &t) {
 }
 
 bool operator==(const Tuple &t1, const Tuple &t2) {
-  for (int i = 0; i < 4; ++i) {
+  for (size_t i = 0; i < 4; ++i) {
     if (!AlmostEquals(t1[i], t2[i])) {
       return false;
     };
@@ -40,7 +40,7 @@ bool operator==(const Tuple &t1, const Tuple &t2) {
 }
 
 bool operator!=(const Tuple &t1, const Tuple &t2) {
-  for (int i = 0; i < 4; ++i) {
+  for (size_t i = 0; i < 4; ++i) {
     if (AlmostEquals(t1[i], t2[i])) {
       return true;
     };

@@ -5,7 +5,7 @@
 TEST(VectorTests, VectorCreatesAVectorTuple) {
   raytracer::Tuple a(4, -4, 3, 0);
   raytracer::Vector v(4, -4, 3);
-  for (int i = 0; i < 4; ++i) {
+  for (size_t i = 0; i < 4; ++i) {
     ASSERT_DOUBLE_EQ(a[i], v[i])
         << "The vector and tuple differ at index " << i;
   }

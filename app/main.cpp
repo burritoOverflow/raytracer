@@ -1,5 +1,7 @@
+#include <fstream>
 #include <iostream>
 
+#include "Canvas.h"
 #include "Point.h"
 #include "Vector.h"
 
@@ -30,21 +32,33 @@ Projectile tick(Environment environment, Projectile projectile) {
 
 int main(void) {
   // Projectile starts one unit above the origin
-  // Velocity is normalized 1 unit/tick
-  raytracer::Point initial_position(0, 1, 0);
-  raytracer::Vector initial_velocity(1, 1, 0);
-  Projectile projectile(initial_position, initial_velocity.normalize());
+  raytracer::Point start(0, 1, 0);
+  raytracer::Vector velocity = raytracer::Vector(1, 1.8, 0).normalize() * 11.25;
+  Projectile projectile(start, velocity);
 
   // Gravity is -0.1 unit/tick, and wind is -0.01 unit/tick
   raytracer::Vector gravity(0, -0.1, 0);
   raytracer::Vector wind(-0.01, 0, 0);
   Environment environment(gravity, wind);
 
-  size_t num_ticks = 0;
+  raytracer::Canvas canvas(900, 550);
+
+  size_t x = static_cast<int>(projectile.position.x());
+  size_t y = canvas.height_ - static_cast<int>(projectile.position.y());
+  canvas.WritePixel(x, y, raytracer::Color(0, 1, 1));
+
   while (projectile.position.y() > 0) {
-    std::cout << "Position: " << projectile.position << std::endl;
     projectile = tick(environment, projectile);
-    ++num_ticks;
+    size_t x = static_cast<int>(projectile.position.x());
+    size_t y = canvas.height_ - static_cast<int>(projectile.position.y());
+    if (x < 0 || x >= canvas.width_ || y < 0 || y >= canvas.height_) {
+      continue;
+    }
+    canvas.WritePixel(x, y, raytracer::Color(0, 1, 1));
   }
-  std::cout << "Total ticks: " << num_ticks << std::endl;
+
+  // Write the canvas to a file
+  std::ofstream out("scene.ppm");
+  out << canvas.ToPpm();
+  out.close();
 }
