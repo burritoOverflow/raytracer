@@ -1,5 +1,7 @@
 #include "Matrix.h"
+#include "Point.h"
 #include "Tuple.h"
+#include "Vector.h"
 
 #include <gtest/gtest.h>
 
@@ -235,4 +237,143 @@ TEST(MatrixTests, MultiplyMatrixByItsInverse) {
       {{8, 2, 2, 2}, {3, -1, 7, 0}, {7, 0, 5, 4}, {6, -2, 0, 5}});
   raytracer::Matrix c = a * b;
   EXPECT_TRUE(a == c * b.Inverse());
+}
+
+TEST(MatrixTests, MultiplyByTranslationMatrix) {
+  raytracer::Translation transform(5, -3, 2);
+  raytracer::Point point(-3, 4, 5);
+  EXPECT_TRUE(raytracer::Point(2, 1, 7) == transform * point);
+}
+
+TEST(MatrixTests, MultiplyByInverseOfTranslation) {
+  raytracer::Translation transform(5, -3, 2);
+  raytracer::Matrix inverse = transform.Inverse();
+  raytracer::Point point(-3, 4, 5);
+  EXPECT_TRUE(raytracer::Point(-8, 7, 3) == inverse * point);
+}
+
+TEST(MatrixTests, TranslationDoesNotAffectVectors) {
+  raytracer::Translation transform(5, -3, 2);
+  raytracer::Vector vector(-3, 4, 5);
+  EXPECT_TRUE(vector == transform * vector);
+}
+
+TEST(MatrixTests, ScalingAppliedToPoint) {
+  raytracer::Scaling transform(2, 3, 4);
+  raytracer::Point point(-4, 6, 8);
+  EXPECT_TRUE(raytracer::Point(-8, 18, 32) == transform * point);
+}
+
+TEST(MatrixTests, ScalingAppliedToVector) {
+  raytracer::Scaling transform(2, 3, 4);
+  raytracer::Vector vector(-4, 6, 8);
+  EXPECT_TRUE(raytracer::Vector(-8, 18, 32) == transform * vector);
+}
+
+TEST(MatrixTests, MultiplyByInverseOfScalingMatrix) {
+  raytracer::Scaling transform(2, 3, 4);
+  raytracer::Matrix inverse = transform.Inverse();
+  raytracer::Vector vector(-4, 6, 8);
+  EXPECT_TRUE(raytracer::Vector(-2, 2, 2) == inverse * vector);
+}
+
+TEST(MatrixTests, ReflectionIsScalingByNegativeValue) {
+  raytracer::Scaling transform(-1, 1, 1);
+  raytracer::Point point(2, 3, 4);
+  EXPECT_TRUE(raytracer::Point(-2, 3, 4) == transform * point);
+}
+
+TEST(MatrixTests, RotatePointAroundXAxis) {
+  raytracer::Point point(0, 1, 0);
+  raytracer::RotationX half_quarter(M_PI / 4);
+  raytracer::RotationX full_quarter(M_PI / 2);
+  EXPECT_TRUE(raytracer::Point(0, sqrt(2) / 2, sqrt(2) / 2) ==
+              half_quarter * point);
+  EXPECT_TRUE(raytracer::Point(0, 0, 1) == full_quarter * point);
+}
+
+TEST(MatrixTests, InverseOfXRotationRotatesInOppositeDirection) {
+  raytracer::Point point(0, 1, 0);
+  raytracer::RotationX half_quarter(M_PI / 4);
+  raytracer::Matrix inverse = half_quarter.Inverse();
+  EXPECT_TRUE(raytracer::Point(0, sqrt(2) / 2, -sqrt(2) / 2) ==
+              inverse * point);
+}
+
+TEST(MatrixTests, RotatePointAroundYAxis) {
+  raytracer::Point point(0, 0, 1);
+  raytracer::RotationY half_quarter(M_PI / 4);
+  raytracer::RotationY full_quarter(M_PI / 2);
+  EXPECT_TRUE(raytracer::Point(sqrt(2) / 2, 0, sqrt(2) / 2) ==
+              half_quarter * point);
+  EXPECT_TRUE(raytracer::Point(1, 0, 0) == full_quarter * point);
+}
+
+TEST(MatrixTests, RotatePointAroundZAxis) {
+  raytracer::Point point(0, 1, 0);
+  raytracer::RotationZ half_quarter(M_PI / 4);
+  raytracer::RotationZ full_quarter(M_PI / 2);
+  EXPECT_TRUE(raytracer::Point(-sqrt(2) / 2, sqrt(2) / 2, 0) ==
+              half_quarter * point);
+  EXPECT_TRUE(raytracer::Point(-1, 0, 0) == full_quarter * point);
+}
+
+TEST(MatrixTests, ShearingTransformationMovesXInProportionToY) {
+  raytracer::Shearing transform(1, 0, 0, 0, 0, 0);
+  raytracer::Point point(2, 3, 4);
+  EXPECT_TRUE(raytracer::Point(5, 3, 4) == transform * point);
+}
+
+TEST(MatrixTests, ShearingTransformationMovesXInProportionToZ) {
+  raytracer::Shearing transform(0, 1, 0, 0, 0, 0);
+  raytracer::Point point(2, 3, 4);
+  EXPECT_TRUE(raytracer::Point(6, 3, 4) == transform * point);
+}
+
+TEST(MatrixTests, ShearingTransformationMovesYInProportionToX) {
+  raytracer::Shearing transform(0, 0, 1, 0, 0, 0);
+  raytracer::Point point(2, 3, 4);
+  EXPECT_TRUE(raytracer::Point(2, 5, 4) == transform * point);
+}
+
+TEST(MatrixTests, ShearingTransformationMovesYInProportionToZ) {
+  raytracer::Shearing transform(0, 0, 0, 1, 0, 0);
+  raytracer::Point point(2, 3, 4);
+  EXPECT_TRUE(raytracer::Point(2, 7, 4) == transform * point);
+}
+
+TEST(MatrixTests, ShearingTransformationMovesZInProportionToX) {
+  raytracer::Shearing transform(0, 0, 0, 0, 1, 0);
+  raytracer::Point point(2, 3, 4);
+  EXPECT_TRUE(raytracer::Point(2, 3, 6) == transform * point);
+}
+
+TEST(MatrixTests, ShearingTransformationMovesZInProportionToY) {
+  raytracer::Shearing transform(0, 0, 0, 0, 0, 1);
+  raytracer::Point point(2, 3, 4);
+  EXPECT_TRUE(raytracer::Point(2, 3, 7) == transform * point);
+}
+
+TEST(MatrixTests, IndividualTransformationsAreAppliedInSequence) {
+  raytracer::RotationX a(M_PI / 2);
+  raytracer::Scaling b(5, 5, 5);
+  raytracer::Translation c(10, 5, 7);
+  raytracer::Point point(1, 0, 1);
+
+  raytracer::Point p2 = a * point;
+  EXPECT_TRUE(raytracer::Point(1, -1, 0) == p2);
+
+  raytracer::Point p3 = b * p2;
+  EXPECT_TRUE(raytracer::Point(5, -5, 0) == p3);
+
+  raytracer::Point p4 = c * p3;
+  EXPECT_TRUE(raytracer::Point(15, 0, 7) == p4);
+}
+
+TEST(MatrixTests, ChainedTransformationsMustBeAppliedInReverseOrder) {
+  raytracer::Identity transform =
+      raytracer::Identity().RotateX(M_PI / 2).Scale(5, 5, 5).Translate(10, 5,
+                                                                       7);
+  raytracer::Point point(1, 0, 1);
+  EXPECT_TRUE(raytracer::Point(15, 0, 7) == transform * point);
 }

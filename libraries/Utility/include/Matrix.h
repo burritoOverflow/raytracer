@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cmath>
 #include <vector>
 
 #include "AlmostEquals.h"
@@ -46,9 +47,103 @@ public:
   bool IsInvertible();
   Matrix Inverse();
 
+  Matrix Translate(double x, double y, double z);
+  Matrix Scale(double x, double y, double z);
+  Matrix RotateX(double radians);
+  Matrix RotateY(double radians);
+  Matrix RotateZ(double radians);
+  Matrix Shear(double x_y, double x_z, double y_x, double y_z, double z_x,
+               double z_y);
+
   size_t rows_;
   size_t columns_;
   std::vector<std::vector<double>> matrix_;
+};
+
+class Identity : public Matrix {
+public:
+  Identity() : Matrix(4, 4) {
+    for (size_t i = 0; i < 4; ++i) {
+      (*this)(i, i) = 1;
+    }
+  }
+  Identity(const Matrix &m) : Matrix(m) {}
+};
+
+class Translation : public Identity {
+public:
+  Translation(double x, double y, double z) : Identity() {
+    (*this)(0, 3) = x;
+    (*this)(1, 3) = y;
+    (*this)(2, 3) = z;
+  }
+  Translation(const Identity &m) : Identity(m) {}
+};
+
+class Scaling : public Matrix {
+public:
+  Scaling(double x, double y, double z) : Matrix(4, 4) {
+    (*this)(0, 0) = x;
+    (*this)(1, 1) = y;
+    (*this)(2, 2) = z;
+    (*this)(3, 3) = 1;
+  }
+  Scaling(const Matrix &m) : Matrix(m) {}
+};
+
+/* The rotation matrices obeys the left-hand rule */
+class RotationX : public Matrix {
+public:
+  RotationX(double radians) : Matrix(4, 4) {
+    (*this)(0, 0) = 1;
+    (*this)(1, 1) = cos(radians);
+    (*this)(1, 2) = -sin(radians);
+    (*this)(2, 1) = sin(radians);
+    (*this)(2, 2) = cos(radians);
+    (*this)(3, 3) = 1;
+  }
+  RotationX(const Matrix &m) : Matrix(m) {}
+};
+
+class RotationY : public Matrix {
+public:
+  RotationY(double radians) : Matrix(4, 4) {
+    (*this)(0, 0) = cos(radians);
+    (*this)(0, 2) = sin(radians);
+    (*this)(1, 1) = 1;
+    (*this)(2, 1) = -sin(radians);
+    (*this)(2, 2) = cos(radians);
+    (*this)(3, 3) = 1;
+  }
+  RotationY(const Matrix &m) : Matrix(m) {}
+};
+
+class RotationZ : public Matrix {
+public:
+  RotationZ(double radians) : Matrix(4, 4) {
+    (*this)(0, 0) = cos(radians);
+    (*this)(0, 1) = -sin(radians);
+    (*this)(1, 0) = sin(radians);
+    (*this)(1, 1) = cos(radians);
+    (*this)(2, 2) = 1;
+    (*this)(3, 3) = 1;
+  }
+  RotationZ(const Matrix &m) : Matrix(m) {}
+};
+
+class Shearing : public Identity {
+public:
+  Shearing(double x_y, double x_z, double y_x, double y_z, double z_x,
+           double z_y)
+      : Identity() {
+    (*this)(0, 1) = x_y;
+    (*this)(0, 2) = x_z;
+    (*this)(1, 0) = y_x;
+    (*this)(1, 2) = y_z;
+    (*this)(2, 0) = z_x;
+    (*this)(2, 1) = z_y;
+  }
+  Shearing(const Identity &m) : Identity(m) {}
 };
 } // namespace raytracer
 

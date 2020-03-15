@@ -76,6 +76,37 @@ Matrix Matrix::Inverse() {
   return result;
 }
 
+Matrix Matrix::Translate(double x, double y, double z) {
+  Translation translation(x, y, z);
+  return translation * (*this);
+}
+
+Matrix Matrix::Scale(double x, double y, double z) {
+  Scaling scaling(x, y, z);
+  return scaling * (*this);
+}
+
+Matrix Matrix::RotateX(double radians) {
+  RotationX rotation(radians);
+  return rotation * (*this);
+}
+
+Matrix Matrix::RotateY(double radians) {
+  RotationY rotation(radians);
+  return rotation * (*this);
+}
+
+Matrix Matrix::RotateZ(double radians) {
+  RotationZ rotation(radians);
+  return rotation * (*this);
+}
+
+Matrix Matrix::Shear(double x_y, double x_z, double y_x, double y_z, double z_x,
+                     double z_y) {
+  Shearing shearing(x_y, x_z, y_x, y_z, z_x, z_y);
+  return shearing * (*this);
+}
+
 std::ostream &operator<<(std::ostream &os, const raytracer::Matrix &m) {
   for (size_t row = 0; row < m.rows_; ++row) {
     for (size_t column = 0; column < m.columns_; ++column) {
