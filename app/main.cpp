@@ -1,60 +1,27 @@
 #include <fstream>
-#include <iostream>
 
 #include "Canvas.h"
+#include "Matrix.h"
 #include "Point.h"
-#include "Vector.h"
 
-class Environment {
-public:
-  Environment(raytracer::Vector gravity, raytracer::Vector wind)
-      : gravity(gravity), wind(wind) {}
-
-  raytracer::Vector gravity;
-  raytracer::Vector wind;
-};
-
-class Projectile {
-public:
-  Projectile(raytracer::Point position, raytracer::Vector velocity)
-      : position(position), velocity(velocity) {}
-
-  raytracer::Point position;
-  raytracer::Vector velocity;
-};
-
-Projectile tick(Environment environment, Projectile projectile) {
-  raytracer::Point position = projectile.position + projectile.velocity;
-  raytracer::Vector velocity =
-      projectile.velocity + environment.gravity + environment.wind;
-  return Projectile(position, velocity);
-};
-
+/* Plots position of the hours on the analog clock face */
 int main(void) {
-  // Projectile starts one unit above the origin
-  raytracer::Point start(0, 1, 0);
-  raytracer::Vector velocity = raytracer::Vector(1, 1.8, 0).Normalize() * 11.25;
-  Projectile projectile(start, velocity);
+  size_t width = 100;
+  size_t height = width;
+  raytracer::Canvas canvas(width, height);
+  double radius = (3. / 8) * width;
 
-  // Gravity is -0.1 unit/tick, and wind is -0.01 unit/tick
-  raytracer::Vector gravity(0, -0.1, 0);
-  raytracer::Vector wind(-0.01, 0, 0);
-  Environment environment(gravity, wind);
+  raytracer::Point point(0, 0, 1);
+  raytracer::Point canvas_center(width / 2, height / 2, 0);
+  raytracer::Point hour_position(0, 0, 0);
 
-  raytracer::Canvas canvas(900, 550);
-
-  size_t x = static_cast<int>(projectile.position.x());
-  size_t y = canvas.height_ - static_cast<int>(projectile.position.y());
-  canvas.WritePixel(x, y, raytracer::Color(0, 1, 1));
-
-  while (projectile.position.y() > 0) {
-    projectile = tick(environment, projectile);
-    size_t x = static_cast<int>(projectile.position.x());
-    size_t y = canvas.height_ - static_cast<int>(projectile.position.y());
-    if (x < 0 || x >= canvas.width_ || y < 0 || y >= canvas.height_) {
-      continue;
-    }
-    canvas.WritePixel(x, y, raytracer::Color(0, 1, 1));
+  for (size_t i = 0; i < 12; ++i) {
+    hour_position = raytracer::RotationY(i * M_PI / 6) * point;
+    std::cout << i << ": " << hour_position << std::endl;
+    size_t x = canvas_center.x() + static_cast<int>(radius * hour_position.x());
+    size_t y = canvas_center.y() - static_cast<int>(radius * hour_position.z());
+    std::cout << "x: " << x << " z: " << y << std::endl;
+    canvas.WritePixel(x, y, raytracer::Color(1, 1, 1));
   }
 
   // Write the canvas to a file
