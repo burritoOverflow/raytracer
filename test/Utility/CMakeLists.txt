@@ -6,6 +6,7 @@ target_sources(
     ColorTests.cpp
     MatrixTests.cpp
     PointTests.cpp
+    RayTests.cpp
     TupleTests.cpp
     VectorTests.cpp
 )

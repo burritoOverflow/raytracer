@@ -3,6 +3,8 @@
 #include "Tuple.h"
 
 namespace raytracer {
+namespace utility {
+
 class Vector : public Tuple {
 public:
   Vector() : Tuple() {}
@@ -14,4 +16,6 @@ public:
                   x() * v.y() - y() * v.x());
   }
 };
+
+} // namespace utility
 } // namespace raytracer

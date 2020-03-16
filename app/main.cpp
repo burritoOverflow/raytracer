@@ -11,17 +11,17 @@ int main(void) {
   raytracer::Canvas canvas(width, height);
   double radius = (3. / 8) * width;
 
-  raytracer::Point point(0, 0, 1);
-  raytracer::Point canvas_center(width / 2, height / 2, 0);
-  raytracer::Point hour_position(0, 0, 0);
+  raytracer::utility::Point point(0, 0, 1);
+  raytracer::utility::Point canvas_center(width / 2, height / 2, 0);
+  raytracer::utility::Point hour_position(0, 0, 0);
 
   for (size_t i = 0; i < 12; ++i) {
-    hour_position = raytracer::RotationY(i * M_PI / 6) * point;
+    hour_position = raytracer::utility::RotationY(i * M_PI / 6) * point;
     std::cout << i << ": " << hour_position << std::endl;
     size_t x = canvas_center.x() + static_cast<int>(radius * hour_position.x());
     size_t y = canvas_center.y() - static_cast<int>(radius * hour_position.z());
     std::cout << "x: " << x << " z: " << y << std::endl;
-    canvas.WritePixel(x, y, raytracer::Color(1, 1, 1));
+    canvas.WritePixel(x, y, raytracer::utility::Color(1, 1, 1));
   }
 
   // Write the canvas to a file

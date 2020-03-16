@@ -7,6 +7,8 @@
 #include "Tuple.h"
 
 namespace raytracer {
+namespace utility {
+
 class Matrix {
 public:
   Matrix(size_t rows, size_t columns) : rows_(rows), columns_(columns) {
@@ -145,13 +147,17 @@ public:
   }
   Shearing(const Identity &m) : Identity(m) {}
 };
+
+} // namespace utility
 } // namespace raytracer
 
-std::ostream &operator<<(std::ostream &os, const raytracer::Matrix &m);
+std::ostream &operator<<(std::ostream &os, const raytracer::utility::Matrix &m);
 
-bool operator==(const raytracer::Matrix &m1, const raytracer::Matrix &m2);
-bool operator!=(const raytracer::Matrix &m1, const raytracer::Matrix &m2);
-raytracer::Matrix operator*(const raytracer::Matrix &m1,
-                            const raytracer::Matrix &m2);
-raytracer::Tuple operator*(const raytracer::Matrix &m,
-                           const raytracer::Tuple &t);
+bool operator==(const raytracer::utility::Matrix &m1,
+                const raytracer::utility::Matrix &m2);
+bool operator!=(const raytracer::utility::Matrix &m1,
+                const raytracer::utility::Matrix &m2);
+raytracer::utility::Matrix operator*(const raytracer::utility::Matrix &m1,
+                                     const raytracer::utility::Matrix &m2);
+raytracer::utility::Tuple operator*(const raytracer::utility::Matrix &m,
+                                    const raytracer::utility::Tuple &t);

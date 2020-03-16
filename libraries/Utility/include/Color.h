@@ -3,6 +3,8 @@
 #include "Tuple.h"
 
 namespace raytracer {
+namespace utility {
+
 class Color : public Tuple {
 public:
   Color() : Tuple() {}
@@ -13,4 +15,6 @@ public:
   inline double green() const { return e[1]; }
   inline double blue() const { return e[2]; }
 };
+
+} // namespace utility
 } // namespace raytracer

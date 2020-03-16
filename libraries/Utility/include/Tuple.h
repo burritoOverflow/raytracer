@@ -5,6 +5,8 @@
 #include "AlmostEquals.h"
 
 namespace raytracer {
+namespace utility {
+
 class Tuple {
 public:
   Tuple() {}
@@ -46,19 +48,26 @@ public:
 
   double e[4];
 };
+
+} // namespace utility
 } // namespace raytracer
 
-std::istream &operator>>(std::istream &is, raytracer::Tuple &t);
-std::ostream &operator<<(std::ostream &os, const raytracer::Tuple &t);
+std::istream &operator>>(std::istream &is, raytracer::utility::Tuple &t);
+std::ostream &operator<<(std::ostream &os, const raytracer::utility::Tuple &t);
 
-bool operator==(const raytracer::Tuple &t1, const raytracer::Tuple &t2);
-bool operator!=(const raytracer::Tuple &t1, const raytracer::Tuple &t2);
-raytracer::Tuple operator+(const raytracer::Tuple &t1,
-                           const raytracer::Tuple &t2);
-raytracer::Tuple operator-(const raytracer::Tuple &t1,
-                           const raytracer::Tuple &t2);
-raytracer::Tuple operator*(const raytracer::Tuple &t1,
-                           const raytracer::Tuple &t2);
-raytracer::Tuple operator*(const raytracer::Tuple &t, double d);
-raytracer::Tuple operator*(double d, const raytracer::Tuple &t);
-raytracer::Tuple operator/(const raytracer::Tuple &t, double d);
+bool operator==(const raytracer::utility::Tuple &t1,
+                const raytracer::utility::Tuple &t2);
+bool operator!=(const raytracer::utility::Tuple &t1,
+                const raytracer::utility::Tuple &t2);
+raytracer::utility::Tuple operator+(const raytracer::utility::Tuple &t1,
+                                    const raytracer::utility::Tuple &t2);
+raytracer::utility::Tuple operator-(const raytracer::utility::Tuple &t1,
+                                    const raytracer::utility::Tuple &t2);
+raytracer::utility::Tuple operator*(const raytracer::utility::Tuple &t1,
+                                    const raytracer::utility::Tuple &t2);
+raytracer::utility::Tuple operator*(const raytracer::utility::Tuple &t,
+                                    double d);
+raytracer::utility::Tuple operator*(double d,
+                                    const raytracer::utility::Tuple &t);
+raytracer::utility::Tuple operator/(const raytracer::utility::Tuple &t,
+                                    double d);

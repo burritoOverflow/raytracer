@@ -2,7 +2,7 @@
 
 #include <sstream>
 
-using namespace raytracer;
+namespace raytracer {
 
 std::string Canvas::ToPpm() const {
   const size_t max_line_length = 70;
@@ -18,7 +18,7 @@ std::string Canvas::ToPpm() const {
   size_t char_count = 0;
   for (size_t y = 0; y < height_; ++y) {
     for (size_t x = 0; x < width_; ++x) {
-      Color color = GetPixel(x, y);
+      utility::Color color = GetPixel(x, y);
 
       for (size_t k = 0; k < 3; ++k) {
         ppm_data << std::clamp(static_cast<int>(color[k] * 256), 0, 255);
@@ -42,3 +42,5 @@ std::string Canvas::ToPpm() const {
   }
   return ppm_data.str();
 }
+
+} // namespace raytracer
