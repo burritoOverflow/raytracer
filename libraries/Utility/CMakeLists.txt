@@ -6,6 +6,7 @@ target_sources(
     src/Color.cpp
     src/Matrix.cpp
     src/Point.cpp
+    src/Ray.cpp
     src/Tuple.cpp
     src/Vector.cpp
   PUBLIC
@@ -13,6 +14,7 @@ target_sources(
     ${CMAKE_CURRENT_LIST_DIR}/include/Color.h
     ${CMAKE_CURRENT_LIST_DIR}/include/Matrix.h
     ${CMAKE_CURRENT_LIST_DIR}/include/Point.h
+    ${CMAKE_CURRENT_LIST_DIR}/include/Ray.h
     ${CMAKE_CURRENT_LIST_DIR}/include/Tuple.h
     ${CMAKE_CURRENT_LIST_DIR}/include/Vector.h
 )
