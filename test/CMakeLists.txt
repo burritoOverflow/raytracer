@@ -1,6 +1,7 @@
 add_executable(LibraryTests "")
 
 add_subdirectory(Canvas)
+add_subdirectory(Geometry)
 add_subdirectory(Utility)
 
 target_sources(
@@ -13,7 +14,8 @@ target_link_libraries(
   LibraryTests
   PRIVATE
     # CanvasTests
-    UtilityTests
+    GeometryTests
+    # UtilityTests
     gmock
 )
 
