@@ -3,6 +3,7 @@ add_library( GeometryTests SHARED "")
 target_sources(
   GeometryTests
   PRIVATE
+    IntersectionTests.cpp
     SphereTests.cpp
 )
 
