@@ -6,7 +6,7 @@ target_sources(
     src/Intersection.cpp
     src/Sphere.cpp
   PUBLIC
-  ${CMAKE_CURRENT_LIST_DIR}/include/Intersection.h
+    ${CMAKE_CURRENT_LIST_DIR}/include/Intersection.h
     ${CMAKE_CURRENT_LIST_DIR}/include/Sphere.h
 )
 
