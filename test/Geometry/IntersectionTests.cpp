@@ -51,7 +51,7 @@ TEST(IntersectionTests, TheHitWhenSomeIntersectionsHaveNegativeT) {
   EXPECT_TRUE(i2 == i.value());
 }
 
-TEST(IntersectionTests, DISABLED_TheHitWhenAllIntersectionsHaveNegativeT) {
+TEST(IntersectionTests, TheHitWhenAllIntersectionsHaveNegativeT) {
   geometry::Sphere s;
   geometry::Intersection i1(-2, s);
   geometry::Intersection i2(-1, s);

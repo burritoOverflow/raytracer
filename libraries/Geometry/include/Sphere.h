@@ -18,6 +18,7 @@ public:
   double Discriminant(utility::Ray ray);
 
   void SetTransform(utility::Matrix transform);
+  utility::Vector NormalAt(utility::Point point);
 
   static std::atomic<uint64_t> ID;
 

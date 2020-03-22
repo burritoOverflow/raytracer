@@ -86,3 +86,53 @@ TEST(SphereTests, IntersectTranslatedSphereWithRay) {
   std::vector<geometry::Intersection> xs = geometry::Intersect(s, r);
   ASSERT_EQ(0, xs.size());
 }
+
+TEST(SphereTests, NormalOnSphereAtPointOnXAxis) {
+  geometry::Sphere s;
+  utility::Vector n = s.NormalAt(utility::Point(1, 0, 0));
+  EXPECT_TRUE(utility::Vector(1, 0, 0) == n);
+}
+
+TEST(SphereTests, NormalOnSphereAtPointOnYAxis) {
+  geometry::Sphere s;
+  utility::Vector n = s.NormalAt(utility::Point(0, 1, 0));
+  EXPECT_TRUE(utility::Vector(0, 1, 0) == n);
+}
+
+TEST(SphereTests, NormalOnSphereAtPointOnZAxis) {
+  geometry::Sphere s;
+  utility::Vector n = s.NormalAt(utility::Point(0, 0, 1));
+  EXPECT_TRUE(utility::Vector(0, 0, 1) == n);
+}
+
+TEST(SphereTests, NormalOnSphereAtNonaxialPoint) {
+  geometry::Sphere s;
+  utility::Vector n =
+      s.NormalAt(utility::Point(sqrt(3) / 3, sqrt(3) / 3, sqrt(3) / 3));
+  EXPECT_TRUE(utility::Vector(sqrt(3) / 3, sqrt(3) / 3, sqrt(3) / 3) == n);
+}
+
+TEST(SphereTests, NormalIsNormalizedVector) {
+  geometry::Sphere s;
+  utility::Vector n =
+      s.NormalAt(utility::Point(sqrt(3) / 3, sqrt(3) / 3, sqrt(3) / 3));
+  EXPECT_TRUE(n == n.Normalize());
+}
+
+TEST(SphereTests, ComputeNormalOnTranslateSphere) {
+  geometry::Sphere s;
+  s.SetTransform(utility::Translation(0, 1, 0));
+  utility::Vector n = s.NormalAt(utility::Point(0, 1.70711, -0.70711));
+  EXPECT_TRUE(utility::Vector(0, 0.70710678118654746, -0.70710678118654757) ==
+              n);
+}
+
+TEST(SphereTests, ComputeNormalOnTransformedSphere) {
+  geometry::Sphere s;
+  utility::Matrix m =
+      utility::Scaling(1, 0.5, 1) * utility::RotationZ(M_PI / 5);
+  s.SetTransform(m);
+  utility::Vector n = s.NormalAt(utility::Point(0, sqrt(2) / 2, -sqrt(2) / 2));
+  EXPECT_TRUE(utility::Vector(0, 0.97014250014533188, -0.24253562503633294) ==
+              n);
+}

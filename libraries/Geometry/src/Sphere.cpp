@@ -19,6 +19,15 @@ double Sphere::Discriminant(utility::Ray ray) {
 
 void Sphere::SetTransform(utility::Matrix transform) { transform_ = transform; }
 
+utility::Vector Sphere::NormalAt(utility::Point world_point) {
+  utility::Point object_point = transform_.Inverse() * world_point;
+  utility::Vector object_normal = object_point - utility::Point(0, 0, 0);
+  utility::Vector world_normal =
+      transform_.Inverse().Transpose() * object_normal;
+  world_normal[3] = 0;
+  return world_normal.Normalize();
+}
+
 } // namespace geometry
 } // namespace raytracer
 
