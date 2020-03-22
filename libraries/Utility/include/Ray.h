@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Matrix.h"
 #include "Point.h"
 #include "Vector.h"
 
@@ -17,5 +18,10 @@ public:
   Vector direction_;
 };
 
+Ray Transform(Ray &r, Matrix &m);
+
 } // namespace utility
 } // namespace raytracer
+
+raytracer::utility::Ray operator*(const raytracer::utility::Matrix &m,
+                                  const raytracer::utility::Ray &r);
