@@ -6,10 +6,13 @@ namespace raytracer {
 namespace geometry {
 
 std::vector<Intersection> Intersect(Sphere &sphere, utility::Ray ray) {
-  utility::Vector sphere_to_ray = ray.origin_ - sphere.origin_;
+  utility::Matrix transform = sphere.transform_.Inverse();
+  utility::Ray ray_transformed = utility::Transform(ray, transform);
 
-  double a = ray.direction_.Dot(ray.direction_);
-  double b = 2.0 * ray.direction_.Dot(sphere_to_ray);
+  utility::Vector sphere_to_ray = ray_transformed.origin_ - sphere.origin_;
+
+  double a = ray_transformed.direction_.Dot(ray_transformed.direction_);
+  double b = 2.0 * ray_transformed.direction_.Dot(sphere_to_ray);
   double c = sphere_to_ray.Dot(sphere_to_ray) - 1.0;
   double discriminant = b * b - 4 * a * c;
 

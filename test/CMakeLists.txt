@@ -14,8 +14,8 @@ target_link_libraries(
   LibraryTests
   PRIVATE
     # CanvasTests
-    # GeometryTests
-    UtilityTests
+    GeometryTests
+    # UtilityTests
     gmock
 )
 

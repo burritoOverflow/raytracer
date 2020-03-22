@@ -17,6 +17,8 @@ double Sphere::Discriminant(utility::Ray ray) {
   return b * b - 4 * a * c;
 }
 
+void Sphere::SetTransform(utility::Matrix transform) { transform_ = transform; }
+
 } // namespace geometry
 } // namespace raytracer
 
