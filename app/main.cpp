@@ -1,27 +1,46 @@
 #include <fstream>
 
 #include "Canvas.h"
-#include "Matrix.h"
+#include "Color.h"
+#include "Intersection.h"
 #include "Point.h"
+#include "Ray.h"
+#include "Sphere.h"
 
 /* Plots position of the hours on the analog clock face */
 int main(void) {
-  size_t width = 100;
-  size_t height = width;
-  raytracer::Canvas canvas(width, height);
-  double radius = (3. / 8) * width;
+  // Start the ray at z = -5
+  raytracer::utility::Point ray_origin(0, 0, -5);
 
-  raytracer::utility::Point point(0, 0, 1);
-  raytracer::utility::Point canvas_center(width / 2, height / 2, 0);
-  raytracer::utility::Point hour_position(0, 0, 0);
+  // Put the wall at z = 10
+  double wall_z = 10;
 
-  for (size_t i = 0; i < 12; ++i) {
-    hour_position = raytracer::utility::RotationY(i * M_PI / 6) * point;
-    std::cout << i << ": " << hour_position << std::endl;
-    size_t x = canvas_center.x() + static_cast<int>(radius * hour_position.x());
-    size_t y = canvas_center.y() - static_cast<int>(radius * hour_position.z());
-    std::cout << "x: " << x << " z: " << y << std::endl;
-    canvas.WritePixel(x, y, raytracer::utility::Color(1, 1, 1));
+  double wall_size = 7.0;
+  double canvas_pixels = 500;
+  double pixel_size = wall_size / canvas_pixels;
+  double half = wall_size / 2;
+
+  raytracer::Canvas canvas(canvas_pixels, canvas_pixels);
+  raytracer::utility::Color color(1, 0, 0);
+  raytracer::geometry::Sphere shape;
+
+  double world_x, world_y;
+  for (size_t y = 0; y < canvas_pixels; ++y) {
+    world_y = half - pixel_size * y;
+    for (size_t x = 0; x < canvas_pixels; ++x) {
+      world_x = -half + pixel_size * x;
+
+      // Describe the point on the wall that the ray will target
+      raytracer::utility::Point position(world_x, world_y, wall_z);
+
+      raytracer::utility::Ray r(ray_origin,
+                                (position - ray_origin).Normalize());
+      auto xs = raytracer::geometry::Intersect(shape, r);
+
+      if (raytracer::geometry::Hit(xs) != std::nullopt) {
+        canvas.WritePixel(x, y, color);
+      }
+    }
   }
 
   // Write the canvas to a file
