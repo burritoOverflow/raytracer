@@ -24,7 +24,7 @@ utility::Vector Sphere::NormalAt(utility::Point world_point) {
   utility::Vector object_normal = object_point - utility::Point(0, 0, 0);
   utility::Vector world_normal =
       transform_.Inverse().Transpose() * object_normal;
-  world_normal[3] = 0;
+  world_normal[3] = 0; // Set the w coordinate to zero
   return world_normal.Normalize();
 }
 
