@@ -1,4 +1,4 @@
-add_library( CanvasTests SHARED "")
+add_library(CanvasTests SHARED "")
 
 target_sources(
   CanvasTests

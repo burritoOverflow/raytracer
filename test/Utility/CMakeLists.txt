@@ -1,4 +1,4 @@
-add_library( UtilityTests SHARED "")
+add_library(UtilityTests SHARED "")
 
 target_sources(
   UtilityTests

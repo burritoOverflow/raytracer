@@ -1,3 +1,5 @@
 add_subdirectory(Canvas)
 add_subdirectory(Geometry)
+add_subdirectory(Material)
+add_subdirectory(Scene)
 add_subdirectory(Utility)

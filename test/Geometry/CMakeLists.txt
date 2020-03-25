@@ -1,4 +1,4 @@
-add_library( GeometryTests SHARED "")
+add_library(GeometryTests SHARED "")
 
 target_sources(
   GeometryTests
