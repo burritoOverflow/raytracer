@@ -2,6 +2,7 @@
 
 #include <vector>
 
+#include "Material.h"
 #include "Matrix.h"
 #include "Point.h"
 #include "Ray.h"
@@ -13,7 +14,7 @@ class Sphere {
 public:
   Sphere()
       : id_(ID++), origin_(utility::Point(0, 0, 0)), radii_(1),
-        transform_(utility::Identity()) {}
+        transform_(utility::Identity()), material_(material::Material()) {}
 
   double Discriminant(utility::Ray ray);
 
@@ -26,6 +27,7 @@ public:
   utility::Point origin_;
   double radii_;
   utility::Matrix transform_;
+  material::Material material_;
 };
 
 } // namespace geometry

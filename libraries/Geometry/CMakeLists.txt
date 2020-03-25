@@ -16,8 +16,9 @@ target_include_directories(
     include
 )
 
-target_link_libraries(
-  Geometry
+target_link_libraries(Geometry
   PRIVATE
     Utility
+  PUBLIC
+    Material
 )

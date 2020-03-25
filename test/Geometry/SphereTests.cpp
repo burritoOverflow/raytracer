@@ -136,3 +136,16 @@ TEST(SphereTests, ComputeNormalOnTransformedSphere) {
   EXPECT_TRUE(utility::Vector(0, 0.97014250014533188, -0.24253562503633294) ==
               n);
 }
+
+TEST(SphereTests, SphereHasDefaultMaterial) {
+  geometry::Sphere s;
+  EXPECT_TRUE(material::Material() == s.material_);
+}
+
+TEST(SphereTests, SphereMayBeAssignedMaterial) {
+  geometry::Sphere s;
+  material::Material m;
+  m.ambient_ = 1;
+  s.material_ = m;
+  EXPECT_TRUE(m == s.material_);
+}

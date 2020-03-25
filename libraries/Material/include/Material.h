@@ -24,3 +24,8 @@ public:
 
 } // namespace material
 } // namespace raytracer
+
+bool operator==(const raytracer::material::Material &m1,
+                const raytracer::material::Material &m2);
+bool operator!=(const raytracer::material::Material &m1,
+                const raytracer::material::Material &m2);
