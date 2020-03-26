@@ -9,6 +9,7 @@ target_sources(
 target_link_libraries(
   SceneTests
   PRIVATE
+    Material
     Scene
     Utility
     gmock

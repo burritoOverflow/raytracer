@@ -1,7 +1,9 @@
 #pragma once
 
 #include "Color.h"
+#include "Material.h"
 #include "Point.h"
+#include "Vector.h"
 
 namespace raytracer {
 namespace scene {
@@ -14,6 +16,10 @@ public:
   utility::Point position_;
   utility::Color intensity_;
 };
+
+utility::Color Lighting(material::Material material, PointLight light,
+                        utility::Point point, utility::Vector eye_vector,
+                        utility::Vector normal_vector);
 
 } // namespace scene
 } // namespace raytracer
