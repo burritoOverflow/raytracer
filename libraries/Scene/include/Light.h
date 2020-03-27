@@ -23,3 +23,6 @@ utility::Color Lighting(material::Material material, PointLight light,
 
 } // namespace scene
 } // namespace raytracer
+
+bool operator==(const raytracer::scene::PointLight &l1,
+                const raytracer::scene::PointLight &l2);
