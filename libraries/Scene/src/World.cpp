@@ -4,8 +4,8 @@ namespace raytracer {
 namespace scene {
 
 const bool World::Contains(const PointLight light) const {
-  for (const auto i : light_sources_) {
-    if (i == light) {
+  for (const auto &i : light_sources_) {
+    if (*i == light) {
       return true;
     }
   }
@@ -13,8 +13,8 @@ const bool World::Contains(const PointLight light) const {
 }
 
 const bool World::Contains(const geometry::Sphere object) const {
-  for (const auto i : objects_) {
-    if (i == object) {
+  for (const auto &i : objects_) {
+    if (*i == object) {
       return true;
     }
   }
@@ -23,8 +23,8 @@ const bool World::Contains(const geometry::Sphere object) const {
 
 std::vector<geometry::Intersection> World::Intersect(utility::Ray ray) {
   std::vector<geometry::Intersection> intersections_vector;
-  for (auto i : objects_) {
-    std::vector<geometry::Intersection> xs = geometry::Intersect(i, ray);
+  for (auto &i : objects_) {
+    std::vector<geometry::Intersection> xs = geometry::Intersect(*i, ray);
     intersections_vector.insert(std::end(intersections_vector), std::begin(xs),
                                 std::end(xs));
   }
@@ -35,15 +35,18 @@ std::vector<geometry::Intersection> World::Intersect(utility::Ray ray) {
 
 World DefaultWorld() {
   PointLight light(utility::Point(-10, 10, -10), utility::Color(1, 1, 1));
+  std::vector<std::shared_ptr<PointLight>> lights = {
+      std::make_shared<PointLight>(light)};
 
   geometry::Sphere s1;
   s1.material_ =
       material::Material(utility::Color(0.8, 1.0, 0.6), 0.1, 0.7, 0.2, 200);
   geometry::Sphere s2;
   s2.transform_ = utility::Scaling(0.5, 0.5, 0.5);
+  std::vector<std::shared_ptr<geometry::Sphere>> objects = {
+      std::make_shared<geometry::Sphere>(s1),
+      std::make_shared<geometry::Sphere>(s2)};
 
-  std::vector<PointLight> lights = {light};
-  std::vector<geometry::Sphere> objects = {s1, s2};
   return World(lights, objects);
 }
 

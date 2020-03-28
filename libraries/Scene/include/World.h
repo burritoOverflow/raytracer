@@ -13,8 +13,8 @@ namespace scene {
 class World {
 public:
   World() {}
-  World(std::vector<PointLight> light_sources,
-        std::vector<geometry::Sphere> objects)
+  World(std::vector<std::shared_ptr<PointLight>> light_sources,
+        std::vector<std::shared_ptr<geometry::Sphere>> objects)
       : light_sources_(light_sources), objects_(objects) {}
 
   const bool Contains(const PointLight light) const;
@@ -22,8 +22,8 @@ public:
 
   std::vector<geometry::Intersection> Intersect(utility::Ray ray);
 
-  std::vector<PointLight> light_sources_;
-  std::vector<geometry::Sphere> objects_;
+  std::vector<std::shared_ptr<PointLight>> light_sources_;
+  std::vector<std::shared_ptr<geometry::Sphere>> objects_;
 };
 
 World DefaultWorld();
