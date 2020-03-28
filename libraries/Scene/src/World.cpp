@@ -33,6 +33,15 @@ std::vector<geometry::Intersection> World::Intersect(utility::Ray ray) {
   return intersections_vector;
 }
 
+utility::Color World::ShadeHit(geometry::Computations comps) {
+  utility::Color color(0, 0, 0);
+  for (auto &i : light_sources_) {
+    color += Lighting(comps.object.material_, *(light_sources_.front()),
+                      comps.point, comps.eye_vector, comps.normal_vector);
+  }
+  return color;
+}
+
 World DefaultWorld() {
   PointLight light(utility::Point(-10, 10, -10), utility::Color(1, 1, 1));
   std::vector<std::shared_ptr<PointLight>> lights = {
