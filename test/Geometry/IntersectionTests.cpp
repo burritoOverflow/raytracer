@@ -71,3 +71,36 @@ TEST(IntersectionTests, TheHitIsAlwaysTheLowestNonnegativeIntersection) {
   auto i = geometry::Hit(xs);
   EXPECT_TRUE(i4 == i.value());
 }
+
+TEST(IntersectionTests, PrecomputeStateOfIntersection) {
+  utility::Ray r(utility::Point(0, 0, -5), utility::Vector(0, 0, 1));
+  geometry::Sphere shape;
+  geometry::Intersection i(4, shape);
+  geometry::Computations comps = i.PrepareComputations(r);
+  EXPECT_TRUE(i.t_ == comps.t);
+  EXPECT_TRUE(i.object_ == comps.object);
+  EXPECT_TRUE(utility::Point(0, 0, -1) == comps.point);
+  EXPECT_TRUE(utility::Vector(0, 0, -1) == comps.eye_vector);
+  EXPECT_TRUE(utility::Vector(0, 0, -1) == comps.normal_vector);
+}
+
+TEST(IntersectionTests, HitWhenIntersectionOccursOnTheOutside) {
+  utility::Ray r(utility::Point(0, 0, -5), utility::Vector(0, 0, 1));
+  geometry::Sphere shape;
+  geometry::Intersection i(4, shape);
+  geometry::Computations comps = i.PrepareComputations(r);
+  EXPECT_FALSE(comps.inside);
+}
+
+TEST(IntersectionTests, HitWhenIntersectionOccursOnTheInside) {
+  utility::Ray r(utility::Point(0, 0, 0), utility::Vector(0, 0, 1));
+  geometry::Sphere shape;
+  geometry::Intersection i(1, shape);
+  geometry::Computations comps = i.PrepareComputations(r);
+  EXPECT_TRUE(utility::Point(0, 0, 1) == comps.point);
+  EXPECT_TRUE(utility::Vector(0, 0, -1) == comps.eye_vector);
+  EXPECT_TRUE(comps.inside);
+
+  // The normal would have been (0, 0, 1), but is inverted!
+  EXPECT_TRUE(utility::Vector(0, 0, -1) == comps.normal_vector);
+}

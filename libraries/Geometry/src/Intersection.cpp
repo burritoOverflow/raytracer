@@ -5,6 +5,28 @@
 namespace raytracer {
 namespace geometry {
 
+Computations Intersection::PrepareComputations(utility::Ray ray) {
+  Computations comps;
+
+  // Copy the intersection's properties, for convenience
+  comps.t = t_;
+  comps.object = object_;
+
+  // Precompute some useful values
+  comps.point = ray.Position(comps.t);
+  comps.eye_vector = -ray.direction_;
+  comps.normal_vector = comps.object.NormalAt(comps.point);
+
+  if (comps.normal_vector.Dot(comps.eye_vector) < 0) {
+    comps.inside = true;
+    comps.normal_vector = -comps.normal_vector;
+  } else {
+    comps.inside = false;
+  }
+
+  return comps;
+}
+
 std::vector<Intersection> Intersect(Sphere &sphere, utility::Ray ray) {
   utility::Matrix transform = sphere.transform_.Inverse();
   utility::Ray ray_transformed = utility::Transform(ray, transform);

@@ -4,15 +4,27 @@
 #include <optional>
 #include <vector>
 
+#include "Ray.h"
 #include "Sphere.h"
 
 namespace raytracer {
 namespace geometry {
 
+struct Computations {
+  double t;
+  Sphere object;
+  utility::Point point;
+  utility::Vector eye_vector;
+  utility::Vector normal_vector;
+  bool inside;
+};
+
 class Intersection {
 public:
   Intersection(double t, Sphere &sphere)
       : t_(t), object_(sphere) {} // TODO: Generalize for all kinds of objects
+
+  Computations PrepareComputations(utility::Ray ray);
 
   double t_;
   Sphere object_;
