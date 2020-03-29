@@ -4,7 +4,9 @@
 #include <vector>
 
 #include "AlmostEquals.h"
+#include "Point.h"
 #include "Tuple.h"
+#include <Vector.h>
 
 namespace raytracer {
 namespace utility {
@@ -147,6 +149,8 @@ public:
   }
   Shearing(const Identity &m) : Identity(m) {}
 };
+
+Matrix ViewTransform(Point from, Point to, Vector up);
 
 } // namespace utility
 } // namespace raytracer

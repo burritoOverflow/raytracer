@@ -2,7 +2,8 @@
 
 #include <numeric>
 
-using namespace raytracer::utility;
+namespace raytracer {
+namespace utility {
 
 Matrix Matrix::Transpose() {
   Matrix result(columns_, rows_);
@@ -107,7 +108,24 @@ Matrix Matrix::Shear(double x_y, double x_z, double y_x, double y_z, double z_x,
   return shearing * (*this);
 }
 
-std::ostream &operator<<(std::ostream &os, const Matrix &m) {
+Matrix ViewTransform(Point from, Point to, Vector up) {
+  utility::Vector forward = (to - from).Normalize();
+  utility::Vector left = forward.Cross(up.Normalize());
+  utility::Vector true_up = left.Cross(forward);
+
+  utility::Matrix orientation({{left.x(), left.y(), left.z(), 0},
+                               {true_up.x(), true_up.y(), true_up.z(), 0},
+                               {-forward.x(), -forward.y(), -forward.z(), 0},
+                               {0, 0, 0, 1}});
+
+  return orientation * Translation(-from.x(), -from.y(), -from.z());
+}
+
+} // namespace utility
+} // namespace raytracer
+
+std::ostream &operator<<(std::ostream &os,
+                         const raytracer::utility::Matrix &m) {
   for (size_t row = 0; row < m.rows_; ++row) {
     for (size_t column = 0; column < m.columns_; ++column) {
       os << m.GetElement(row, column);
@@ -120,7 +138,8 @@ std::ostream &operator<<(std::ostream &os, const Matrix &m) {
   return os;
 }
 
-bool operator==(const Matrix &m1, const Matrix &m2) {
+bool operator==(const raytracer::utility::Matrix &m1,
+                const raytracer::utility::Matrix &m2) {
   if (m1.rows_ != m2.rows_ || m1.columns_ != m2.rows_) {
     return false;
   }
@@ -136,12 +155,16 @@ bool operator==(const Matrix &m1, const Matrix &m2) {
   return true;
 }
 
-bool operator!=(const Matrix &m1, const Matrix &m2) { return !(m1 == m2); }
+bool operator!=(const raytracer::utility::Matrix &m1,
+                const raytracer::utility::Matrix &m2) {
+  return !(m1 == m2);
+}
 
-Matrix operator*(const Matrix &m1, const Matrix &m2) {
+raytracer::utility::Matrix operator*(const raytracer::utility::Matrix &m1,
+                                     const raytracer::utility::Matrix &m2) {
   assert(m1.columns_ == m2.rows_);
 
-  Matrix result(m1.rows_, m2.columns_);
+  raytracer::utility::Matrix result(m1.rows_, m2.columns_);
   std::vector<double> row_column_multiplications(m1.columns_);
 
   for (size_t row = 0; row < m1.rows_; ++row) {
@@ -159,10 +182,11 @@ Matrix operator*(const Matrix &m1, const Matrix &m2) {
   return result;
 }
 
-Tuple operator*(const Matrix &m, const Tuple &t) {
+raytracer::utility::Tuple operator*(const raytracer::utility::Matrix &m,
+                                    const raytracer::utility::Tuple &t) {
   assert(m.rows_ == 4);
 
-  Tuple result(0, 0, 0, 0);
+  raytracer::utility::Tuple result(0, 0, 0, 0);
   for (size_t row = 0; row < m.rows_; ++row) {
     result.e[row] = m.GetElement(row, 0) * t[0] + m.GetElement(row, 1) * t[1] +
                     m.GetElement(row, 2) * t[2] + m.GetElement(row, 3) * t[3];

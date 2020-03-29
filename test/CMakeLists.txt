@@ -18,8 +18,8 @@ target_link_libraries(
     # CanvasTests
     # GeometryTests
     # MaterialTests
-    SceneTests
-    # UtilityTests
+    # SceneTests
+    UtilityTests
     gmock
 )
 

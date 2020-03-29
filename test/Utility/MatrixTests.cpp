@@ -1,9 +1,10 @@
 #include "Matrix.h"
+
+#include <gtest/gtest.h>
+
 #include "Point.h"
 #include "Tuple.h"
 #include "Vector.h"
-
-#include <gtest/gtest.h>
 
 using namespace raytracer;
 
@@ -374,4 +375,44 @@ TEST(MatrixTests, ChainedTransformationsMustBeAppliedInReverseOrder) {
       utility::Identity().RotateX(M_PI / 2).Scale(5, 5, 5).Translate(10, 5, 7);
   utility::Point point(1, 0, 1);
   EXPECT_TRUE(utility::Point(15, 0, 7) == transform * point);
+}
+
+TEST(MatrixTests, TransformationMatrixForDefaultOrientation) {
+  utility::Point from(0, 0, 0);
+  utility::Point to(0, 0, -1);
+  utility::Vector up(0, 1, 0);
+  utility::Matrix t = utility::ViewTransform(from, to, up);
+  EXPECT_TRUE(utility::Identity() == t);
+}
+
+TEST(MatrixTests, ViewTransformationMatrixLookingInPositiveZDirection) {
+  utility::Point from(0, 0, 0);
+  utility::Point to(0, 0, 1);
+  utility::Vector up(0, 1, 0);
+  utility::Matrix t = utility::ViewTransform(from, to, up);
+  EXPECT_TRUE(utility::Scaling(-1, 1, -1) == t);
+}
+
+TEST(MatrixTests, ViewTransformationMoveTheWorld) {
+  utility::Point from(0, 0, 8);
+  utility::Point to(0, 0, 0);
+  utility::Vector up(0, 1, 0);
+  utility::Matrix t = utility::ViewTransform(from, to, up);
+  EXPECT_TRUE(utility::Translation(0, 0, -8) == t);
+}
+
+TEST(MatrixTests, ArbitraryViewTransformation) {
+  utility::Point from(1, 3, 2);
+  utility::Point to(4, -2, 8);
+  utility::Vector up(1, 1, 0);
+  utility::Matrix t = utility::ViewTransform(from, to, up);
+  std::cout << std::setprecision(17);
+  std::cout << t << std::endl;
+  EXPECT_TRUE(utility::Matrix({{-0.50709255283710986, 0.50709255283710986,
+                                0.67612340378281321, -2.3664319132398459},
+                               {0.76771593385968007, 0.60609152673132627,
+                                0.12121830534626524, -2.8284271247461894},
+                               {-0.35856858280031806, 0.59761430466719678,
+                                -0.71713716560063612, 0},
+                               {0, 0, 0, 1}}) == t);
 }
