@@ -50,8 +50,6 @@ TEST(WorldTests, ShadeIntersection) {
   geometry::Intersection i(4, shape);
   geometry::Computations comps = i.PrepareComputations(r);
   utility::Color c = w.ShadeHit(comps);
-  std::cout.precision(17);
-  std::cout << c << std::endl;
   EXPECT_TRUE(utility::Color(0.38066119308103435, 0.47582649135129296,
                              0.28549589481077575) == c);
 }
@@ -67,4 +65,33 @@ TEST(WorldTests, ShadeIntersectionFromTheInside) {
   utility::Color c = w.ShadeHit(comps);
   EXPECT_TRUE(utility::Color(0.9049844720832575, 0.9049844720832575,
                              0.9049844720832575) == c);
+}
+
+TEST(WorldTests, TheColorWhenRayMisses) {
+  scene::World w = scene::DefaultWorld();
+  utility::Ray r(utility::Point(0, 0, -5), utility::Vector(0, 1, 0));
+  utility::Color c = w.ColorAt(r);
+  EXPECT_TRUE(utility::Color(0, 0, 0) == c);
+}
+
+TEST(WorldTests, TheColorWhenRayHits) {
+  scene::World w = scene::DefaultWorld();
+  utility::Ray r(utility::Point(0, 0, -5), utility::Vector(0, 0, 1));
+  utility::Color c = w.ColorAt(r);
+  EXPECT_TRUE(utility::Color(0.38066119308103435, 0.47582649135129296,
+                             0.28549589481077575) == c);
+}
+
+TEST(WorldTests, TheColorWithIntersectionBehindTheRay) {
+  scene::World w = scene::DefaultWorld();
+
+  auto outer = w.objects_.front();
+  outer->material_.ambient_ = 1;
+
+  auto inner = w.objects_.at(1);
+  inner->material_.ambient_ = 1;
+
+  utility::Ray r(utility::Point(0, 0, 0.75), utility::Vector(0, 0, -1));
+  utility::Color c = w.ColorAt(r);
+  EXPECT_TRUE(inner->material_.color_ == c);
 }

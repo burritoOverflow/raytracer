@@ -42,6 +42,18 @@ utility::Color World::ShadeHit(geometry::Computations comps) {
   return color;
 }
 
+utility::Color World::ColorAt(utility::Ray ray) {
+  std::vector<geometry::Intersection> intersections = Intersect(ray);
+  auto hit = geometry::Hit(intersections);
+
+  if (hit == std::nullopt) {
+    return utility::Color(0, 0, 0);
+  }
+
+  geometry::Computations comps = hit->PrepareComputations(ray);
+  return ShadeHit(comps);
+}
+
 World DefaultWorld() {
   PointLight light(utility::Point(-10, 10, -10), utility::Color(1, 1, 1));
   std::vector<std::shared_ptr<PointLight>> lights = {

@@ -22,6 +22,7 @@ public:
 
   std::vector<geometry::Intersection> Intersect(utility::Ray ray);
   utility::Color ShadeHit(geometry::Computations comps);
+  utility::Color ColorAt(utility::Ray ray);
 
   std::vector<std::shared_ptr<PointLight>> light_sources_;
   std::vector<std::shared_ptr<geometry::Sphere>> objects_;
