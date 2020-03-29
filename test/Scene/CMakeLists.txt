@@ -3,6 +3,7 @@ add_library(SceneTests SHARED "")
 target_sources(
   SceneTests
   PRIVATE
+    CameraTests.cpp
     LightTests.cpp
     WorldTests.cpp
 )
