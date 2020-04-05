@@ -5,7 +5,7 @@ namespace scene {
 
 utility::Color Lighting(material::Material material, PointLight light,
                         utility::Point point, utility::Vector eye_vector,
-                        utility::Vector normal_vector) {
+                        utility::Vector normal_vector, bool in_shadow) {
   // Combine the surface color with the light's color/intensity
   utility::Color effective_color = material.color_ * light.intensity_;
 
@@ -40,6 +40,11 @@ utility::Color Lighting(material::Material material, PointLight light,
       double factor = std::pow(reflect_dot_eye, material.shininess_);
       specular = light.intensity_ * material.specular_ * factor;
     }
+  }
+
+  // Ignore the specular and diffuse component if the point is in shadow
+  if (in_shadow) {
+    return ambient;
   }
 
   // Add the three contributions together to get the final shading

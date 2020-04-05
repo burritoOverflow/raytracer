@@ -35,9 +35,11 @@ std::vector<geometry::Intersection> World::Intersect(utility::Ray ray) {
 
 utility::Color World::ShadeHit(geometry::Computations comps) {
   utility::Color color(0, 0, 0);
+  bool shadowed = IsShadowed(comps.over_point);
   for (auto &i : light_sources_) {
-    color += Lighting(comps.object.material_, *(light_sources_.front()),
-                      comps.point, comps.eye_vector, comps.normal_vector);
+    color +=
+        Lighting(comps.object.material_, *(light_sources_.front()), comps.point,
+                 comps.eye_vector, comps.normal_vector, shadowed);
   }
   return color;
 }
@@ -52,6 +54,23 @@ utility::Color World::ColorAt(utility::Ray ray) {
 
   geometry::Computations comps = hit->PrepareComputations(ray);
   return ShadeHit(comps);
+}
+
+bool World::IsShadowed(utility::Point point) {
+  // TODO: Change the return value to a vector of booleans to account for each
+  // light source in the scene
+  utility::Vector v = light_sources_[0]->position_ - point;
+  double distance = v.Magnitude();
+  utility::Vector direction = v.Normalize();
+
+  utility::Ray ray(point, direction);
+  std::vector<geometry::Intersection> intersections = Intersect(ray);
+
+  auto hit = geometry::Hit(intersections);
+  if (hit != std::nullopt && hit.value().t_ < distance) {
+    return true;
+  }
+  return false;
 }
 
 World DefaultWorld() {

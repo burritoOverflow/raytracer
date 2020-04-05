@@ -104,3 +104,13 @@ TEST(IntersectionTests, HitWhenIntersectionOccursOnTheInside) {
   // The normal would have been (0, 0, 1), but is inverted!
   EXPECT_TRUE(utility::Vector(0, 0, -1) == comps.normal_vector);
 }
+
+TEST(IntersectionTests, TheHitShouldOffsetThePoint) {
+  utility::Ray ray(utility::Point(0, 0, 5), utility::Vector(0, 0, 1));
+  geometry::Sphere shape;
+  shape.transform_ = utility::Translation(0, 0, 1);
+  geometry::Intersection intersection(5, shape);
+  geometry::Computations comps = intersection.PrepareComputations(ray);
+  ASSERT_LT(comps.over_point.z(), -EPSILON / 2);
+  ASSERT_GT(comps.point.z(), comps.over_point.z());
+}

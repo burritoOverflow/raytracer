@@ -7,6 +7,8 @@
 #include "Ray.h"
 #include "Sphere.h"
 
+const double EPSILON = 0.00001;
+
 namespace raytracer {
 namespace geometry {
 
@@ -14,6 +16,7 @@ struct Computations {
   double t;
   Sphere object;
   utility::Point point;
+  utility::Point over_point;
   utility::Vector eye_vector;
   utility::Vector normal_vector;
   bool inside;

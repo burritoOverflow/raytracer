@@ -19,7 +19,7 @@ public:
 
 utility::Color Lighting(material::Material material, PointLight light,
                         utility::Point point, utility::Vector eye_vector,
-                        utility::Vector normal_vector);
+                        utility::Vector normal_vector, bool in_shadow);
 
 } // namespace scene
 } // namespace raytracer

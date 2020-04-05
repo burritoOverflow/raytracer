@@ -94,3 +94,47 @@ TEST(WorldTests, TheColorWithIntersectionBehindTheRay) {
   utility::Color c = w.ColorAt(r);
   EXPECT_TRUE(inner->material_.color_ == c);
 }
+
+TEST(WorldTests, ThereIsNoShadowWhenNothingIsCollinearWithPointAndLight) {
+  scene::World w = scene::DefaultWorld();
+  utility::Point p(0, 10, 0);
+  EXPECT_FALSE(w.IsShadowed(p));
+}
+
+TEST(WorldTests, TheShadowWhenAnObjectIsBetweenThePointAndTheLight) {
+  scene::World w = scene::DefaultWorld();
+  utility::Point p(10, -10, 10);
+  EXPECT_TRUE(w.IsShadowed(p));
+}
+
+TEST(WorldTests, ThereIsNoShadowWhenAnObjectIsBehindTheLight) {
+  scene::World w = scene::DefaultWorld();
+  utility::Point p(-20, 20, -20);
+  EXPECT_FALSE(w.IsShadowed(p));
+}
+
+TEST(WorldTests, ThereIsNoShadowWhenAnObjectIsBehindThePoint) {
+  scene::World w = scene::DefaultWorld();
+  utility::Point p(-2, 2, -2);
+  EXPECT_FALSE(w.IsShadowed(p));
+}
+
+TEST(WorldTests, TheShadeHitFunctionIsGivenAnIntersectionInShadow) {
+  scene::World world;
+  world.light_sources_.push_back(std::make_shared<raytracer::scene::PointLight>(
+      scene::PointLight(utility::Point(0, 0, -10), utility::Color(1, 1, 1))));
+
+  geometry::Sphere s1;
+  world.objects_.push_back(std::make_shared<raytracer::geometry::Sphere>(s1));
+
+  geometry::Sphere s2;
+  s2.transform_ = utility::Translation(0, 0, 10);
+  world.objects_.push_back(std::make_shared<raytracer::geometry::Sphere>(s1));
+
+  utility::Ray ray(utility::Point(0, 0, 5), utility::Vector(0, 0, 1));
+  geometry::Intersection intersection(4, s2);
+  geometry::Computations comps = intersection.PrepareComputations(ray);
+  utility::Color color = world.ShadeHit(comps);
+
+  EXPECT_TRUE(utility::Color(0.1, 0.1, 0.1) == color);
+}

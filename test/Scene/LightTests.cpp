@@ -29,7 +29,7 @@ TEST_F(LightTests, LightingWithEyeBetweenLightAndSurface) {
   utility::Vector normal_vector(0, 0, -1);
   scene::PointLight light(utility::Point(0, 0, -10), utility::Color(1, 1, 1));
   utility::Color result =
-      scene::Lighting(m, light, position, eye_vector, normal_vector);
+      scene::Lighting(m, light, position, eye_vector, normal_vector, false);
   EXPECT_TRUE(utility::Color(1.9, 1.9, 1.9) == result);
 }
 
@@ -39,7 +39,7 @@ TEST_F(LightTests,
   utility::Vector normal_vector(0, 0, -1);
   scene::PointLight light(utility::Point(0, 0, -10), utility::Color(1, 1, 1));
   utility::Color result =
-      scene::Lighting(m, light, position, eye_vector, normal_vector);
+      scene::Lighting(m, light, position, eye_vector, normal_vector, false);
   EXPECT_TRUE(utility::Color(1.0, 1.0, 1.0) == result);
 }
 
@@ -48,7 +48,7 @@ TEST_F(LightTests, LightingWithEyeOppositeSurfaceWithLightOffset45Degrees) {
   utility::Vector normal_vector(0, 0, -1);
   scene::PointLight light(utility::Point(0, 10, -10), utility::Color(1, 1, 1));
   utility::Color result =
-      scene::Lighting(m, light, position, eye_vector, normal_vector);
+      scene::Lighting(m, light, position, eye_vector, normal_vector, false);
   EXPECT_TRUE(utility::Color(0.1 + 0.9 * sqrt(2) / 2, 0.1 + 0.9 * sqrt(2) / 2,
                              0.1 + 0.9 * sqrt(2) / 2) == result);
 }
@@ -58,7 +58,7 @@ TEST_F(LightTests, LightingWithEyeInPathOfReflectionVector) {
   utility::Vector normal_vector(0, 0, -1);
   scene::PointLight light(utility::Point(0, 10, -10), utility::Color(1, 1, 1));
   utility::Color result =
-      scene::Lighting(m, light, position, eye_vector, normal_vector);
+      scene::Lighting(m, light, position, eye_vector, normal_vector, false);
   EXPECT_TRUE(utility::Color(0.1 + 0.9 * sqrt(2) / 2 + 0.9,
                              0.1 + 0.9 * sqrt(2) / 2 + 0.9,
                              0.1 + 0.9 * sqrt(2) / 2 + 0.9) == result);
@@ -69,6 +69,16 @@ TEST_F(LightTests, LightingWithLightBehindSurface) {
   utility::Vector normal_vector(0, 0, -1);
   scene::PointLight light(utility::Point(0, 0, 10), utility::Color(1, 1, 1));
   utility::Color result =
-      scene::Lighting(m, light, position, eye_vector, normal_vector);
+      scene::Lighting(m, light, position, eye_vector, normal_vector, false);
+  EXPECT_TRUE(utility::Color(0.1, 0.1, 0.1) == result);
+}
+
+TEST_F(LightTests, LightingWithSurfaceInShadow) {
+  utility::Vector eye_vector(0, 0, -1);
+  utility::Vector normal_vector(0, 0, -1);
+  scene::PointLight light(utility::Point(0, 0, -10), utility::Color(1, 1, 1));
+  bool in_shadow = true;
+  utility::Color result =
+      scene::Lighting(m, light, position, eye_vector, normal_vector, in_shadow);
   EXPECT_TRUE(utility::Color(0.1, 0.1, 0.1) == result);
 }
