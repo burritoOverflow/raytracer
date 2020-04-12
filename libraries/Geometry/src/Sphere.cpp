@@ -5,8 +5,6 @@
 namespace raytracer {
 namespace geometry {
 
-std::atomic<uint64_t> Sphere::ID = 0;
-
 double Sphere::Discriminant(utility::Ray ray) {
   utility::Vector sphere_to_ray = ray.origin_ - origin_;
 
@@ -16,8 +14,6 @@ double Sphere::Discriminant(utility::Ray ray) {
 
   return b * b - 4 * a * c;
 }
-
-void Sphere::SetTransform(utility::Matrix transform) { transform_ = transform; }
 
 utility::Vector Sphere::NormalAt(utility::Point world_point) {
   utility::Point object_point = transform_.Inverse() * world_point;

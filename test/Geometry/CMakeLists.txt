@@ -4,6 +4,7 @@ target_sources(
   GeometryTests
   PRIVATE
     IntersectionTests.cpp
+    ShapeTests.cpp
     SphereTests.cpp
 )
 

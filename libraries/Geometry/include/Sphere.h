@@ -6,28 +6,23 @@
 #include "Matrix.h"
 #include "Point.h"
 #include "Ray.h"
+#include "Shape.h"
 
 namespace raytracer {
 namespace geometry {
 
-class Sphere {
+class Sphere : public Shape {
 public:
-  Sphere()
-      : id_(ID++), origin_(utility::Point(0, 0, 0)), radii_(1),
-        transform_(utility::Identity()), material_(material::Material()) {}
+  Sphere() : Shape(), origin_(utility::Point(0, 0, 0)), radii_(1) {}
 
   double Discriminant(utility::Ray ray);
 
-  void SetTransform(utility::Matrix transform);
   utility::Vector NormalAt(utility::Point point);
 
   static std::atomic<uint64_t> ID;
 
-  uint64_t id_;
   utility::Point origin_;
   double radii_;
-  utility::Matrix transform_;
-  material::Material material_;
 };
 
 } // namespace geometry

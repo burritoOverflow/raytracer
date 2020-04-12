@@ -57,18 +57,6 @@ TEST(SphereTests, SphereIsBehindRay) {
   ASSERT_DOUBLE_EQ(-4.0, xs[1].t_);
 }
 
-TEST(SphereTests, DefaultTransformationOfSphere) {
-  geometry::Sphere s;
-  EXPECT_TRUE(utility::Identity() == s.transform_);
-}
-
-TEST(SphereTests, ChangeTransformationOfSphere) {
-  geometry::Sphere s;
-  utility::Translation t(2, 3, 4);
-  s.SetTransform(t);
-  EXPECT_TRUE(t == s.transform_);
-}
-
 TEST(SphereTests, IntersectScaledSphereWithRay) {
   utility::Ray r(utility::Point(0, 0, -5), utility::Vector(0, 0, 1));
   geometry::Sphere s;
@@ -135,17 +123,4 @@ TEST(SphereTests, ComputeNormalOnTransformedSphere) {
   utility::Vector n = s.NormalAt(utility::Point(0, sqrt(2) / 2, -sqrt(2) / 2));
   EXPECT_TRUE(utility::Vector(0, 0.97014250014533188, -0.24253562503633294) ==
               n);
-}
-
-TEST(SphereTests, SphereHasDefaultMaterial) {
-  geometry::Sphere s;
-  EXPECT_TRUE(material::Material() == s.material_);
-}
-
-TEST(SphereTests, SphereMayBeAssignedMaterial) {
-  geometry::Sphere s;
-  material::Material m;
-  m.ambient_ = 1;
-  s.material_ = m;
-  EXPECT_TRUE(m == s.material_);
 }
