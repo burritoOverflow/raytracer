@@ -12,6 +12,8 @@ const double EPSILON = 0.00001;
 namespace raytracer {
 namespace geometry {
 
+class Sphere;
+
 struct Computations {
   double t;
   std::shared_ptr<Sphere> object;
@@ -33,7 +35,6 @@ public:
   std::shared_ptr<Sphere> object_;
 };
 
-std::vector<Intersection> Intersect(std::shared_ptr<Sphere>, utility::Ray &ray);
 std::vector<Intersection>
 Intersections(const std::initializer_list<Intersection> &intersections);
 std::optional<Intersection> Hit(std::vector<Intersection> &intersections);

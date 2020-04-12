@@ -29,28 +29,6 @@ Computations Intersection::PrepareComputations(utility::Ray ray) {
   return comps;
 }
 
-std::vector<Intersection> Intersect(std::shared_ptr<Sphere> sphere,
-                                    utility::Ray &ray) {
-  utility::Matrix transform = sphere->transform_.Inverse();
-  utility::Ray ray_transformed = utility::Transform(ray, transform);
-
-  utility::Vector sphere_to_ray = ray_transformed.origin_ - sphere->origin_;
-
-  double a = ray_transformed.direction_.Dot(ray_transformed.direction_);
-  double b = 2.0 * ray_transformed.direction_.Dot(sphere_to_ray);
-  double c = sphere_to_ray.Dot(sphere_to_ray) - 1.0;
-  double discriminant = b * b - 4 * a * c;
-
-  if (discriminant < 0) {
-    return std::vector<Intersection>{};
-  }
-
-  double t1 = (-b - sqrt(discriminant)) / (2 * a);
-  double t2 = (-b + sqrt(discriminant)) / (2 * a);
-  return std::vector<Intersection>{Intersection(t1, sphere),
-                                   Intersection(t2, sphere)};
-}
-
 std::vector<Intersection>
 Intersections(const std::initializer_list<Intersection> &intersections) {
   std::vector<Intersection> intersections_vector;

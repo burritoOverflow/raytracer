@@ -30,10 +30,10 @@ TEST(IntersectionTests, IntersectSetsTheObjectOnTheIntersection) {
   utility::Ray r(utility::Point(0, 0, -5), utility::Vector(0, 0, 1));
   std::shared_ptr<geometry::Sphere> shape =
       std::make_shared<geometry::Sphere>();
-  std::vector<geometry::Intersection> xs = geometry::Intersect(shape, r);
+  std::vector<geometry::Intersection> xs = shape->Intersect(r);
   ASSERT_EQ(2, xs.size());
-  EXPECT_TRUE(shape == xs[0].object_);
-  EXPECT_TRUE(shape == xs[1].object_);
+  EXPECT_TRUE(*shape == *xs[0].object_);
+  EXPECT_TRUE(*shape == *xs[1].object_);
 }
 
 TEST(IntersectionTests, TheHitWhenAllIntersectionsHavePositiveT) {

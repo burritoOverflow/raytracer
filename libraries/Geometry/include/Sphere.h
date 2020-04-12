@@ -2,6 +2,7 @@
 
 #include <vector>
 
+#include "Intersection.h"
 #include "Material.h"
 #include "Matrix.h"
 #include "Point.h"
@@ -11,11 +12,14 @@
 namespace raytracer {
 namespace geometry {
 
+class Intersection;
+
 class Sphere : public Shape {
 public:
   Sphere() : Shape(), origin_(utility::Point(0, 0, 0)), radii_(1) {}
 
   double Discriminant(utility::Ray ray);
+  std::vector<Intersection> Intersect(utility::Ray &ray);
 
   utility::Vector NormalAt(utility::Point point);
 

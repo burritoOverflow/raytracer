@@ -24,7 +24,7 @@ const bool World::Contains(const geometry::Sphere object) const {
 std::vector<geometry::Intersection> World::Intersect(utility::Ray ray) {
   std::vector<geometry::Intersection> intersections_vector;
   for (auto &i : objects_) {
-    std::vector<geometry::Intersection> xs = geometry::Intersect(i, ray);
+    std::vector<geometry::Intersection> xs = i->Intersect(ray);
     intersections_vector.insert(std::end(intersections_vector), std::begin(xs),
                                 std::end(xs));
   }
