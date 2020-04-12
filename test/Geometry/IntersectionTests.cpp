@@ -106,7 +106,7 @@ TEST(IntersectionTests, HitWhenIntersectionOccursOnTheInside) {
 }
 
 TEST(IntersectionTests, TheHitShouldOffsetThePoint) {
-  utility::Ray ray(utility::Point(0, 0, 5), utility::Vector(0, 0, 1));
+  utility::Ray ray(utility::Point(0, 0, -5), utility::Vector(0, 0, 1));
   geometry::Sphere shape;
   shape.transform_ = utility::Translation(0, 0, 1);
   geometry::Intersection intersection(5, shape);
