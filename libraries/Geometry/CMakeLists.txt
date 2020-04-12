@@ -4,10 +4,12 @@ target_sources(
   Geometry
   PRIVATE
     src/Intersection.cpp
+    src/Plane.cpp
     src/Shape.cpp
     src/Sphere.cpp
   PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}/include/Intersection.h
+    ${CMAKE_CURRENT_LIST_DIR}/include/Plane.h
     ${CMAKE_CURRENT_LIST_DIR}/include/Shape.h
     ${CMAKE_CURRENT_LIST_DIR}/include/Sphere.h
 )

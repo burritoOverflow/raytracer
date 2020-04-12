@@ -50,8 +50,6 @@ TEST(ShapeTest, ComputingTheNormalOnATranslatedShape) {
   auto s = std::make_shared<geometry::TestShape>();
   s->SetTransform(utility::Translation(0, 1, 0));
   utility::Vector n = s->NormalAt(utility::Point(0, 1.70711, -0.70711));
-  std::cout << std::setprecision(17);
-  std::cout << n << std::endl;
   EXPECT_TRUE(utility::Vector(0, 0.70710678118654746, -0.70710678118654757) ==
               n);
 }
@@ -62,8 +60,6 @@ TEST(ShapeTest, ComputingTheNormalOnATransformedShape) {
       utility::Scaling(1, 0.5, 1) * utility::RotationZ(M_PI / 5);
   s->SetTransform(m);
   utility::Vector n = s->NormalAt(utility::Point(0, sqrt(2) / 2, -sqrt(2) / 2));
-  std::cout << std::setprecision(17);
-  std::cout << n << std::endl;
   EXPECT_TRUE(utility::Vector(0, 0.97014250014533188, -0.24253562503633294) ==
               n);
 }

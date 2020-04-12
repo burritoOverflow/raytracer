@@ -34,7 +34,7 @@ std::vector<Intersection> Sphere::LocalIntersect(utility::Ray &ray) {
       Intersection(t2, std::make_shared<Sphere>(*this))};
 }
 
-utility::Vector Sphere::LocalNormalAt(utility::Point point) {
+utility::Vector Sphere::LocalNormalAt(utility::Point &point) {
   return point - utility::Point(0, 0, 0);
 }
 

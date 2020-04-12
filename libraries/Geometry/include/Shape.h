@@ -29,7 +29,7 @@ public:
 
 protected:
   virtual std::vector<Intersection> LocalIntersect(utility::Ray &ray) = 0;
-  virtual utility::Vector LocalNormalAt(utility::Point point) = 0;
+  virtual utility::Vector LocalNormalAt(utility::Point &point) = 0;
 };
 
 // TODO: Move to test/ directory
@@ -44,7 +44,7 @@ public:
     return {};
   };
 
-  utility::Vector LocalNormalAt(utility::Point point) {
+  utility::Vector LocalNormalAt(utility::Point &point) {
     return utility::Vector(point.x(), point.y(), point.z());
   }
 

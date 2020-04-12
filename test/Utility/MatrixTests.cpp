@@ -406,8 +406,6 @@ TEST(MatrixTests, ArbitraryViewTransformation) {
   utility::Point to(4, -2, 8);
   utility::Vector up(1, 1, 0);
   utility::Matrix t = utility::ViewTransform(from, to, up);
-  std::cout << std::setprecision(17);
-  std::cout << t << std::endl;
   EXPECT_TRUE(utility::Matrix({{-0.50709255283710986, 0.50709255283710986,
                                 0.67612340378281321, -2.3664319132398459},
                                {0.76771593385968007, 0.60609152673132627,

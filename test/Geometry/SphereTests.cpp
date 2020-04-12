@@ -9,14 +9,14 @@
 using namespace raytracer;
 
 TEST(SphereTests, CreateSphereReturnsUniqueId) {
-  geometry::Sphere s1;
-  geometry::Sphere s2;
-  EXPECT_TRUE(s1.id_ != s2.id_);
+  auto s1 = std::make_shared<geometry::Sphere>();
+  auto s2 = std::make_shared<geometry::Sphere>();
+  EXPECT_TRUE(s1->id_ != s2->id_);
 }
 
 TEST(SphereTests, RayIntersectsSphereAtTwoPoints) {
   utility::Ray r(utility::Point(0, 0, -5), utility::Vector(0, 0, 1));
-  std::shared_ptr<geometry::Sphere> s = std::make_shared<geometry::Sphere>();
+  auto s = std::make_shared<geometry::Sphere>();
   std::vector<geometry::Intersection> xs = s->Intersect(r);
   ASSERT_EQ(2, xs.size());
   ASSERT_DOUBLE_EQ(4.0, xs[0].t_);
@@ -25,7 +25,7 @@ TEST(SphereTests, RayIntersectsSphereAtTwoPoints) {
 
 TEST(SphereTests, RayIntersectsSphereAtTangent) {
   utility::Ray r(utility::Point(0, 1, -5), utility::Vector(0, 0, 1));
-  std::shared_ptr<geometry::Sphere> s = std::make_shared<geometry::Sphere>();
+  auto s = std::make_shared<geometry::Sphere>();
   std::vector<geometry::Intersection> xs = s->Intersect(r);
   ASSERT_EQ(2, xs.size());
   ASSERT_DOUBLE_EQ(5.0, xs[0].t_);
@@ -34,14 +34,14 @@ TEST(SphereTests, RayIntersectsSphereAtTangent) {
 
 TEST(SphereTests, RayMissesSphere) {
   utility::Ray r(utility::Point(0, 2, -5), utility::Vector(0, 0, 1));
-  std::shared_ptr<geometry::Sphere> s = std::make_shared<geometry::Sphere>();
+  auto s = std::make_shared<geometry::Sphere>();
   std::vector<geometry::Intersection> xs = s->Intersect(r);
   ASSERT_EQ(0, xs.size());
 }
 
 TEST(SphereTests, RayOriginatesInsideSphere) {
   utility::Ray r(utility::Point(0, 0, 0), utility::Vector(0, 0, 1));
-  std::shared_ptr<geometry::Sphere> s = std::make_shared<geometry::Sphere>();
+  auto s = std::make_shared<geometry::Sphere>();
   std::vector<geometry::Intersection> xs = s->Intersect(r);
   ASSERT_EQ(2, xs.size());
   ASSERT_DOUBLE_EQ(-1.0, xs[0].t_);
@@ -50,7 +50,7 @@ TEST(SphereTests, RayOriginatesInsideSphere) {
 
 TEST(SphereTests, SphereIsBehindRay) {
   utility::Ray r(utility::Point(0, 0, 5), utility::Vector(0, 0, 1));
-  std::shared_ptr<geometry::Sphere> s = std::make_shared<geometry::Sphere>();
+  auto s = std::make_shared<geometry::Sphere>();
   std::vector<geometry::Intersection> xs = s->Intersect(r);
   ASSERT_EQ(2, xs.size());
   ASSERT_DOUBLE_EQ(-6.0, xs[0].t_);
