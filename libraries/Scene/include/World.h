@@ -14,11 +14,11 @@ class World {
 public:
   World() {}
   World(std::vector<std::shared_ptr<PointLight>> light_sources,
-        std::vector<std::shared_ptr<geometry::Sphere>> objects)
+        std::vector<std::shared_ptr<geometry::Shape>> objects)
       : light_sources_(light_sources), objects_(objects) {}
 
   const bool Contains(const PointLight light) const;
-  const bool Contains(const geometry::Sphere object) const;
+  const bool Contains(const std::shared_ptr<geometry::Shape> object) const;
 
   std::vector<geometry::Intersection> Intersect(utility::Ray ray);
   utility::Color ShadeHit(geometry::Computations comps);
@@ -26,7 +26,7 @@ public:
   bool IsShadowed(utility::Point point);
 
   std::vector<std::shared_ptr<PointLight>> light_sources_;
-  std::vector<std::shared_ptr<geometry::Sphere>> objects_;
+  std::vector<std::shared_ptr<geometry::Shape>> objects_;
 };
 
 World DefaultWorld();

@@ -14,17 +14,17 @@ TEST(WorldTests, CreateWorld) {
 TEST(WorldTests, DefaultWorld) {
   scene::PointLight light(utility::Point(-10, 10, -10),
                           utility::Color(1, 1, 1));
-  geometry::Sphere s1;
-  s1.material_ =
+  std::shared_ptr<geometry::Sphere> s1 = std::make_shared<geometry::Sphere>();
+  s1->material_ =
       material::Material(utility::Color(0.8, 1.0, 0.6), 0.1, 0.7, 0.2, 200);
-  geometry::Sphere s2;
-  s2.transform_ = utility::Scaling(0.5, 0.5, 0.5);
+  std::shared_ptr<geometry::Sphere> s2 = std::make_shared<geometry::Sphere>();
+  s2->transform_ = utility::Scaling(0.5, 0.5, 0.5);
   scene::World w = scene::DefaultWorld();
 
   // The initialization of the world will also increment the ids, which are used
   // for comparison. Therefore, we increment the ids by 2.
-  s1.id_ += 2;
-  s2.id_ += 2;
+  s1->id_ += 2;
+  s2->id_ += 2;
 
   EXPECT_TRUE(w.Contains(light));
   EXPECT_TRUE(w.Contains(s1));
@@ -45,7 +45,7 @@ TEST(WorldTests, IntersectWorldWithRay) {
 TEST(WorldTests, ShadeIntersection) {
   scene::World w = scene::DefaultWorld();
   utility::Ray r(utility::Point(0, 0, -5), utility::Vector(0, 0, 1));
-  std::shared_ptr<geometry::Sphere> shape = w.objects_.front();
+  std::shared_ptr<geometry::Shape> shape = w.objects_.front();
   geometry::Intersection i(4, shape);
   geometry::Computations comps = i.PrepareComputations(r);
   utility::Color c = w.ShadeHit(comps);
@@ -58,7 +58,7 @@ TEST(WorldTests, ShadeIntersectionFromTheInside) {
   w.light_sources_[0] = std::make_shared<scene::PointLight>(
       scene::PointLight(utility::Point(0, 0.25, 0), utility::Color(1, 1, 1)));
   utility::Ray r(utility::Point(0, 0, 0), utility::Vector(0, 0, 1));
-  std::shared_ptr<geometry::Sphere> shape = w.objects_.at(1);
+  std::shared_ptr<geometry::Shape> shape = w.objects_.at(1);
   geometry::Intersection i(0.5, shape);
   geometry::Computations comps = i.PrepareComputations(r);
   utility::Color c = w.ShadeHit(comps);

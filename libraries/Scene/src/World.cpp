@@ -12,9 +12,10 @@ const bool World::Contains(const PointLight light) const {
   return false;
 }
 
-const bool World::Contains(const geometry::Sphere object) const {
+const bool
+World::Contains(const std::shared_ptr<geometry::Shape> object) const {
   for (const auto &i : objects_) {
-    if (*i == object) {
+    if (*i == *object) {
       return true;
     }
   }
@@ -78,14 +79,12 @@ World DefaultWorld() {
   std::vector<std::shared_ptr<PointLight>> lights = {
       std::make_shared<PointLight>(light)};
 
-  geometry::Sphere s1;
-  s1.material_ =
+  std::shared_ptr<geometry::Sphere> s1 = std::make_shared<geometry::Sphere>();
+  s1->material_ =
       material::Material(utility::Color(0.8, 1.0, 0.6), 0.1, 0.7, 0.2, 200);
-  geometry::Sphere s2;
-  s2.transform_ = utility::Scaling(0.5, 0.5, 0.5);
-  std::vector<std::shared_ptr<geometry::Sphere>> objects = {
-      std::make_shared<geometry::Sphere>(s1),
-      std::make_shared<geometry::Sphere>(s2)};
+  std::shared_ptr<geometry::Sphere> s2 = std::make_shared<geometry::Sphere>();
+  s2->transform_ = utility::Scaling(0.5, 0.5, 0.5);
+  std::vector<std::shared_ptr<geometry::Shape>> objects = {s1, s2};
 
   return World(lights, objects);
 }

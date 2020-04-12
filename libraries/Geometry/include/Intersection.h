@@ -5,18 +5,18 @@
 #include <vector>
 
 #include "Ray.h"
-#include "Sphere.h"
+#include "Shape.h"
 
 const double EPSILON = 0.00001;
 
 namespace raytracer {
 namespace geometry {
 
-class Sphere;
+class Shape;
 
 struct Computations {
   double t;
-  std::shared_ptr<Sphere> object;
+  std::shared_ptr<Shape> object;
   utility::Point point;
   utility::Point over_point;
   utility::Vector eye_vector;
@@ -26,13 +26,13 @@ struct Computations {
 
 class Intersection {
 public:
-  Intersection(double t, std::shared_ptr<Sphere> sphere)
-      : t_(t), object_(sphere) {} // TODO: Generalize for all kinds of objects
+  Intersection(double t, std::shared_ptr<Shape> shape)
+      : t_(t), object_(shape) {}
 
   Computations PrepareComputations(utility::Ray ray);
 
   double t_;
-  std::shared_ptr<Sphere> object_;
+  std::shared_ptr<Shape> object_;
 };
 
 std::vector<Intersection>

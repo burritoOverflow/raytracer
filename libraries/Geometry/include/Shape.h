@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Intersection.h"
 #include "Material.h"
 #include "Matrix.h"
 #include "Point.h"
@@ -8,6 +9,8 @@
 namespace raytracer {
 namespace geometry {
 
+class Intersection;
+
 class Shape {
 public:
   Shape()
@@ -15,18 +18,41 @@ public:
         material_(material::Material()) {}
 
   void SetTransform(utility::Matrix transform);
+  std::vector<Intersection> Intersect(utility::Ray &ray);
+  utility::Vector NormalAt(utility::Point point);
 
   static std::atomic<uint64_t> ID;
 
   uint64_t id_;
   utility::Matrix transform_;
   material::Material material_;
+
+protected:
+  virtual std::vector<Intersection> LocalIntersect(utility::Ray &ray) = 0;
+  virtual utility::Vector LocalNormalAt(utility::Point point) = 0;
 };
 
+// TODO: Move to test/ directory
 class TestShape : public Shape {
 public:
-  TestShape() : Shape() {}
+  TestShape()
+      : Shape(), saved_ray_(utility::Ray(utility::Point(), utility::Vector())) {
+  }
+
+  std::vector<Intersection> LocalIntersect(utility::Ray &ray) {
+    saved_ray_ = ray;
+    return {};
+  };
+
+  utility::Vector LocalNormalAt(utility::Point point) {
+    return utility::Vector(point.x(), point.y(), point.z());
+  }
+
+  utility::Ray saved_ray_;
 };
 
 } // namespace geometry
 } // namespace raytracer
+
+bool operator==(const raytracer::geometry::Shape &s1,
+                const raytracer::geometry::Shape &s2);
