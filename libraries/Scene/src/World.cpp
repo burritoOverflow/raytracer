@@ -24,7 +24,7 @@ const bool World::Contains(const geometry::Sphere object) const {
 std::vector<geometry::Intersection> World::Intersect(utility::Ray ray) {
   std::vector<geometry::Intersection> intersections_vector;
   for (auto &i : objects_) {
-    std::vector<geometry::Intersection> xs = geometry::Intersect(*i, ray);
+    std::vector<geometry::Intersection> xs = geometry::Intersect(i, ray);
     intersections_vector.insert(std::end(intersections_vector), std::begin(xs),
                                 std::end(xs));
   }
@@ -38,8 +38,8 @@ utility::Color World::ShadeHit(geometry::Computations comps) {
   bool shadowed = IsShadowed(comps.over_point);
   for (auto &i : light_sources_) {
     color +=
-        Lighting(comps.object.material_, *(light_sources_.front()), comps.point,
-                 comps.eye_vector, comps.normal_vector, shadowed);
+        Lighting(comps.object->material_, *(light_sources_.front()),
+                 comps.point, comps.eye_vector, comps.normal_vector, shadowed);
   }
   return color;
 }

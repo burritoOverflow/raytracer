@@ -15,7 +15,7 @@ Computations Intersection::PrepareComputations(utility::Ray ray) {
   // Precompute some useful values
   comps.point = ray.Position(comps.t);
   comps.eye_vector = -ray.direction_;
-  comps.normal_vector = comps.object.NormalAt(comps.point);
+  comps.normal_vector = comps.object->NormalAt(comps.point);
 
   if (comps.normal_vector.Dot(comps.eye_vector) < 0) {
     comps.inside = true;
@@ -29,11 +29,12 @@ Computations Intersection::PrepareComputations(utility::Ray ray) {
   return comps;
 }
 
-std::vector<Intersection> Intersect(Sphere &sphere, utility::Ray ray) {
-  utility::Matrix transform = sphere.transform_.Inverse();
+std::vector<Intersection> Intersect(std::shared_ptr<Sphere> sphere,
+                                    utility::Ray &ray) {
+  utility::Matrix transform = sphere->transform_.Inverse();
   utility::Ray ray_transformed = utility::Transform(ray, transform);
 
-  utility::Vector sphere_to_ray = ray_transformed.origin_ - sphere.origin_;
+  utility::Vector sphere_to_ray = ray_transformed.origin_ - sphere->origin_;
 
   double a = ray_transformed.direction_.Dot(ray_transformed.direction_);
   double b = 2.0 * ray_transformed.direction_.Dot(sphere_to_ray);
@@ -75,7 +76,7 @@ std::optional<Intersection> Hit(std::vector<Intersection> &intersections) {
 
 bool operator==(const raytracer::geometry::Intersection &i1,
                 const raytracer::geometry::Intersection &i2) {
-  return i1.t_ == i2.t_ && i1.object_.id_ == i2.object_.id_;
+  return i1.t_ == i2.t_ && i1.object_->id_ == i2.object_->id_;
 }
 
 bool operator!=(const raytracer::geometry::Intersection &i1,

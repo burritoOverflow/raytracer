@@ -16,7 +16,7 @@ TEST(SphereTests, CreateSphereReturnsUniqueId) {
 
 TEST(SphereTests, RayIntersectsSphereAtTwoPoints) {
   utility::Ray r(utility::Point(0, 0, -5), utility::Vector(0, 0, 1));
-  geometry::Sphere s;
+  std::shared_ptr<geometry::Sphere> s = std::make_shared<geometry::Sphere>();
   std::vector<geometry::Intersection> xs = geometry::Intersect(s, r);
   ASSERT_EQ(2, xs.size());
   ASSERT_DOUBLE_EQ(4.0, xs[0].t_);
@@ -25,7 +25,7 @@ TEST(SphereTests, RayIntersectsSphereAtTwoPoints) {
 
 TEST(SphereTests, RayIntersectsSphereAtTangent) {
   utility::Ray r(utility::Point(0, 1, -5), utility::Vector(0, 0, 1));
-  geometry::Sphere s;
+  std::shared_ptr<geometry::Sphere> s = std::make_shared<geometry::Sphere>();
   std::vector<geometry::Intersection> xs = geometry::Intersect(s, r);
   ASSERT_EQ(2, xs.size());
   ASSERT_DOUBLE_EQ(5.0, xs[0].t_);
@@ -34,14 +34,14 @@ TEST(SphereTests, RayIntersectsSphereAtTangent) {
 
 TEST(SphereTests, RayMissesSphere) {
   utility::Ray r(utility::Point(0, 2, -5), utility::Vector(0, 0, 1));
-  geometry::Sphere s;
+  std::shared_ptr<geometry::Sphere> s = std::make_shared<geometry::Sphere>();
   std::vector<geometry::Intersection> xs = geometry::Intersect(s, r);
   ASSERT_EQ(0, xs.size());
 }
 
 TEST(SphereTests, RayOriginatesInsideSphere) {
   utility::Ray r(utility::Point(0, 0, 0), utility::Vector(0, 0, 1));
-  geometry::Sphere s;
+  std::shared_ptr<geometry::Sphere> s = std::make_shared<geometry::Sphere>();
   std::vector<geometry::Intersection> xs = geometry::Intersect(s, r);
   ASSERT_EQ(2, xs.size());
   ASSERT_DOUBLE_EQ(-1.0, xs[0].t_);
@@ -50,7 +50,7 @@ TEST(SphereTests, RayOriginatesInsideSphere) {
 
 TEST(SphereTests, SphereIsBehindRay) {
   utility::Ray r(utility::Point(0, 0, 5), utility::Vector(0, 0, 1));
-  geometry::Sphere s;
+  std::shared_ptr<geometry::Sphere> s = std::make_shared<geometry::Sphere>();
   std::vector<geometry::Intersection> xs = geometry::Intersect(s, r);
   ASSERT_EQ(2, xs.size());
   ASSERT_DOUBLE_EQ(-6.0, xs[0].t_);
@@ -59,8 +59,8 @@ TEST(SphereTests, SphereIsBehindRay) {
 
 TEST(SphereTests, IntersectScaledSphereWithRay) {
   utility::Ray r(utility::Point(0, 0, -5), utility::Vector(0, 0, 1));
-  geometry::Sphere s;
-  s.SetTransform(utility::Scaling(2, 2, 2));
+  std::shared_ptr<geometry::Sphere> s = std::make_shared<geometry::Sphere>();
+  s->SetTransform(utility::Scaling(2, 2, 2));
   std::vector<geometry::Intersection> xs = geometry::Intersect(s, r);
   ASSERT_EQ(2, xs.size());
   ASSERT_DOUBLE_EQ(3, xs[0].t_);
@@ -69,8 +69,8 @@ TEST(SphereTests, IntersectScaledSphereWithRay) {
 
 TEST(SphereTests, IntersectTranslatedSphereWithRay) {
   utility::Ray r(utility::Point(0, 0, -5), utility::Vector(0, 0, 1));
-  geometry::Sphere s;
-  s.SetTransform(utility::Translation(5, 0, 0));
+  std::shared_ptr<geometry::Sphere> s = std::make_shared<geometry::Sphere>();
+  s->SetTransform(utility::Translation(5, 0, 0));
   std::vector<geometry::Intersection> xs = geometry::Intersect(s, r);
   ASSERT_EQ(0, xs.size());
 }

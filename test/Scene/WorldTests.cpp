@@ -45,7 +45,7 @@ TEST(WorldTests, IntersectWorldWithRay) {
 TEST(WorldTests, ShadeIntersection) {
   scene::World w = scene::DefaultWorld();
   utility::Ray r(utility::Point(0, 0, -5), utility::Vector(0, 0, 1));
-  geometry::Sphere shape = *(w.objects_.front());
+  std::shared_ptr<geometry::Sphere> shape = w.objects_.front();
   geometry::Intersection i(4, shape);
   geometry::Computations comps = i.PrepareComputations(r);
   utility::Color c = w.ShadeHit(comps);
@@ -58,7 +58,7 @@ TEST(WorldTests, ShadeIntersectionFromTheInside) {
   w.light_sources_[0] = std::make_shared<scene::PointLight>(
       scene::PointLight(utility::Point(0, 0.25, 0), utility::Color(1, 1, 1)));
   utility::Ray r(utility::Point(0, 0, 0), utility::Vector(0, 0, 1));
-  geometry::Sphere shape = *(w.objects_.at(1));
+  std::shared_ptr<geometry::Sphere> shape = w.objects_.at(1);
   geometry::Intersection i(0.5, shape);
   geometry::Computations comps = i.PrepareComputations(r);
   utility::Color c = w.ShadeHit(comps);
@@ -124,12 +124,12 @@ TEST(WorldTests, TheShadeHitFunctionIsGivenAnIntersectionInShadow) {
   world.light_sources_.push_back(std::make_shared<raytracer::scene::PointLight>(
       scene::PointLight(utility::Point(0, 0, -10), utility::Color(1, 1, 1))));
 
-  geometry::Sphere s1;
-  world.objects_.push_back(std::make_shared<raytracer::geometry::Sphere>(s1));
+  std::shared_ptr<geometry::Sphere> s1 = std::make_shared<geometry::Sphere>();
+  world.objects_.push_back(s1);
 
-  geometry::Sphere s2;
-  s2.transform_ = utility::Translation(0, 0, 10);
-  world.objects_.push_back(std::make_shared<raytracer::geometry::Sphere>(s1));
+  std::shared_ptr<geometry::Sphere> s2 = std::make_shared<geometry::Sphere>();
+  s2->transform_ = utility::Translation(0, 0, 10);
+  world.objects_.push_back(s2);
 
   utility::Ray ray(utility::Point(0, 0, 5), utility::Vector(0, 0, 1));
   geometry::Intersection intersection(4, s2);

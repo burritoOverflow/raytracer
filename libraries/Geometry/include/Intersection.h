@@ -14,7 +14,7 @@ namespace geometry {
 
 struct Computations {
   double t;
-  Sphere object;
+  std::shared_ptr<Sphere> object;
   utility::Point point;
   utility::Point over_point;
   utility::Vector eye_vector;
@@ -24,16 +24,16 @@ struct Computations {
 
 class Intersection {
 public:
-  Intersection(double t, Sphere &sphere)
+  Intersection(double t, std::shared_ptr<Sphere> sphere)
       : t_(t), object_(sphere) {} // TODO: Generalize for all kinds of objects
 
   Computations PrepareComputations(utility::Ray ray);
 
   double t_;
-  Sphere object_;
+  std::shared_ptr<Sphere> object_;
 };
 
-std::vector<Intersection> Intersect(Sphere &sphere, utility::Ray ray);
+std::vector<Intersection> Intersect(std::shared_ptr<Sphere>, utility::Ray &ray);
 std::vector<Intersection>
 Intersections(const std::initializer_list<Intersection> &intersections);
 std::optional<Intersection> Hit(std::vector<Intersection> &intersections);
