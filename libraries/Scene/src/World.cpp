@@ -80,8 +80,8 @@ World DefaultWorld() {
       std::make_shared<PointLight>(light)};
 
   std::shared_ptr<geometry::Sphere> s1 = std::make_shared<geometry::Sphere>();
-  s1->material_ =
-      material::Material(utility::Color(0.8, 1.0, 0.6), 0.1, 0.7, 0.2, 200);
+  s1->material_ = material::Material(utility::Color(0.8, 1.0, 0.6),
+                                     std::nullopt, 0.1, 0.7, 0.2, 200);
   std::shared_ptr<geometry::Sphere> s2 = std::make_shared<geometry::Sphere>();
   s2->transform_ = utility::Scaling(0.5, 0.5, 0.5);
   std::vector<std::shared_ptr<geometry::Shape>> objects = {s1, s2};

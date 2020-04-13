@@ -6,8 +6,15 @@ namespace scene {
 utility::Color Lighting(material::Material material, PointLight light,
                         utility::Point point, utility::Vector eye_vector,
                         utility::Vector normal_vector, bool in_shadow) {
+  utility::Color color;
+  if (material.pattern_.has_value()) {
+    color = material.pattern_.value().StripeAt(point);
+  } else {
+    color = material.color_;
+  }
+
   // Combine the surface color with the light's color/intensity
-  utility::Color effective_color = material.color_ * light.intensity_;
+  utility::Color effective_color = color * light.intensity_;
 
   // Find the direction to the light source
   utility::Vector light_vector = (light.position_ - point).Normalize();

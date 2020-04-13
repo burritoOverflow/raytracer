@@ -3,6 +3,7 @@ add_executable(LibraryTests "")
 add_subdirectory(Canvas)
 add_subdirectory(Geometry)
 add_subdirectory(Material)
+add_subdirectory(Pattern)
 add_subdirectory(Scene)
 add_subdirectory(Utility)
 
@@ -16,8 +17,9 @@ target_link_libraries(
   LibraryTests
   PRIVATE
     # CanvasTests
-    GeometryTests
-    # MaterialTests
+    # GeometryTests
+    MaterialTests
+    # PatternTests
     # SceneTests
     # UtilityTests
     gmock
