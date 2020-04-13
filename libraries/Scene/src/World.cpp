@@ -38,9 +38,9 @@ utility::Color World::ShadeHit(geometry::Computations comps) {
   utility::Color color(0, 0, 0);
   bool shadowed = IsShadowed(comps.over_point);
   for (auto &i : light_sources_) {
-    color +=
-        Lighting(comps.object->material_, *(light_sources_.front()),
-                 comps.point, comps.eye_vector, comps.normal_vector, shadowed);
+    color += Lighting(comps.object->material_, comps.object->transform_,
+                      *(light_sources_.front()), comps.point, comps.eye_vector,
+                      comps.normal_vector, shadowed);
   }
   return color;
 }

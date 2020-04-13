@@ -18,8 +18,8 @@ target_link_libraries(
   PRIVATE
     # CanvasTests
     # GeometryTests
-    MaterialTests
-    # PatternTests
+    # MaterialTests
+    PatternTests
     # SceneTests
     # UtilityTests
     gmock

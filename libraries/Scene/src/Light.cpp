@@ -3,12 +3,13 @@
 namespace raytracer {
 namespace scene {
 
-utility::Color Lighting(material::Material material, PointLight light,
+utility::Color Lighting(material::Material material,
+                        utility::Matrix object_transform, PointLight light,
                         utility::Point point, utility::Vector eye_vector,
                         utility::Vector normal_vector, bool in_shadow) {
   utility::Color color;
   if (material.pattern_.has_value()) {
-    color = material.pattern_.value().StripeAt(point);
+    color = material.pattern_.value().StripeAtObject(object_transform, point);
   } else {
     color = material.color_;
   }
