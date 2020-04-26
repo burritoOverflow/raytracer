@@ -7,9 +7,10 @@
 namespace raytracer {
 namespace pattern {
 
-class StripePattern : public Pattern {
+class GradientPattern : public Pattern {
 public:
-  StripePattern(utility::Color a, utility::Color b) : Pattern(), a_(a), b_(b) {}
+  GradientPattern(utility::Color a, utility::Color b)
+      : Pattern(), a_(a), b_(b) {}
 
   utility::Color PatternAt(const utility::Point &point);
 
