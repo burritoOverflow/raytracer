@@ -3,6 +3,7 @@
 #include <gtest/gtest.h>
 
 #include "Light.h"
+#include "StripePattern.h"
 #include "Vector.h"
 
 using namespace raytracer;
@@ -18,8 +19,8 @@ TEST(MaterialTest, DefaultMaterial) {
 
 TEST(MaterialTest, LightingWithAPatternApplied) {
   material::Material m;
-  m.pattern_ =
-      pattern::StripePattern(utility::Color(1, 1, 1), utility::Color(0, 0, 0));
+  m.pattern_ = std::make_shared<pattern::StripePattern>(
+      pattern::StripePattern(utility::Color(1, 1, 1), utility::Color(0, 0, 0)));
   m.ambient_ = 1;
   m.diffuse_ = 0;
   m.specular_ = 0;

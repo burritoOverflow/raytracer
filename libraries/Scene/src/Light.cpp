@@ -9,7 +9,7 @@ utility::Color Lighting(material::Material material,
                         utility::Vector normal_vector, bool in_shadow) {
   utility::Color color;
   if (material.pattern_.has_value()) {
-    color = material.pattern_.value().StripeAtObject(object_transform, point);
+    color = material.pattern_.value()->PatternAtShape(object_transform, point);
   } else {
     color = material.color_;
   }

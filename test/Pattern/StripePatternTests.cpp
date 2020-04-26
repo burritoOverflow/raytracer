@@ -17,26 +17,26 @@ TEST(StripePatternTest, CreatingAStripedPattern) {
 
 TEST(StripePatternTest, AStripePatternIsConstantInY) {
   pattern::StripePattern pattern(white, black);
-  EXPECT_TRUE(white == pattern.StripeAt(utility::Point(0, 0, 0)));
-  EXPECT_TRUE(white == pattern.StripeAt(utility::Point(0, 1, 0)));
-  EXPECT_TRUE(white == pattern.StripeAt(utility::Point(0, 2, 0)));
+  EXPECT_TRUE(white == pattern.PatternAt(utility::Point(0, 0, 0)));
+  EXPECT_TRUE(white == pattern.PatternAt(utility::Point(0, 1, 0)));
+  EXPECT_TRUE(white == pattern.PatternAt(utility::Point(0, 2, 0)));
 }
 
 TEST(StripePatternTest, AStripePatternIsConstantInZ) {
   pattern::StripePattern pattern(white, black);
-  EXPECT_TRUE(white == pattern.StripeAt(utility::Point(0, 0, 0)));
-  EXPECT_TRUE(white == pattern.StripeAt(utility::Point(0, 0, 1)));
-  EXPECT_TRUE(white == pattern.StripeAt(utility::Point(0, 0, 2)));
+  EXPECT_TRUE(white == pattern.PatternAt(utility::Point(0, 0, 0)));
+  EXPECT_TRUE(white == pattern.PatternAt(utility::Point(0, 0, 1)));
+  EXPECT_TRUE(white == pattern.PatternAt(utility::Point(0, 0, 2)));
 }
 
 TEST(StripePatternTest, AStripePatternAlternatesInX) {
   pattern::StripePattern pattern(white, black);
-  EXPECT_TRUE(white == pattern.StripeAt(utility::Point(0, 0, 0)));
-  EXPECT_TRUE(white == pattern.StripeAt(utility::Point(0.9, 0, 0)));
-  EXPECT_TRUE(black == pattern.StripeAt(utility::Point(1, 0, 0)));
-  EXPECT_TRUE(black == pattern.StripeAt(utility::Point(-0.1, 0, 0)));
-  EXPECT_TRUE(black == pattern.StripeAt(utility::Point(-1, 0, 0)));
-  EXPECT_TRUE(white == pattern.StripeAt(utility::Point(-1.1, 0, 0)));
+  EXPECT_TRUE(white == pattern.PatternAt(utility::Point(0, 0, 0)));
+  EXPECT_TRUE(white == pattern.PatternAt(utility::Point(0.9, 0, 0)));
+  EXPECT_TRUE(black == pattern.PatternAt(utility::Point(1, 0, 0)));
+  EXPECT_TRUE(black == pattern.PatternAt(utility::Point(-0.1, 0, 0)));
+  EXPECT_TRUE(black == pattern.PatternAt(utility::Point(-1, 0, 0)));
+  EXPECT_TRUE(white == pattern.PatternAt(utility::Point(-1.1, 0, 0)));
 }
 
 TEST(StripePatternTest, StripesWithAnObjectTransformation) {
@@ -44,7 +44,7 @@ TEST(StripePatternTest, StripesWithAnObjectTransformation) {
   object->SetTransform(utility::Scaling(2, 2, 2));
   pattern::StripePattern pattern(white, black);
   utility::Color c =
-      pattern.StripeAtObject(object->transform_, utility::Point(1.5, 0, 0));
+      pattern.PatternAtShape(object->transform_, utility::Point(1.5, 0, 0));
   EXPECT_TRUE(white == c);
 }
 
@@ -53,7 +53,7 @@ TEST(StripePatternTest, StripesWithAPatternTransformation) {
   pattern::StripePattern pattern(white, black);
   pattern.transform_ = utility::Scaling(2, 2, 2);
   utility::Color c =
-      pattern.StripeAtObject(object->transform_, utility::Point(1.5, 0, 0));
+      pattern.PatternAtShape(object->transform_, utility::Point(1.5, 0, 0));
   EXPECT_TRUE(white == c);
 }
 
@@ -63,6 +63,6 @@ TEST(StripePatternTest, StripesWithBothAnObjectAndAPatternTransformation) {
   pattern::StripePattern pattern(white, black);
   pattern.transform_ = utility::Translation(0.5, 0, 0);
   utility::Color c =
-      pattern.StripeAtObject(object->transform_, utility::Point(2.5, 0, 0));
+      pattern.PatternAtShape(object->transform_, utility::Point(2.5, 0, 0));
   EXPECT_TRUE(white == c);
 }
