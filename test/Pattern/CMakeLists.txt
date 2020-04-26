@@ -5,6 +5,7 @@ target_sources(
   PRIVATE
     GradientPatternTests.cpp
     PatternTests.cpp
+    RingPatternTests.cpp
     StripePatternTests.cpp
 )
 
