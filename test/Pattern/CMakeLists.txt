@@ -3,6 +3,7 @@ add_library(PatternTests SHARED "")
 target_sources(
   PatternTests
   PRIVATE
+    CheckersPatternTests.cpp
     GradientPatternTests.cpp
     PatternTests.cpp
     RingPatternTests.cpp
