@@ -36,3 +36,8 @@ TEST(MaterialTest, LightingWithAPatternApplied) {
   EXPECT_TRUE(utility::Color(1, 1, 1) == c1);
   EXPECT_TRUE(utility::Color(0, 0, 0) == c2);
 }
+
+TEST(MaterialTest, ReflectivityForTheDefaultMaterial) {
+  material::Material m;
+  ASSERT_DOUBLE_EQ(0.0, m.reflective_);
+}

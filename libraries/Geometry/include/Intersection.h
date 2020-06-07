@@ -21,6 +21,7 @@ struct Computations {
   utility::Point over_point;
   utility::Vector eye_vector;
   utility::Vector normal_vector;
+  utility::Vector reflect_vector;
   bool inside;
 };
 

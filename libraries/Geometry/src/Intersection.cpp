@@ -24,6 +24,8 @@ Computations Intersection::PrepareComputations(utility::Ray ray) {
     comps.inside = false;
   }
 
+  comps.reflect_vector = ray.direction_.Reflect(comps.normal_vector);
+
   comps.over_point = comps.point + comps.normal_vector * EPSILON;
 
   return comps;

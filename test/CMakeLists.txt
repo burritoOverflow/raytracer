@@ -19,8 +19,8 @@ target_link_libraries(
     # CanvasTests
     # GeometryTests
     # MaterialTests
-    PatternTests
-    # SceneTests
+    # PatternTests
+    SceneTests
     # UtilityTests
     gmock
 )

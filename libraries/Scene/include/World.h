@@ -4,6 +4,7 @@
 
 #include "Intersection.h"
 #include "Light.h"
+#include "Plane.h"
 #include "Ray.h"
 #include "Sphere.h"
 
@@ -21,9 +22,12 @@ public:
   const bool Contains(const std::shared_ptr<geometry::Shape> object) const;
 
   std::vector<geometry::Intersection> Intersect(utility::Ray ray);
-  utility::Color ShadeHit(geometry::Computations comps);
-  utility::Color ColorAt(utility::Ray ray);
+  utility::Color ShadeHit(geometry::Computations comps, size_t remaining = 5);
+  utility::Color ColorAt(utility::Ray ray, size_t remaining = 5);
   bool IsShadowed(utility::Point point);
+
+  utility::Color ReflectedColor(geometry::Computations comps,
+                                size_t remaining = 5);
 
   std::vector<std::shared_ptr<PointLight>> light_sources_;
   std::vector<std::shared_ptr<geometry::Shape>> objects_;

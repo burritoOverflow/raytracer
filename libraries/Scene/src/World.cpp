@@ -34,18 +34,23 @@ std::vector<geometry::Intersection> World::Intersect(utility::Ray ray) {
   return intersections_vector;
 }
 
-utility::Color World::ShadeHit(geometry::Computations comps) {
-  utility::Color color(0, 0, 0);
+utility::Color World::ShadeHit(geometry::Computations comps, size_t remaining) {
   bool shadowed = IsShadowed(comps.over_point);
+
+  utility::Color surface(0, 0, 0);
   for (auto &i : light_sources_) {
-    color += Lighting(comps.object->material_, comps.object->transform_,
-                      *(light_sources_.front()), comps.point, comps.eye_vector,
-                      comps.normal_vector, shadowed);
+    // TODO: Properly implement support for multiple light sources
+    surface += Lighting(comps.object->material_, comps.object->transform_,
+                        *(light_sources_.front()), comps.point,
+                        comps.eye_vector, comps.normal_vector, shadowed);
   }
-  return color;
+
+  utility::Color reflected = ReflectedColor(comps, remaining);
+
+  return surface + reflected;
 }
 
-utility::Color World::ColorAt(utility::Ray ray) {
+utility::Color World::ColorAt(utility::Ray ray, size_t remaining) {
   std::vector<geometry::Intersection> intersections = Intersect(ray);
   auto hit = geometry::Hit(intersections);
 
@@ -54,7 +59,7 @@ utility::Color World::ColorAt(utility::Ray ray) {
   }
 
   geometry::Computations comps = hit->PrepareComputations(ray);
-  return ShadeHit(comps);
+  return ShadeHit(comps, remaining);
 }
 
 bool World::IsShadowed(utility::Point point) {
@@ -72,6 +77,23 @@ bool World::IsShadowed(utility::Point point) {
     return true;
   }
   return false;
+}
+
+utility::Color World::ReflectedColor(geometry::Computations comps,
+                                     size_t remaining) {
+  if (remaining <= 0) {
+    return utility::Color(0, 0, 0);
+  }
+
+  if (comps.object->material_.reflective_ == 0) {
+    return utility::Color(0, 0, 0);
+  }
+
+  utility::Ray reflect_ray =
+      utility::Ray(comps.over_point, comps.reflect_vector);
+  utility::Color color = ColorAt(reflect_ray, remaining - 1);
+
+  return color * comps.object->material_.reflective_;
 }
 
 World DefaultWorld() {

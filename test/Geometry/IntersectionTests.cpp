@@ -2,12 +2,13 @@
 
 #include <gtest/gtest.h>
 
+#include "Plane.h"
 #include "Ray.h"
 #include "Sphere.h"
 
 using namespace raytracer;
 
-TEST(IntersectionTests, IntersectionEncapsulatesTAndObject) {
+TEST(IntersectionTest, IntersectionEncapsulatesTAndObject) {
   std::shared_ptr<geometry::Sphere> shape =
       std::make_shared<geometry::Sphere>();
   geometry::Intersection i(3.5, shape);
@@ -15,7 +16,7 @@ TEST(IntersectionTests, IntersectionEncapsulatesTAndObject) {
   EXPECT_TRUE(shape == i.object_);
 }
 
-TEST(IntersectionTests, AggregatingIntersections) {
+TEST(IntersectionTest, AggregatingIntersections) {
   std::shared_ptr<geometry::Sphere> shape =
       std::make_shared<geometry::Sphere>();
   geometry::Intersection i1(1, shape);
@@ -26,7 +27,7 @@ TEST(IntersectionTests, AggregatingIntersections) {
   ASSERT_DOUBLE_EQ(2, xs[1].t_);
 }
 
-TEST(IntersectionTests, IntersectSetsTheObjectOnTheIntersection) {
+TEST(IntersectionTest, IntersectSetsTheObjectOnTheIntersection) {
   utility::Ray r(utility::Point(0, 0, -5), utility::Vector(0, 0, 1));
   std::shared_ptr<geometry::Shape> shape = std::make_shared<geometry::Sphere>();
   std::vector<geometry::Intersection> xs = shape->Intersect(r);
@@ -35,7 +36,7 @@ TEST(IntersectionTests, IntersectSetsTheObjectOnTheIntersection) {
   EXPECT_TRUE(*shape == *xs[1].object_);
 }
 
-TEST(IntersectionTests, TheHitWhenAllIntersectionsHavePositiveT) {
+TEST(IntersectionTest, TheHitWhenAllIntersectionsHavePositiveT) {
   std::shared_ptr<geometry::Sphere> shape =
       std::make_shared<geometry::Sphere>();
   geometry::Intersection i1(1, shape);
@@ -45,7 +46,7 @@ TEST(IntersectionTests, TheHitWhenAllIntersectionsHavePositiveT) {
   EXPECT_TRUE(i1 == i.value());
 }
 
-TEST(IntersectionTests, TheHitWhenSomeIntersectionsHaveNegativeT) {
+TEST(IntersectionTest, TheHitWhenSomeIntersectionsHaveNegativeT) {
   std::shared_ptr<geometry::Sphere> shape =
       std::make_shared<geometry::Sphere>();
   geometry::Intersection i1(-1, shape);
@@ -55,7 +56,7 @@ TEST(IntersectionTests, TheHitWhenSomeIntersectionsHaveNegativeT) {
   EXPECT_TRUE(i2 == i.value());
 }
 
-TEST(IntersectionTests, TheHitWhenAllIntersectionsHaveNegativeT) {
+TEST(IntersectionTest, TheHitWhenAllIntersectionsHaveNegativeT) {
   std::shared_ptr<geometry::Sphere> shape =
       std::make_shared<geometry::Sphere>();
   geometry::Intersection i1(-2, shape);
@@ -65,7 +66,7 @@ TEST(IntersectionTests, TheHitWhenAllIntersectionsHaveNegativeT) {
   EXPECT_TRUE(std::nullopt == i);
 }
 
-TEST(IntersectionTests, TheHitIsAlwaysTheLowestNonnegativeIntersection) {
+TEST(IntersectionTest, TheHitIsAlwaysTheLowestNonnegativeIntersection) {
   std::shared_ptr<geometry::Sphere> shape =
       std::make_shared<geometry::Sphere>();
   geometry::Intersection i1(5, shape);
@@ -78,7 +79,7 @@ TEST(IntersectionTests, TheHitIsAlwaysTheLowestNonnegativeIntersection) {
   EXPECT_TRUE(i4 == i.value());
 }
 
-TEST(IntersectionTests, PrecomputeStateOfIntersection) {
+TEST(IntersectionTest, PrecomputeStateOfIntersection) {
   utility::Ray r(utility::Point(0, 0, -5), utility::Vector(0, 0, 1));
   std::shared_ptr<geometry::Sphere> shape =
       std::make_shared<geometry::Sphere>();
@@ -91,7 +92,7 @@ TEST(IntersectionTests, PrecomputeStateOfIntersection) {
   EXPECT_TRUE(utility::Vector(0, 0, -1) == comps.normal_vector);
 }
 
-TEST(IntersectionTests, HitWhenIntersectionOccursOnTheOutside) {
+TEST(IntersectionTest, HitWhenIntersectionOccursOnTheOutside) {
   utility::Ray r(utility::Point(0, 0, -5), utility::Vector(0, 0, 1));
   std::shared_ptr<geometry::Sphere> shape =
       std::make_shared<geometry::Sphere>();
@@ -100,7 +101,7 @@ TEST(IntersectionTests, HitWhenIntersectionOccursOnTheOutside) {
   EXPECT_FALSE(comps.inside);
 }
 
-TEST(IntersectionTests, HitWhenIntersectionOccursOnTheInside) {
+TEST(IntersectionTest, HitWhenIntersectionOccursOnTheInside) {
   utility::Ray r(utility::Point(0, 0, 0), utility::Vector(0, 0, 1));
   std::shared_ptr<geometry::Sphere> shape =
       std::make_shared<geometry::Sphere>();
@@ -114,7 +115,7 @@ TEST(IntersectionTests, HitWhenIntersectionOccursOnTheInside) {
   EXPECT_TRUE(utility::Vector(0, 0, -1) == comps.normal_vector);
 }
 
-TEST(IntersectionTests, TheHitShouldOffsetThePoint) {
+TEST(IntersectionTest, TheHitShouldOffsetThePoint) {
   utility::Ray ray(utility::Point(0, 0, -5), utility::Vector(0, 0, 1));
   std::shared_ptr<geometry::Sphere> shape =
       std::make_shared<geometry::Sphere>();
@@ -123,4 +124,14 @@ TEST(IntersectionTests, TheHitShouldOffsetThePoint) {
   geometry::Computations comps = intersection.PrepareComputations(ray);
   ASSERT_LT(comps.over_point.z(), -EPSILON / 2);
   ASSERT_GT(comps.point.z(), comps.over_point.z());
+}
+
+TEST(IntersectionTest, PrecomputingTheReflectionVector) {
+  auto shape = std::make_shared<raytracer::geometry::Plane>();
+  utility::Ray ray(utility::Point(0, 1, -1),
+                   utility::Vector(0, -sqrt(2) / 2, sqrt(2) / 2));
+  geometry::Intersection intersection(sqrt(2), shape);
+  geometry::Computations comps = intersection.PrepareComputations(ray);
+  EXPECT_TRUE(utility::Vector(0, sqrt(2) / 2, sqrt(2) / 2) ==
+              comps.reflect_vector);
 }
