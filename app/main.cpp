@@ -38,6 +38,7 @@ int main(void) {
           raytracer::pattern::GradientPattern(
               raytracer::utility::Color(1, 0.298, 0.298),
               raytracer::utility::Color(0.204, 0.749, 0.286)));
+  middle->material_.reflective_ = 0.8;
   middle->material_.pattern_.value()->transform_ =
       raytracer::utility::Translation(-0.5, 1, 0.5);
   world.objects_.push_back(middle);

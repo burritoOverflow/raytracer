@@ -38,5 +38,13 @@ utility::Vector Sphere::LocalNormalAt(utility::Point &point) {
   return point - utility::Point(0, 0, 0);
 }
 
+Sphere GlassSphere() {
+  Sphere sphere;
+  sphere.transform_ = utility::Identity();
+  sphere.material_.transparency_ = 1.0;
+  sphere.material_.refractive_index_ = 1.5;
+  return sphere;
+}
+
 } // namespace geometry
 } // namespace raytracer

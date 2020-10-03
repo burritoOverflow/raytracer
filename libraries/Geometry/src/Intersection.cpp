@@ -2,11 +2,43 @@
 
 #include <algorithm>
 
+#include "AlmostEquals.h"
+
 namespace raytracer {
 namespace geometry {
 
-Computations Intersection::PrepareComputations(utility::Ray ray) {
+Computations Intersection::PrepareComputations(
+    utility::Ray ray, const std::vector<Intersection> &intersections) {
   Computations comps;
+
+  std::vector<std::shared_ptr<Shape>> containers = {};
+  for (auto i : intersections) {
+    if (i == *this) {
+      if (containers.empty()) {
+        comps.n1 = 1.0;
+      } else {
+        comps.n1 = containers.back().get()->material_.refractive_index_;
+      }
+    }
+
+    const auto id = i.object_.get()->id_;
+    auto it = std::find_if(
+        containers.begin(), containers.end(),
+        [id](std::shared_ptr<Shape> const &i) { return i.get()->id_ == id; });
+    if (it != containers.end()) {
+      containers.erase(it);
+    } else {
+      containers.push_back(i.object_);
+    }
+
+    if (i == *this) {
+      if (containers.empty()) {
+        comps.n2 = 1.0;
+      } else {
+        comps.n2 = containers.back().get()->material_.refractive_index_;
+      }
+    }
+  }
 
   // Copy the intersection's properties, for convenience
   comps.t = t_;
@@ -42,8 +74,9 @@ Intersections(const std::initializer_list<Intersection> &intersections) {
   return intersections_vector;
 }
 
-std::optional<Intersection> Hit(std::vector<Intersection> &intersections) {
-  for (Intersection &i : intersections) {
+std::optional<Intersection>
+Hit(const std::vector<Intersection> &intersections) {
+  for (auto &i : intersections) {
     if (i.t_ > 0) {
       return i;
     }
@@ -56,7 +89,7 @@ std::optional<Intersection> Hit(std::vector<Intersection> &intersections) {
 
 bool operator==(const raytracer::geometry::Intersection &i1,
                 const raytracer::geometry::Intersection &i2) {
-  return i1.t_ == i2.t_ && i1.object_->id_ == i2.object_->id_;
+  return AlmostEquals(i1.t_, i2.t_) && i1.object_->id_ == i2.object_->id_;
 }
 
 bool operator!=(const raytracer::geometry::Intersection &i1,

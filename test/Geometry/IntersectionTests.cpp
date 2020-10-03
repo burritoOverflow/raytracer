@@ -135,3 +135,52 @@ TEST(IntersectionTest, PrecomputingTheReflectionVector) {
   EXPECT_TRUE(utility::Vector(0, sqrt(2) / 2, sqrt(2) / 2) ==
               comps.reflect_vector);
 }
+
+TEST(IntersectionTest, FindingN1AndN2AtVariousIntersections) {
+  auto A = std::make_shared<raytracer::geometry::Sphere>(
+      raytracer::geometry::GlassSphere());
+  A->transform_ = utility::Scaling(2, 2, 2);
+  A->material_.refractive_index_ = 1.5;
+
+  auto B = std::make_shared<raytracer::geometry::Sphere>(
+      raytracer::geometry::GlassSphere());
+  B->transform_ = utility::Translation(0, 0, -0.25);
+  B->material_.refractive_index_ = 2.0;
+
+  auto C = std::make_shared<raytracer::geometry::Sphere>(
+      raytracer::geometry::GlassSphere());
+  C->transform_ = utility::Translation(0, 0, 0.25);
+  C->material_.refractive_index_ = 2.5;
+
+  utility::Ray ray =
+      utility::Ray(utility::Point(0, 0, -4), utility::Vector(0, 0, 1));
+
+  std::vector<geometry::Intersection> xs = geometry::Intersections(
+      {geometry::Intersection(2, A), geometry::Intersection(2.75, B),
+       geometry::Intersection(3.25, C), geometry::Intersection(4.75, B),
+       geometry::Intersection(5.25, C), geometry::Intersection(6, A)});
+
+  geometry::Computations comps0 = xs[0].PrepareComputations(ray, xs);
+  ASSERT_DOUBLE_EQ(1.0, comps0.n1);
+  ASSERT_DOUBLE_EQ(1.5, comps0.n2);
+
+  geometry::Computations comps1 = xs[1].PrepareComputations(ray, xs);
+  ASSERT_DOUBLE_EQ(1.5, comps1.n1);
+  ASSERT_DOUBLE_EQ(2.0, comps1.n2);
+
+  geometry::Computations comps2 = xs[2].PrepareComputations(ray, xs);
+  ASSERT_DOUBLE_EQ(2.0, comps2.n1);
+  ASSERT_DOUBLE_EQ(2.5, comps2.n2);
+
+  geometry::Computations comps3 = xs[3].PrepareComputations(ray, xs);
+  ASSERT_DOUBLE_EQ(2.5, comps3.n1);
+  ASSERT_DOUBLE_EQ(2.5, comps3.n2);
+
+  geometry::Computations comps4 = xs[4].PrepareComputations(ray, xs);
+  ASSERT_DOUBLE_EQ(2.5, comps4.n1);
+  ASSERT_DOUBLE_EQ(1.5, comps4.n2);
+
+  geometry::Computations comps5 = xs[5].PrepareComputations(ray, xs);
+  ASSERT_DOUBLE_EQ(1.5, comps5.n1);
+  ASSERT_DOUBLE_EQ(1.0, comps5.n2);
+}
