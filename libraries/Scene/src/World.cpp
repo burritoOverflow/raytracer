@@ -96,6 +96,15 @@ utility::Color World::ReflectedColor(geometry::Computations comps,
   return color * comps.object->material_.reflective_;
 }
 
+utility::Color World::RefractedColor(geometry::Computations comps,
+                                     size_t remaining) {
+  if (comps.object.get()->material_.transparency_ == 0) {
+    return utility::Color(0, 0, 0);
+  }
+
+  return utility::Color(1, 1, 1);
+}
+
 World DefaultWorld() {
   PointLight light(utility::Point(-10, 10, -10), utility::Color(1, 1, 1));
   std::vector<std::shared_ptr<PointLight>> lights = {

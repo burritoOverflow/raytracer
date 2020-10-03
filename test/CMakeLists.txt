@@ -17,10 +17,10 @@ target_link_libraries(
   LibraryTests
   PRIVATE
     # CanvasTests
-    GeometryTests
+    # GeometryTests
     # MaterialTests
     # PatternTests
-    # SceneTests
+    SceneTests
     # UtilityTests
     gmock
 )
