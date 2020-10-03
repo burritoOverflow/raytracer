@@ -46,8 +46,9 @@ utility::Color World::ShadeHit(geometry::Computations comps, size_t remaining) {
   }
 
   utility::Color reflected = ReflectedColor(comps, remaining);
+  utility::Color refracted = RefractedColor(comps, remaining);
 
-  return surface + reflected;
+  return surface + reflected + refracted;
 }
 
 utility::Color World::ColorAt(utility::Ray ray, size_t remaining) {
