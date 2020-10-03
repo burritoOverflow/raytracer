@@ -98,6 +98,10 @@ utility::Color World::ReflectedColor(geometry::Computations comps,
 
 utility::Color World::RefractedColor(geometry::Computations comps,
                                      size_t remaining) {
+  if (remaining <= 0) {
+    return utility::Color(0, 0, 0);
+  }
+
   if (comps.object.get()->material_.transparency_ == 0) {
     return utility::Color(0, 0, 0);
   }

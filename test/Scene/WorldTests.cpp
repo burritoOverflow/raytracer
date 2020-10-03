@@ -233,8 +233,25 @@ TEST(WorldTest, TheRefractedColorWithAnOpaqueSurface) {
       utility::Ray(utility::Point(0, 0, -5), utility::Vector(0, 0, 1));
   std::vector<geometry::Intersection> xs = geometry::Intersections(
       {geometry::Intersection(4, shape), geometry::Intersection(6, shape)});
-  geometry::Computations comps = xs[0].PrepareComputations(ray, xs);
 
+  geometry::Computations comps = xs[0].PrepareComputations(ray, xs);
   utility::Color color = world.RefractedColor(comps, 5);
+
+  EXPECT_TRUE(utility::Color(0, 0, 0) == color);
+}
+
+TEST(WorldTest, TheRefractedColorAtTheMaximumRecursiveDepth) {
+  scene::World world = scene::DefaultWorld();
+  auto shape = world.objects_.front();
+  shape->material_.transparency_ = 1.0;
+  shape->material_.refractive_index_ = 1.5;
+  utility::Ray ray =
+      utility::Ray(utility::Point(0, 0, -5), utility::Vector(0, 0, 1));
+  std::vector<geometry::Intersection> xs = geometry::Intersections(
+      {geometry::Intersection(4, shape), geometry::Intersection(6, shape)});
+
+  geometry::Computations comps = xs[0].PrepareComputations(ray, xs);
+  utility::Color color = world.RefractedColor(comps, 0);
+
   EXPECT_TRUE(utility::Color(0, 0, 0) == color);
 }
