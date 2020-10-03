@@ -106,6 +106,14 @@ utility::Color World::RefractedColor(geometry::Computations comps,
     return utility::Color(0, 0, 0);
   }
 
+  // Snell's Law
+  const double n_ratio = comps.n1 / comps.n2;
+  const double cos_i = comps.eye_vector.Dot(comps.normal_vector);
+  const double sin2_t = std::pow(n_ratio, 2) * (1 - std::pow(cos_i, 2));
+  if (sin2_t > 1) {
+    return utility::Color(0, 0, 0);
+  }
+
   return utility::Color(1, 1, 1);
 }
 
