@@ -41,3 +41,9 @@ TEST(MaterialTest, ReflectivityForTheDefaultMaterial) {
   material::Material m;
   ASSERT_DOUBLE_EQ(0.0, m.reflective_);
 }
+
+TEST(MaterialTest, TransparencyAndRefractiveIndexForTheDefaultMaterial) {
+  material::Material m;
+  ASSERT_DOUBLE_EQ(0.0, m.transparency_);
+  ASSERT_DOUBLE_EQ(1.0, m.refractive_index_);
+}

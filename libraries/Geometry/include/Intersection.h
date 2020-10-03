@@ -23,6 +23,8 @@ struct Computations {
   utility::Vector normal_vector;
   utility::Vector reflect_vector;
   bool inside;
+  double n1;
+  double n2;
 };
 
 class Intersection {
@@ -30,7 +32,10 @@ public:
   Intersection(double t, std::shared_ptr<Shape> shape)
       : t_(t), object_(shape) {}
 
-  Computations PrepareComputations(utility::Ray ray);
+  Computations
+  PrepareComputations(utility::Ray ray,
+                      const std::vector<Intersection> &intersections =
+                          std::vector<Intersection>());
 
   double t_;
   std::shared_ptr<Shape> object_;
@@ -38,7 +43,7 @@ public:
 
 std::vector<Intersection>
 Intersections(const std::initializer_list<Intersection> &intersections);
-std::optional<Intersection> Hit(std::vector<Intersection> &intersections);
+std::optional<Intersection> Hit(const std::vector<Intersection> &intersections);
 
 } // namespace geometry
 } // namespace raytracer

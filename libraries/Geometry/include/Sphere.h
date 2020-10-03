@@ -17,5 +17,7 @@ public:
   double radii_;
 };
 
+Sphere GlassSphere();
+
 } // namespace geometry
 } // namespace raytracer
