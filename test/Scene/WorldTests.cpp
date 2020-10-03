@@ -272,3 +272,24 @@ TEST(WorldTest, TheRefractedColorUnderTotalInternalReflection) {
 
   EXPECT_TRUE(utility::Color(0, 0, 0) == color);
 }
+
+TEST(WorldTest, TheRefractedColorWithARefractedRay) {
+  scene::World world = scene::DefaultWorld();
+  auto A = world.objects_[0];
+  A->material_.ambient_ = 1.0;
+  A->material_.pattern_ = std::make_shared<pattern::TestPattern>();
+  auto B = world.objects_[1];
+  B->material_.transparency_ = 1.0;
+  B->material_.refractive_index_ = 1.5;
+  utility::Ray ray =
+      utility::Ray(utility::Point(0, 0, 0.1), utility::Vector(0, 1, 0));
+  std::vector<geometry::Intersection> xs = geometry::Intersections(
+      {geometry::Intersection(-0.9899, A), geometry::Intersection(-0.4899, B),
+       geometry::Intersection(0.4899, B), geometry::Intersection(0.9899, A)});
+
+  geometry::Computations comps = xs[2].PrepareComputations(ray, xs);
+  utility::Color color = world.RefractedColor(comps, 5);
+
+  EXPECT_TRUE(utility::Color(0, 0.99888453952495349, 0.047219452538348854) ==
+              color);
+}

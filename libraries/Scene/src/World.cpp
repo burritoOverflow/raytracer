@@ -114,7 +114,12 @@ utility::Color World::RefractedColor(geometry::Computations comps,
     return utility::Color(0, 0, 0);
   }
 
-  return utility::Color(1, 1, 1);
+  const double cos_t = std::sqrt(1.0 - sin2_t);
+  utility::Vector direction = comps.normal_vector * (n_ratio * cos_i - cos_t) -
+                              comps.eye_vector * n_ratio;
+  utility::Ray refract_ray = utility::Ray(comps.under_point, direction);
+  return ColorAt(refract_ray, remaining - 1) *
+         comps.object->material_.transparency_;
 }
 
 World DefaultWorld() {
