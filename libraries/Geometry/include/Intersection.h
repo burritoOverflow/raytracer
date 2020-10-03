@@ -19,6 +19,7 @@ struct Computations {
   std::shared_ptr<Shape> object;
   utility::Point point;
   utility::Point over_point;
+  utility::Point under_point;
   utility::Vector eye_vector;
   utility::Vector normal_vector;
   utility::Vector reflect_vector;
