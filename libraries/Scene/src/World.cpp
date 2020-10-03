@@ -46,8 +46,9 @@ utility::Color World::ShadeHit(geometry::Computations comps, size_t remaining) {
   }
 
   utility::Color reflected = ReflectedColor(comps, remaining);
+  utility::Color refracted = RefractedColor(comps, remaining);
 
-  return surface + reflected;
+  return surface + reflected + refracted;
 }
 
 utility::Color World::ColorAt(utility::Ray ray, size_t remaining) {
@@ -94,6 +95,32 @@ utility::Color World::ReflectedColor(geometry::Computations comps,
   utility::Color color = ColorAt(reflect_ray, remaining - 1);
 
   return color * comps.object->material_.reflective_;
+}
+
+utility::Color World::RefractedColor(geometry::Computations comps,
+                                     size_t remaining) {
+  if (remaining <= 0) {
+    return utility::Color(0, 0, 0);
+  }
+
+  if (comps.object.get()->material_.transparency_ == 0) {
+    return utility::Color(0, 0, 0);
+  }
+
+  // Snell's Law
+  const double n_ratio = comps.n1 / comps.n2;
+  const double cos_i = comps.eye_vector.Dot(comps.normal_vector);
+  const double sin2_t = std::pow(n_ratio, 2) * (1 - std::pow(cos_i, 2));
+  if (sin2_t > 1) {
+    return utility::Color(0, 0, 0);
+  }
+
+  const double cos_t = std::sqrt(1.0 - sin2_t);
+  utility::Vector direction = comps.normal_vector * (n_ratio * cos_i - cos_t) -
+                              comps.eye_vector * n_ratio;
+  utility::Ray refract_ray = utility::Ray(comps.under_point, direction);
+  return ColorAt(refract_ray, remaining - 1) *
+         comps.object->material_.transparency_;
 }
 
 World DefaultWorld() {

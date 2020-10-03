@@ -184,3 +184,17 @@ TEST(IntersectionTest, FindingN1AndN2AtVariousIntersections) {
   ASSERT_DOUBLE_EQ(1.5, comps5.n1);
   ASSERT_DOUBLE_EQ(1.0, comps5.n2);
 }
+
+TEST(IntersectionTest, TheUnderPointIsOffsetBelowTheSurface) {
+  utility::Ray ray =
+      utility::Ray(utility::Point(0, 0, -5), utility::Vector(0, 0, 1));
+  auto shape = std::make_shared<raytracer::geometry::Sphere>(
+      raytracer::geometry::GlassSphere());
+  shape->transform_ = utility::Translation(0, 0, 1);
+  geometry::Intersection i(5, shape);
+  std::vector<geometry::Intersection> xs = geometry::Intersections({i});
+
+  geometry::Computations comps = i.PrepareComputations(ray, xs);
+  ASSERT_GT(comps.under_point.z(), EPSILON / 2);
+  ASSERT_LT(comps.point.z(), comps.under_point.z());
+}

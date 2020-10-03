@@ -225,3 +225,96 @@ TEST(WorldTest, TheReflectedColorAtTheMaximumRecursiveDepth) {
 
   EXPECT_TRUE(utility::Color(0, 0, 0) == color);
 }
+
+TEST(WorldTest, TheRefractedColorWithAnOpaqueSurface) {
+  scene::World world = scene::DefaultWorld();
+  auto shape = world.objects_.front();
+  utility::Ray ray =
+      utility::Ray(utility::Point(0, 0, -5), utility::Vector(0, 0, 1));
+  std::vector<geometry::Intersection> xs = geometry::Intersections(
+      {geometry::Intersection(4, shape), geometry::Intersection(6, shape)});
+
+  geometry::Computations comps = xs[0].PrepareComputations(ray, xs);
+  utility::Color color = world.RefractedColor(comps, 5);
+
+  EXPECT_TRUE(utility::Color(0, 0, 0) == color);
+}
+
+TEST(WorldTest, TheRefractedColorAtTheMaximumRecursiveDepth) {
+  scene::World world = scene::DefaultWorld();
+  auto shape = world.objects_.front();
+  shape->material_.transparency_ = 1.0;
+  shape->material_.refractive_index_ = 1.5;
+  utility::Ray ray =
+      utility::Ray(utility::Point(0, 0, -5), utility::Vector(0, 0, 1));
+  std::vector<geometry::Intersection> xs = geometry::Intersections(
+      {geometry::Intersection(4, shape), geometry::Intersection(6, shape)});
+
+  geometry::Computations comps = xs[0].PrepareComputations(ray, xs);
+  utility::Color color = world.RefractedColor(comps, 0);
+
+  EXPECT_TRUE(utility::Color(0, 0, 0) == color);
+}
+
+TEST(WorldTest, TheRefractedColorUnderTotalInternalReflection) {
+  scene::World world = scene::DefaultWorld();
+  auto shape = world.objects_.front();
+  shape->material_.transparency_ = 1.0;
+  shape->material_.refractive_index_ = 1.5;
+  utility::Ray ray =
+      utility::Ray(utility::Point(0, 0, sqrt(2) / 2), utility::Vector(0, 1, 0));
+  std::vector<geometry::Intersection> xs =
+      geometry::Intersections({geometry::Intersection(-sqrt(2) / 2, shape),
+                               geometry::Intersection(sqrt(2) / 2, shape)});
+
+  geometry::Computations comps = xs[1].PrepareComputations(ray, xs);
+  utility::Color color = world.RefractedColor(comps, 5);
+
+  EXPECT_TRUE(utility::Color(0, 0, 0) == color);
+}
+
+TEST(WorldTest, TheRefractedColorWithARefractedRay) {
+  scene::World world = scene::DefaultWorld();
+  auto A = world.objects_[0];
+  A->material_.ambient_ = 1.0;
+  A->material_.pattern_ = std::make_shared<pattern::TestPattern>();
+  auto B = world.objects_[1];
+  B->material_.transparency_ = 1.0;
+  B->material_.refractive_index_ = 1.5;
+  utility::Ray ray =
+      utility::Ray(utility::Point(0, 0, 0.1), utility::Vector(0, 1, 0));
+  std::vector<geometry::Intersection> xs = geometry::Intersections(
+      {geometry::Intersection(-0.9899, A), geometry::Intersection(-0.4899, B),
+       geometry::Intersection(0.4899, B), geometry::Intersection(0.9899, A)});
+
+  geometry::Computations comps = xs[2].PrepareComputations(ray, xs);
+  utility::Color color = world.RefractedColor(comps, 5);
+
+  EXPECT_TRUE(utility::Color(0, 0.99888453952495349, 0.047219452538348854) ==
+              color);
+}
+
+TEST(WorldTest, ShadeHitWithATransparentMaterial) {
+  scene::World world = scene::DefaultWorld();
+  std::shared_ptr<geometry::Plane> floor = std::make_shared<geometry::Plane>();
+  floor->material_.transparency_ = 0.5;
+  floor->material_.refractive_index_ = 1.5;
+  floor->transform_ = utility::Translation(0, -1, 0);
+  world.objects_.push_back(floor);
+  std::shared_ptr<geometry::Sphere> ball = std::make_shared<geometry::Sphere>();
+  ball->material_.color_ = utility::Color(1, 0, 0);
+  ball->material_.ambient_ = 0.5;
+  ball->transform_ = utility::Translation(0, -3.5, -0.5);
+  world.objects_.push_back(ball);
+
+  utility::Ray ray = utility::Ray(
+      utility::Point(0, 0, -3), utility::Vector(0, -sqrt(2) / 2, sqrt(2) / 2));
+  std::vector<geometry::Intersection> xs =
+      geometry::Intersections({geometry::Intersection(sqrt(2), floor)});
+
+  geometry::Computations comps = xs[0].PrepareComputations(ray, xs);
+  utility::Color color = world.ShadeHit(comps, 5);
+
+  EXPECT_TRUE(utility::Color(0.93642538898150141, 0.68642538898150141,
+                             0.68642538898150141) == color);
+}

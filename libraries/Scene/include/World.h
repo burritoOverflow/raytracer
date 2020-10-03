@@ -28,6 +28,8 @@ public:
 
   utility::Color ReflectedColor(geometry::Computations comps,
                                 size_t remaining = 5);
+  utility::Color RefractedColor(geometry::Computations comps,
+                                size_t remaining = 5);
 
   std::vector<std::shared_ptr<PointLight>> light_sources_;
   std::vector<std::shared_ptr<geometry::Shape>> objects_;

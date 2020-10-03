@@ -59,6 +59,7 @@ Computations Intersection::PrepareComputations(
   comps.reflect_vector = ray.direction_.Reflect(comps.normal_vector);
 
   comps.over_point = comps.point + comps.normal_vector * EPSILON;
+  comps.under_point = comps.point - comps.normal_vector * EPSILON;
 
   return comps;
 }
