@@ -198,3 +198,18 @@ TEST(IntersectionTest, TheUnderPointIsOffsetBelowTheSurface) {
   ASSERT_GT(comps.under_point.z(), EPSILON / 2);
   ASSERT_LT(comps.point.z(), comps.under_point.z());
 }
+
+TEST(IntersectionTest, TheSchlickApproximationUnderTotalInternalReflection) {
+  auto shape = std::make_shared<raytracer::geometry::Sphere>(
+      raytracer::geometry::GlassSphere());
+  utility::Ray ray =
+      utility::Ray(utility::Point(0, 0, sqrt(2) / 2), utility::Vector(0, 1, 0));
+  std::vector<geometry::Intersection> xs =
+      geometry::Intersections({geometry::Intersection(-sqrt(2) / 2, shape),
+                               geometry::Intersection(sqrt(2) / 2, shape)});
+
+  geometry::Computations comps = xs[1].PrepareComputations(ray, xs);
+  double reflectance = geometry::Schlick(comps);
+
+  ASSERT_DOUBLE_EQ(1.0, reflectance);
+}
