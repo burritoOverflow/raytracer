@@ -17,9 +17,14 @@ double Schlick(Computations comps) {
     if (sin2_t > 1.0) {
       return 1.0;
     }
+
+    double cos_t = sqrt(1.0 - sin2_t);
+    // When n1 > n2, use cos(theta_t) instead
+    cos = cos_t;
   }
 
-  return 0.0;
+  double r0 = std::pow((comps.n1 - comps.n2) / (comps.n1 + comps.n2), 2);
+  return r0 + (1 - r0) * std::pow(1 - cos, 5);
 }
 
 Computations Intersection::PrepareComputations(
