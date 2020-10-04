@@ -198,3 +198,46 @@ TEST(IntersectionTest, TheUnderPointIsOffsetBelowTheSurface) {
   ASSERT_GT(comps.under_point.z(), EPSILON / 2);
   ASSERT_LT(comps.point.z(), comps.under_point.z());
 }
+
+TEST(IntersectionTest, TheSchlickApproximationUnderTotalInternalReflection) {
+  auto shape = std::make_shared<raytracer::geometry::Sphere>(
+      raytracer::geometry::GlassSphere());
+  utility::Ray ray =
+      utility::Ray(utility::Point(0, 0, sqrt(2) / 2), utility::Vector(0, 1, 0));
+  std::vector<geometry::Intersection> xs =
+      geometry::Intersections({geometry::Intersection(-sqrt(2) / 2, shape),
+                               geometry::Intersection(sqrt(2) / 2, shape)});
+
+  geometry::Computations comps = xs[1].PrepareComputations(ray, xs);
+  double reflectance = geometry::Schlick(comps);
+
+  ASSERT_DOUBLE_EQ(1.0, reflectance);
+}
+
+TEST(IntersectionTest, TheSchlickApproximationWithAPerpendicularViewingAngle) {
+  auto shape = std::make_shared<raytracer::geometry::Sphere>(
+      raytracer::geometry::GlassSphere());
+  utility::Ray ray =
+      utility::Ray(utility::Point(0, 0, 0), utility::Vector(0, 1, 0));
+  std::vector<geometry::Intersection> xs = geometry::Intersections(
+      {geometry::Intersection(-1, shape), geometry::Intersection(1, shape)});
+
+  geometry::Computations comps = xs[1].PrepareComputations(ray, xs);
+  double reflectance = geometry::Schlick(comps);
+
+  ASSERT_DOUBLE_EQ(0.04, reflectance);
+}
+
+TEST(IntersectionTest, TheSchlickApproximationWithSmallAngleAndN2GTN1) {
+  auto shape = std::make_shared<raytracer::geometry::Sphere>(
+      raytracer::geometry::GlassSphere());
+  utility::Ray ray =
+      utility::Ray(utility::Point(0, 0.99, -2), utility::Vector(0, 0, 1));
+  std::vector<geometry::Intersection> xs =
+      geometry::Intersections({geometry::Intersection(1.8589, shape)});
+
+  geometry::Computations comps = xs[0].PrepareComputations(ray, xs);
+  double reflectance = geometry::Schlick(comps);
+
+  ASSERT_DOUBLE_EQ(0.48873081012212183, reflectance);
+}

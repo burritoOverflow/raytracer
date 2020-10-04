@@ -318,3 +318,29 @@ TEST(WorldTest, ShadeHitWithATransparentMaterial) {
   EXPECT_TRUE(utility::Color(0.93642538898150141, 0.68642538898150141,
                              0.68642538898150141) == color);
 }
+
+TEST(WorldTest, ShadeHitWithAReflectiveTransparentMaterial) {
+  scene::World world = scene::DefaultWorld();
+  std::shared_ptr<geometry::Plane> floor = std::make_shared<geometry::Plane>();
+  floor->material_.reflective_ = 0.5;
+  floor->material_.transparency_ = 0.5;
+  floor->material_.refractive_index_ = 1.5;
+  floor->transform_ = utility::Translation(0, -1, 0);
+  world.objects_.push_back(floor);
+  std::shared_ptr<geometry::Sphere> ball = std::make_shared<geometry::Sphere>();
+  ball->material_.color_ = utility::Color(1, 0, 0);
+  ball->material_.ambient_ = 0.5;
+  ball->transform_ = utility::Translation(0, -3.5, -0.5);
+  world.objects_.push_back(ball);
+
+  utility::Ray ray = utility::Ray(
+      utility::Point(0, 0, -3), utility::Vector(0, -sqrt(2) / 2, sqrt(2) / 2));
+  std::vector<geometry::Intersection> xs =
+      geometry::Intersections({geometry::Intersection(sqrt(2), floor)});
+
+  geometry::Computations comps = xs[0].PrepareComputations(ray, xs);
+  utility::Color color = world.ShadeHit(comps, 5);
+
+  EXPECT_TRUE(utility::Color(0.93391521307085057, 0.69643431694455415,
+                             0.69243074575933306) == color);
+}

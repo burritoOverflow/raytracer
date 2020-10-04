@@ -7,6 +7,26 @@
 namespace raytracer {
 namespace geometry {
 
+double Schlick(Computations comps) {
+  double cos = comps.eye_vector.Dot(comps.normal_vector);
+
+  // Total internal reflection can only occur if n1 > n2
+  if (comps.n1 > comps.n2) {
+    double n = comps.n1 / comps.n2;
+    double sin2_t = std::pow(n, 2) * (1.0 - std::pow(cos, 2));
+    if (sin2_t > 1.0) {
+      return 1.0;
+    }
+
+    double cos_t = sqrt(1.0 - sin2_t);
+    // When n1 > n2, use cos(theta_t) instead
+    cos = cos_t;
+  }
+
+  double r0 = std::pow((comps.n1 - comps.n2) / (comps.n1 + comps.n2), 2);
+  return r0 + (1 - r0) * std::pow(1 - cos, 5);
+}
+
 Computations Intersection::PrepareComputations(
     utility::Ray ray, const std::vector<Intersection> &intersections) {
   Computations comps;

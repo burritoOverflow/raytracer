@@ -48,7 +48,13 @@ utility::Color World::ShadeHit(geometry::Computations comps, size_t remaining) {
   utility::Color reflected = ReflectedColor(comps, remaining);
   utility::Color refracted = RefractedColor(comps, remaining);
 
-  return surface + reflected + refracted;
+  auto material = comps.object->material_;
+  if (material.reflective_ > 0 && material.transparency_ > 0) {
+    double reflectance = geometry::Schlick(comps);
+    return surface + reflected * reflectance + refracted * (1 - reflectance);
+  } else {
+    return surface + reflected + refracted;
+  }
 }
 
 utility::Color World::ColorAt(utility::Ray ray, size_t remaining) {

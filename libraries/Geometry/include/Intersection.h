@@ -28,6 +28,8 @@ struct Computations {
   double n2;
 };
 
+double Schlick(Computations comps);
+
 class Intersection {
 public:
   Intersection(double t, std::shared_ptr<Shape> shape)
