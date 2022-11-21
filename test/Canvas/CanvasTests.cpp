@@ -3,6 +3,7 @@
 #include <gtest/gtest.h>
 
 using namespace raytracer;
+using namespace utility;
 
 TEST(CanvasTests, CreateCanvas) {
   size_t width = 10;
@@ -11,7 +12,7 @@ TEST(CanvasTests, CreateCanvas) {
   ASSERT_EQ(width, c.width_);
   ASSERT_EQ(height, c.height_);
 
-  utility::Color black(0, 0, 0);
+  Color black(0, 0, 0);
   for (size_t i = 0; i < width; ++i) {
     for (size_t j = 0; j < height; ++j) {
       EXPECT_TRUE(black == c(i, j));
@@ -21,7 +22,7 @@ TEST(CanvasTests, CreateCanvas) {
 
 TEST(CanvasTests, WritePixelToCanvas) {
   raytracer::Canvas c(10, 20);
-  utility::Color red(1, 0, 0);
+  Color red(1, 0, 0);
   c.WritePixel(2, 3, red);
   EXPECT_TRUE(red == c(2, 3));
   EXPECT_TRUE(red == c.GetPixel(2, 3));
@@ -47,9 +48,9 @@ TEST(CanvasTests, ConstructPpmHeader) {
 
 TEST(CanvasTests, ConstructPpmPixelData) {
   raytracer::Canvas c(5, 3);
-  utility::Color c1(1.5, 0, 0);
-  utility::Color c2(0, 0.5, 0);
-  utility::Color c3(-0.5, 0, 1);
+  Color c1(1.5, 0, 0);
+  Color c2(0, 0.5, 0);
+  Color c3(-0.5, 0, 1);
   c.WritePixel(0, 0, c1);
   c.WritePixel(2, 1, c2);
   c.WritePixel(4, 2, c3);
@@ -77,7 +78,7 @@ TEST(CanvasTests, SplitLongLinesInPpmFiles) {
   raytracer::Canvas c(width, height);
   for (size_t x = 0; x < width; ++x) {
     for (size_t y = 0; y < height; ++y) {
-      c.WritePixel(x, y, utility::Color(1, 0.8, 0.6));
+      c.WritePixel(x, y, Color(1, 0.8, 0.6));
     }
   }
   std::string ppm = c.ToPpm();

@@ -7,6 +7,7 @@
 #include "Sphere.h"
 
 using namespace raytracer;
+using namespace utility;
 
 TEST(IntersectionTest, IntersectionEncapsulatesTAndObject) {
   std::shared_ptr<geometry::Sphere> shape =
@@ -28,7 +29,7 @@ TEST(IntersectionTest, AggregatingIntersections) {
 }
 
 TEST(IntersectionTest, IntersectSetsTheObjectOnTheIntersection) {
-  utility::Ray r(utility::Point(0, 0, -5), utility::Vector(0, 0, 1));
+  Ray r(Point(0, 0, -5), Vector(0, 0, 1));
   std::shared_ptr<geometry::Shape> shape = std::make_shared<geometry::Sphere>();
   std::vector<geometry::Intersection> xs = shape->Intersect(r);
   ASSERT_EQ(2, xs.size());
@@ -80,20 +81,20 @@ TEST(IntersectionTest, TheHitIsAlwaysTheLowestNonnegativeIntersection) {
 }
 
 TEST(IntersectionTest, PrecomputeStateOfIntersection) {
-  utility::Ray r(utility::Point(0, 0, -5), utility::Vector(0, 0, 1));
+  Ray r(Point(0, 0, -5), Vector(0, 0, 1));
   std::shared_ptr<geometry::Sphere> shape =
       std::make_shared<geometry::Sphere>();
   geometry::Intersection i(4, shape);
   geometry::Computations comps = i.PrepareComputations(r);
   EXPECT_TRUE(i.t_ == comps.t);
   EXPECT_TRUE(i.object_ == comps.object);
-  EXPECT_TRUE(utility::Point(0, 0, -1) == comps.point);
-  EXPECT_TRUE(utility::Vector(0, 0, -1) == comps.eye_vector);
-  EXPECT_TRUE(utility::Vector(0, 0, -1) == comps.normal_vector);
+  EXPECT_TRUE(Point(0, 0, -1) == comps.point);
+  EXPECT_TRUE(Vector(0, 0, -1) == comps.eye_vector);
+  EXPECT_TRUE(Vector(0, 0, -1) == comps.normal_vector);
 }
 
 TEST(IntersectionTest, HitWhenIntersectionOccursOnTheOutside) {
-  utility::Ray r(utility::Point(0, 0, -5), utility::Vector(0, 0, 1));
+  Ray r(Point(0, 0, -5), Vector(0, 0, 1));
   std::shared_ptr<geometry::Sphere> shape =
       std::make_shared<geometry::Sphere>();
   geometry::Intersection i(4, shape);
@@ -102,24 +103,24 @@ TEST(IntersectionTest, HitWhenIntersectionOccursOnTheOutside) {
 }
 
 TEST(IntersectionTest, HitWhenIntersectionOccursOnTheInside) {
-  utility::Ray r(utility::Point(0, 0, 0), utility::Vector(0, 0, 1));
+  Ray r(Point(0, 0, 0), Vector(0, 0, 1));
   std::shared_ptr<geometry::Sphere> shape =
       std::make_shared<geometry::Sphere>();
   geometry::Intersection i(1, shape);
   geometry::Computations comps = i.PrepareComputations(r);
-  EXPECT_TRUE(utility::Point(0, 0, 1) == comps.point);
-  EXPECT_TRUE(utility::Vector(0, 0, -1) == comps.eye_vector);
+  EXPECT_TRUE(Point(0, 0, 1) == comps.point);
+  EXPECT_TRUE(Vector(0, 0, -1) == comps.eye_vector);
   EXPECT_TRUE(comps.inside);
 
   // The normal would have been (0, 0, 1), but it is inverted!
-  EXPECT_TRUE(utility::Vector(0, 0, -1) == comps.normal_vector);
+  EXPECT_TRUE(Vector(0, 0, -1) == comps.normal_vector);
 }
 
 TEST(IntersectionTest, TheHitShouldOffsetThePoint) {
-  utility::Ray ray(utility::Point(0, 0, -5), utility::Vector(0, 0, 1));
+  Ray ray(Point(0, 0, -5), Vector(0, 0, 1));
   std::shared_ptr<geometry::Sphere> shape =
       std::make_shared<geometry::Sphere>();
-  shape->transform_ = utility::Translation(0, 0, 1);
+  shape->transform_ = Translation(0, 0, 1);
   geometry::Intersection intersection(5, shape);
   geometry::Computations comps = intersection.PrepareComputations(ray);
   ASSERT_LT(comps.over_point.z(), -EPSILON / 2);
@@ -128,32 +129,29 @@ TEST(IntersectionTest, TheHitShouldOffsetThePoint) {
 
 TEST(IntersectionTest, PrecomputingTheReflectionVector) {
   auto shape = std::make_shared<raytracer::geometry::Plane>();
-  utility::Ray ray(utility::Point(0, 1, -1),
-                   utility::Vector(0, -sqrt(2) / 2, sqrt(2) / 2));
+  Ray ray(Point(0, 1, -1), Vector(0, -sqrt(2) / 2, sqrt(2) / 2));
   geometry::Intersection intersection(sqrt(2), shape);
   geometry::Computations comps = intersection.PrepareComputations(ray);
-  EXPECT_TRUE(utility::Vector(0, sqrt(2) / 2, sqrt(2) / 2) ==
-              comps.reflect_vector);
+  EXPECT_TRUE(Vector(0, sqrt(2) / 2, sqrt(2) / 2) == comps.reflect_vector);
 }
 
 TEST(IntersectionTest, FindingN1AndN2AtVariousIntersections) {
   auto A = std::make_shared<raytracer::geometry::Sphere>(
       raytracer::geometry::GlassSphere());
-  A->transform_ = utility::Scaling(2, 2, 2);
+  A->transform_ = Scaling(2, 2, 2);
   A->material_.refractive_index_ = 1.5;
 
   auto B = std::make_shared<raytracer::geometry::Sphere>(
       raytracer::geometry::GlassSphere());
-  B->transform_ = utility::Translation(0, 0, -0.25);
+  B->transform_ = Translation(0, 0, -0.25);
   B->material_.refractive_index_ = 2.0;
 
   auto C = std::make_shared<raytracer::geometry::Sphere>(
       raytracer::geometry::GlassSphere());
-  C->transform_ = utility::Translation(0, 0, 0.25);
+  C->transform_ = Translation(0, 0, 0.25);
   C->material_.refractive_index_ = 2.5;
 
-  utility::Ray ray =
-      utility::Ray(utility::Point(0, 0, -4), utility::Vector(0, 0, 1));
+  Ray ray = Ray(Point(0, 0, -4), Vector(0, 0, 1));
 
   std::vector<geometry::Intersection> xs = geometry::Intersections(
       {geometry::Intersection(2, A), geometry::Intersection(2.75, B),
@@ -186,11 +184,10 @@ TEST(IntersectionTest, FindingN1AndN2AtVariousIntersections) {
 }
 
 TEST(IntersectionTest, TheUnderPointIsOffsetBelowTheSurface) {
-  utility::Ray ray =
-      utility::Ray(utility::Point(0, 0, -5), utility::Vector(0, 0, 1));
+  Ray ray = Ray(Point(0, 0, -5), Vector(0, 0, 1));
   auto shape = std::make_shared<raytracer::geometry::Sphere>(
       raytracer::geometry::GlassSphere());
-  shape->transform_ = utility::Translation(0, 0, 1);
+  shape->transform_ = Translation(0, 0, 1);
   geometry::Intersection i(5, shape);
   std::vector<geometry::Intersection> xs = geometry::Intersections({i});
 
@@ -202,8 +199,7 @@ TEST(IntersectionTest, TheUnderPointIsOffsetBelowTheSurface) {
 TEST(IntersectionTest, TheSchlickApproximationUnderTotalInternalReflection) {
   auto shape = std::make_shared<raytracer::geometry::Sphere>(
       raytracer::geometry::GlassSphere());
-  utility::Ray ray =
-      utility::Ray(utility::Point(0, 0, sqrt(2) / 2), utility::Vector(0, 1, 0));
+  Ray ray = Ray(Point(0, 0, sqrt(2) / 2), Vector(0, 1, 0));
   std::vector<geometry::Intersection> xs =
       geometry::Intersections({geometry::Intersection(-sqrt(2) / 2, shape),
                                geometry::Intersection(sqrt(2) / 2, shape)});
@@ -217,8 +213,7 @@ TEST(IntersectionTest, TheSchlickApproximationUnderTotalInternalReflection) {
 TEST(IntersectionTest, TheSchlickApproximationWithAPerpendicularViewingAngle) {
   auto shape = std::make_shared<raytracer::geometry::Sphere>(
       raytracer::geometry::GlassSphere());
-  utility::Ray ray =
-      utility::Ray(utility::Point(0, 0, 0), utility::Vector(0, 1, 0));
+  Ray ray = Ray(Point(0, 0, 0), Vector(0, 1, 0));
   std::vector<geometry::Intersection> xs = geometry::Intersections(
       {geometry::Intersection(-1, shape), geometry::Intersection(1, shape)});
 
@@ -231,8 +226,7 @@ TEST(IntersectionTest, TheSchlickApproximationWithAPerpendicularViewingAngle) {
 TEST(IntersectionTest, TheSchlickApproximationWithSmallAngleAndN2GTN1) {
   auto shape = std::make_shared<raytracer::geometry::Sphere>(
       raytracer::geometry::GlassSphere());
-  utility::Ray ray =
-      utility::Ray(utility::Point(0, 0.99, -2), utility::Vector(0, 0, 1));
+  Ray ray = Ray(Point(0, 0.99, -2), Vector(0, 0, 1));
   std::vector<geometry::Intersection> xs =
       geometry::Intersections({geometry::Intersection(1.8589, shape)});
 
