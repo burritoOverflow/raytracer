@@ -1,7 +1,13 @@
+#include <algorithm>
+#include <filesystem>
 #include <fstream>
+#include <stdexcept>
 
 #define _USE_MATH_DEFINES
 #include <math.h>
+
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "../3rdparty/stb/stb_image_write.h"
 
 #include "Camera.h"
 #include "Canvas.h"
@@ -13,6 +19,50 @@
 #include "Sphere.h"
 #include "StripePattern.h"
 #include "World.h"
+
+void write_canvas_to_image(std::filesystem::path &file_path,
+                           const raytracer::Canvas &canvas) {
+  size_t channels = 3;
+
+  auto get_image_data = [](size_t width, size_t height, size_t channels,
+                           const raytracer::Canvas &canvas) {
+    std::vector<uint8_t> image_data(canvas.width_ * canvas.height_ * channels);
+    size_t i = 0;
+    for (size_t col = 0; col < canvas.height_; ++col) {
+      for (size_t row = 0; row < canvas.width_; ++row) {
+        for (size_t k = 0; k < channels; ++k) {
+          image_data[i++] = (uint8_t)std::clamp(
+              static_cast<int>(canvas.framebuffer_[row][col][k] * 256), 0, 255);
+        }
+      }
+    }
+
+    return image_data;
+  };
+
+  if (file_path.extension() == ".ppm") {
+    // Handle special case ppm implemented in the Canvas class
+    std::ofstream out(file_path.string().c_str());
+    out << canvas.ToPpm();
+    out.close();
+  } else if (file_path.extension() == ".bmp") {
+    stbi_write_bmp(
+        file_path.string().c_str(), canvas.width_, canvas.height_, channels,
+        get_image_data(canvas.width_, canvas.height_, channels, canvas).data());
+  } else if (file_path.extension() == ".jpg") {
+    stbi_write_jpg(
+        file_path.string().c_str(), canvas.width_, canvas.height_, channels,
+        get_image_data(canvas.width_, canvas.height_, channels, canvas).data(),
+        100);
+  } else if (file_path.extension() == ".png") {
+    stbi_write_png(
+        file_path.string().c_str(), canvas.width_, canvas.height_, channels,
+        get_image_data(canvas.width_, canvas.height_, channels, canvas).data(),
+        canvas.width_ * channels);
+  } else {
+    throw std::invalid_argument("Invalid image file format provided.");
+  }
+}
 
 int main(void) {
   raytracer::scene::World world;
@@ -96,7 +146,5 @@ int main(void) {
   raytracer::Canvas canvas = camera.Render(world);
 
   // Write the canvas to a file
-  std::ofstream out("scene.ppm");
-  out << canvas.ToPpm();
-  out.close();
+  write_canvas_to_image(std::filesystem::current_path() / "scene.bmp", canvas);
 }
