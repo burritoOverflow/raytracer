@@ -1,4 +1,4 @@
-add_library(Scene SHARED "")
+add_library(Scene STATIC "")
 
 target_sources(
   Scene

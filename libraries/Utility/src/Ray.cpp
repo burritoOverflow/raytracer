@@ -1,5 +1,7 @@
 #include "Ray.h"
 
+#include <cassert>
+
 namespace raytracer {
 namespace utility {
 

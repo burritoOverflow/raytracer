@@ -1,4 +1,4 @@
-add_library(Pattern SHARED "")
+add_library(Pattern STATIC "")
 
 target_sources(
   Pattern

@@ -1,9 +1,6 @@
-[submodule "googletest"]
-	path = 3rdparty/googletest
-	url = https://github.com/google/googletest
 [submodule "3rdparty/stb"]
 	path = 3rdparty/stb
 	url = https://github.com/nothings/stb.git
-[submodule "3rdparty/eigen"]
-	path = 3rdparty/eigen
-	url = https://gitlab.com/libeigen/eigen
+[submodule "3rdparty/googletest"]
+	path = 3rdparty/googletest
+	url = https://github.com/google/googletest

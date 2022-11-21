@@ -1,4 +1,4 @@
-add_library(Utility SHARED "")
+add_library(Utility STATIC "")
 
 target_sources(
   Utility

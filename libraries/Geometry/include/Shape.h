@@ -1,5 +1,7 @@
 #pragma once
 
+#include <atomic>
+
 #include "Intersection.h"
 #include "Material.h"
 #include "Matrix.h"

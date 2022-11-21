@@ -1,5 +1,6 @@
 #include "Canvas.h"
 
+#include <algorithm>
 #include <sstream>
 
 namespace raytracer {

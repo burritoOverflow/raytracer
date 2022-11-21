@@ -1,4 +1,4 @@
-add_library(Material SHARED "")
+add_library(Material STATIC "")
 
 target_sources(
   Material

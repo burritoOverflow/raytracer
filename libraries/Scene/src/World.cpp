@@ -1,5 +1,7 @@
 #include "World.h"
 
+#include <algorithm>
+
 namespace raytracer {
 namespace scene {
 

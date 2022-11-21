@@ -1,4 +1,4 @@
-add_library(Canvas SHARED "")
+add_library(Canvas STATIC "")
 
 target_sources(
   Canvas
