@@ -9,8 +9,8 @@ TEST(CubeTest, ARayIntersectsACube) {
   struct Example {
     utility::Point origin;
     utility::Vector direction;
+    double t0;
     double t1;
-    double t2;
   };
   std::vector<Example> examples{
       {utility::Point(5, 0.5, 0), utility::Vector(-1, 0, 0), 4, 6},
@@ -27,8 +27,8 @@ TEST(CubeTest, ARayIntersectsACube) {
     auto ray = utility::Ray(example.origin, example.direction);
     auto xs = cube->LocalIntersect(ray);
     EXPECT_EQ(2, xs.size());
-    EXPECT_DOUBLE_EQ(example.t1, xs[0].t_);
-    EXPECT_DOUBLE_EQ(example.t2, xs[1].t_);
+    EXPECT_DOUBLE_EQ(example.t0, xs[0].t_);
+    EXPECT_DOUBLE_EQ(example.t1, xs[1].t_);
   }
 }
 

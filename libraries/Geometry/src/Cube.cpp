@@ -31,8 +31,6 @@ utility::Vector Cube::LocalNormalAt(utility::Point &point) {
     return utility::Vector(0, point.y(), 0);
   }
   return utility::Vector(0, 0, point.z());
-
-  return utility::Vector(0, 1, 0);
 }
 
 std::tuple<double, double> Cube::CheckAxis(double origin, double direction) {
