@@ -5,7 +5,7 @@ target_sources(
   PRIVATE
     src/Material.cpp
   PUBLIC
-    ${CMAKE_CURRENT_LIST_DIR}/include/Material.h
+    ${CMAKE_CURRENT_LIST_DIR}/include/Material.hpp
 )
 
 target_include_directories(

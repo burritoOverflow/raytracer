@@ -1,4 +1,4 @@
-#include "Light.h"
+#include "Light.hpp"
 
 namespace raytracer {
 namespace scene {

@@ -4,10 +4,10 @@
 #include <cmath>
 #include <vector>
 
-#include "AlmostEquals.h"
-#include "Point.h"
-#include "Tuple.h"
-#include <Vector.h>
+#include "AlmostEquals.hpp"
+#include "Point.hpp"
+#include "Tuple.hpp"
+#include "Vector.hpp"
 
 namespace raytracer {
 namespace utility {

@@ -5,8 +5,8 @@
 #include <optional>
 #include <vector>
 
-#include "Ray.h"
-#include "Shape.h"
+#include "Ray.hpp"
+#include "Shape.hpp"
 
 const double EPSILON = 0.00001;
 

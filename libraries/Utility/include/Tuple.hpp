@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "AlmostEquals.h"
+#include "AlmostEquals.hpp"
 
 namespace raytracer {
 namespace utility {

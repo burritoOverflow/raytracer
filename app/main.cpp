@@ -9,16 +9,16 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "../3rdparty/stb/stb_image_write.h"
 
-#include "Camera.h"
-#include "Canvas.h"
-#include "CheckersPattern.h"
-#include "GradientPattern.h"
-#include "Matrix.h"
-#include "Plane.h"
-#include "RingPattern.h"
-#include "Sphere.h"
-#include "StripePattern.h"
-#include "World.h"
+#include "Camera.hpp"
+#include "Canvas.hpp"
+#include "CheckersPattern.hpp"
+#include "GradientPattern.hpp"
+#include "Matrix.hpp"
+#include "Plane.hpp"
+#include "RingPattern.hpp"
+#include "Sphere.hpp"
+#include "StripePattern.hpp"
+#include "World.hpp"
 
 void write_canvas_to_image(std::filesystem::path &file_path,
                            const raytracer::Canvas &canvas) {

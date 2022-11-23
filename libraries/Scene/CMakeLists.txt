@@ -7,9 +7,9 @@ target_sources(
     src/Light.cpp
     src/World.cpp
   PUBLIC
-    ${CMAKE_CURRENT_LIST_DIR}/include/Camera.h
-    ${CMAKE_CURRENT_LIST_DIR}/include/Light.h
-    ${CMAKE_CURRENT_LIST_DIR}/include/World.h
+    ${CMAKE_CURRENT_LIST_DIR}/include/Camera.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/include/Light.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/include/World.hpp
 )
 
 target_include_directories(

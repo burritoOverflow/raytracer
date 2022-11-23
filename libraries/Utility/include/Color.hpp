@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Tuple.h"
+#include "Tuple.hpp"
 
 namespace raytracer {
 namespace utility {

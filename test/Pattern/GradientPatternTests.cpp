@@ -1,4 +1,4 @@
-#include "GradientPattern.h"
+#include "GradientPattern.hpp"
 
 #include <gtest/gtest.h>
 

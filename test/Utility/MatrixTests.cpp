@@ -1,13 +1,13 @@
-#include "Matrix.h"
+#include "Matrix.hpp"
 
 #define _USE_MATH_DEFINES
 #include <math.h>
 
 #include <gtest/gtest.h>
 
-#include "Point.h"
-#include "Tuple.h"
-#include "Vector.h"
+#include "Point.hpp"
+#include "Tuple.hpp"
+#include "Vector.hpp"
 
 using namespace raytracer;
 using namespace utility;

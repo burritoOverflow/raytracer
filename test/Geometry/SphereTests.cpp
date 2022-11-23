@@ -1,10 +1,10 @@
-#include "Sphere.h"
+#include "Sphere.hpp"
 
 #include <gtest/gtest.h>
 
 #include <vector>
 
-#include "Intersection.h"
+#include "Intersection.hpp"
 
 using namespace raytracer;
 using namespace utility;

@@ -2,11 +2,11 @@
 
 #include <atomic>
 
-#include "Intersection.h"
-#include "Material.h"
-#include "Matrix.h"
-#include "Point.h"
-#include "Ray.h"
+#include "Intersection.hpp"
+#include "Material.hpp"
+#include "Matrix.hpp"
+#include "Point.hpp"
+#include "Ray.hpp"
 
 namespace raytracer {
 namespace geometry {

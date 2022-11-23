@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Matrix.h"
-#include "Point.h"
-#include "Vector.h"
+#include "Matrix.hpp"
+#include "Point.hpp"
+#include "Vector.hpp"
 
 namespace raytracer {
 namespace utility {

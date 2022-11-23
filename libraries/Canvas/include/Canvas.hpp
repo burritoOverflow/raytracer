@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "Color.h"
+#include "Color.hpp"
 
 namespace raytracer {
 

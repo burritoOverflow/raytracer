@@ -1,4 +1,4 @@
-#include "CheckersPattern.h"
+#include "CheckersPattern.hpp"
 
 #include <gtest/gtest.h>
 

@@ -1,8 +1,8 @@
-#include "StripePattern.h"
+#include "StripePattern.hpp"
 
 #include <cmath>
 
-#include "AlmostEquals.h"
+#include "AlmostEquals.hpp"
 
 namespace raytracer {
 namespace pattern {

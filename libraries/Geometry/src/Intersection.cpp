@@ -1,8 +1,8 @@
-#include "Intersection.h"
+#include "Intersection.hpp"
 
 #include <algorithm>
 
-#include "AlmostEquals.h"
+#include "AlmostEquals.hpp"
 
 namespace raytracer {
 namespace geometry {

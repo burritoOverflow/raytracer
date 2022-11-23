@@ -2,11 +2,11 @@
 
 #include <vector>
 
-#include "Intersection.h"
-#include "Light.h"
-#include "Plane.h"
-#include "Ray.h"
-#include "Sphere.h"
+#include "Intersection.hpp"
+#include "Light.hpp"
+#include "Plane.hpp"
+#include "Ray.hpp"
+#include "Sphere.hpp"
 
 namespace raytracer {
 namespace scene {

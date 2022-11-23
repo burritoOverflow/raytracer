@@ -3,8 +3,8 @@
 #include <memory>
 #include <optional>
 
-#include "Color.h"
-#include "Pattern.h"
+#include "Color.hpp"
+#include "Pattern.hpp"
 
 namespace raytracer {
 namespace material {

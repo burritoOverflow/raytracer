@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Color.h"
-#include "Matrix.h"
+#include "Color.hpp"
+#include "Matrix.hpp"
 
 namespace raytracer {
 namespace pattern {

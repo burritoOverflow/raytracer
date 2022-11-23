@@ -1,8 +1,8 @@
-#include "Pattern.h"
+#include "Pattern.hpp"
 
 #include <gtest/gtest.h>
 
-#include "Sphere.h"
+#include "Sphere.hpp"
 
 using namespace raytracer;
 using namespace utility;

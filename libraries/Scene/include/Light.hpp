@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Color.h"
-#include "Material.h"
-#include "Point.h"
-#include "Vector.h"
+#include "Color.hpp"
+#include "Material.hpp"
+#include "Point.hpp"
+#include "Vector.hpp"
 
 namespace raytracer {
 namespace scene {

@@ -1,4 +1,4 @@
-#include "Material.h"
+#include "Material.hpp"
 
 bool operator==(const raytracer::material::Material &m1,
                 const raytracer::material::Material &m2) {

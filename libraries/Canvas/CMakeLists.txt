@@ -5,7 +5,7 @@ target_sources(
   PRIVATE
     src/Canvas.cpp
   PUBLIC
-    ${CMAKE_CURRENT_LIST_DIR}/include/Canvas.h
+    ${CMAKE_CURRENT_LIST_DIR}/include/Canvas.hpp
 )
 
 target_include_directories(

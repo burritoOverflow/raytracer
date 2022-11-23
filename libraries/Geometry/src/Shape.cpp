@@ -1,4 +1,4 @@
-#include "Shape.h"
+#include "Shape.hpp"
 
 namespace raytracer {
 namespace geometry {

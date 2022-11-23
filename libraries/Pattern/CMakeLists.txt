@@ -9,11 +9,11 @@ target_sources(
     src/RingPattern.cpp
     src/StripePattern.cpp
   PUBLIC
-    ${CMAKE_CURRENT_LIST_DIR}/include/CheckersPattern.h
-    ${CMAKE_CURRENT_LIST_DIR}/include/GradientPattern.h
-    ${CMAKE_CURRENT_LIST_DIR}/include/Pattern.h
-    ${CMAKE_CURRENT_LIST_DIR}/include/RingPattern.h
-    ${CMAKE_CURRENT_LIST_DIR}/include/StripePattern.h
+    ${CMAKE_CURRENT_LIST_DIR}/include/CheckersPattern.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/include/GradientPattern.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/include/Pattern.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/include/RingPattern.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/include/StripePattern.hpp
 )
 
 target_include_directories(

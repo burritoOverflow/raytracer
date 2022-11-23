@@ -2,10 +2,10 @@
 
 #include <iostream>
 
-#include "Canvas.h"
-#include "Matrix.h"
-#include "Ray.h"
-#include "World.h"
+#include "Canvas.hpp"
+#include "Matrix.hpp"
+#include "Ray.hpp"
+#include "World.hpp"
 
 namespace raytracer {
 namespace scene {

@@ -1,4 +1,4 @@
-#include "RingPattern.h"
+#include "RingPattern.hpp"
 
 #include <gtest/gtest.h>
 

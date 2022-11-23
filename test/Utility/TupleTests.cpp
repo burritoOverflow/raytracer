@@ -1,9 +1,9 @@
-#include "Tuple.h"
+#include "Tuple.hpp"
 
 #include <gtest/gtest.h>
 
-#include "Point.h"
-#include "Vector.h"
+#include "Point.hpp"
+#include "Vector.hpp"
 
 using namespace raytracer;
 using namespace utility;

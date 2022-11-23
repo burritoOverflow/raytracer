@@ -1,4 +1,4 @@
-#include "Shape.h"
+#include "Shape.hpp"
 
 #define _USE_MATH_DEFINES
 #include <math.h>

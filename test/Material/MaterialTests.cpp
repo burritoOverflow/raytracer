@@ -1,10 +1,10 @@
-#include "Material.h"
+#include "Material.hpp"
 
 #include <gtest/gtest.h>
 
-#include "Light.h"
-#include "StripePattern.h"
-#include "Vector.h"
+#include "Light.hpp"
+#include "StripePattern.hpp"
+#include "Vector.hpp"
 
 using namespace raytracer;
 using namespace utility;

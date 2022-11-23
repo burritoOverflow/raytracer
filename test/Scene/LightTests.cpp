@@ -1,8 +1,8 @@
-#include "Light.h"
+#include "Light.hpp"
 
 #include <gtest/gtest.h>
 
-#include "Material.h"
+#include "Material.hpp"
 
 using namespace raytracer;
 using namespace utility;
