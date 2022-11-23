@@ -13,7 +13,7 @@ std::vector<Intersection> Cube::LocalIntersect(utility::Ray &ray) {
   auto tmin = std::max({xtmin, ytmin, ztmin});
   auto tmax = std::min({xtmax, ytmax, ztmax});
 
-  if (tmin > tmax) {
+  if (tmin > tmax || tmax < 0) {
     return {};
   }
   return std::vector<Intersection>{

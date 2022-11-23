@@ -43,7 +43,8 @@ TEST(CubeTest, ARayMissesACube) {
       {utility::Point(0, 0, -2), utility::Vector(0.5345, 0.8018, 0.2673)},
       {utility::Point(2, 0, 2), utility::Vector(0, 0, -1)},
       {utility::Point(0, 2, 2), utility::Vector(0, -1, 0)},
-      {utility::Point(2, 2, 0), utility::Vector(-1, 0, 0)}};
+      {utility::Point(2, 2, 0), utility::Vector(-1, 0, 0)},
+      {utility::Point(0, 0, 2), utility::Vector(0, 0, 1)}};
 
   for (auto &example : examples) {
     auto cube = std::make_unique<geometry::Cube>();

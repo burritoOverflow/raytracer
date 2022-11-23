@@ -20,7 +20,6 @@ std::vector<Intersection> Cylinder::LocalIntersect(utility::Ray &ray) {
   double c = std::pow(ray.origin_.x(), 2) + std::pow(ray.origin_.z(), 2) - 1;
 
   auto discriminant = b * b - 4 * a * c;
-
   if (discriminant < 0) {
     return {};
   }
@@ -69,9 +68,8 @@ bool Cylinder::CheckCap(const utility::Ray ray, double t) {
 
 void Cylinder::IntersectCaps(const utility::Ray ray,
                              std::vector<Intersection> &xs) {
-  // Caps only matter if the cylinder is closed, and might possiblyt be
-  // intersected by the ray.
-  if (!closed_ || AlmostEquals(ray.direction_.y(), 0)) {
+  // Caps only matter if the cylinder is closed.
+  if (!closed_) {
     return;
   }
 
