@@ -1,13 +1,13 @@
 #include "Cylinder.h"
 
 #include <algorithm>
+#include <cmath>
 
 namespace raytracer {
 namespace geometry {
 
 std::vector<Intersection> Cylinder::LocalIntersect(utility::Ray &ray) {
-  double a = ray.direction_.x() * ray.direction_.x() +
-             ray.direction_.z() * ray.direction_.z();
+  double a = std::pow(ray.direction_.x(), 2) + std::pow(ray.direction_.z(), 2);
 
   std::vector<Intersection> xs;
   if (AlmostEquals(a, 0)) {
@@ -17,8 +17,7 @@ std::vector<Intersection> Cylinder::LocalIntersect(utility::Ray &ray) {
 
   double b = 2 * (ray.origin_.x() * ray.direction_.x() +
                   ray.origin_.z() * ray.direction_.z());
-  double c =
-      ray.origin_.x() * ray.origin_.x() + ray.origin_.z() * ray.origin_.z() - 1;
+  double c = std::pow(ray.origin_.x(), 2) + std::pow(ray.origin_.z(), 2) - 1;
 
   auto discriminant = b * b - 4 * a * c;
 
@@ -47,7 +46,7 @@ std::vector<Intersection> Cylinder::LocalIntersect(utility::Ray &ray) {
 
 utility::Vector Cylinder::LocalNormalAt(utility::Point &point) {
   // Compute the square of the distance from the y axis.
-  double distance = point.x() * point.x() + point.z() * point.z();
+  double distance = std::pow(point.x(), 2) + std::pow(point.z(), 2);
 
   if (distance < 1 && point.y() >= maximum_ - EPSILON) {
     return utility::Vector(0, 1, 0);

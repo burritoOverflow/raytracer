@@ -1,6 +1,7 @@
 target_sources(
   Tests
   PRIVATE
+    ConeTests.cpp
     CubeTests.cpp
     CylinderTests.cpp
     IntersectionTests.cpp

@@ -3,6 +3,7 @@ add_library(Geometry STATIC "")
 target_sources(
   Geometry
   PRIVATE
+  src/Cone.cpp
   src/Cube.cpp
   src/Cylinder.cpp
   src/Intersection.cpp
@@ -10,6 +11,7 @@ target_sources(
   src/Shape.cpp
   src/Sphere.cpp
   PUBLIC
+  ${CMAKE_CURRENT_LIST_DIR}/include/Cone.h
   ${CMAKE_CURRENT_LIST_DIR}/include/Cube.h
   ${CMAKE_CURRENT_LIST_DIR}/include/Cylinder.h
   ${CMAKE_CURRENT_LIST_DIR}/include/Intersection.h
