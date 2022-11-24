@@ -1,5 +1,8 @@
 #include "Camera.hpp"
 
+#include <execution>
+#include <numeric>
+
 namespace raytracer {
 namespace scene {
 
@@ -27,13 +30,16 @@ utility::Ray Camera::RayForPixel(size_t px, size_t py) {
 Canvas Camera::Render(scene::World world) {
   raytracer::Canvas image(hsize_, vsize_);
 
-  for (size_t y = 0; y < vsize_; ++y) {
-    for (size_t x = 0; x < hsize_; ++x) {
-      utility::Ray ray = RayForPixel(x, y);
-      utility::Color color = world.ColorAt(ray);
-      image.WritePixel(x, y, color);
-    }
-  }
+  std::vector<size_t> pixels(hsize_ * vsize_);
+  std::iota(std::begin(pixels), std::end(pixels), 0);
+  std::for_each(std::execution::par, pixels.begin(), pixels.end(),
+                [this, &world, &image](auto &&item) {
+                  size_t x = item % hsize_;
+                  size_t y = item / hsize_;
+                  utility::Ray ray = RayForPixel(x, y);
+                  utility::Color color = world.ColorAt(ray);
+                  image.WritePixel(x, y, color);
+                });
 
   return image;
 }
