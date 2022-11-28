@@ -3,6 +3,7 @@
 #include <gtest/gtest.h>
 
 #include "Light.hpp"
+#include "RingPattern.hpp"
 #include "StripePattern.hpp"
 #include "Vector.hpp"
 
@@ -19,12 +20,12 @@ TEST(MaterialTest, DefaultMaterial) {
 }
 
 TEST(MaterialTest, LightingWithAPatternApplied) {
-  material::Material m;
-  m.pattern_ = std::make_shared<pattern::StripePattern>(
-      pattern::StripePattern(Color(1, 1, 1), Color(0, 0, 0)));
-  m.ambient_ = 1;
-  m.diffuse_ = 0;
-  m.specular_ = 0;
+  auto m = std::make_shared<material::Material>();
+  m->pattern_ =
+      std::make_shared<pattern::StripePattern>(Color(1, 1, 1), Color(0, 0, 0));
+  m->ambient_ = 1;
+  m->diffuse_ = 0;
+  m->specular_ = 0;
   Vector eye_vector(0, 0, -1);
   Vector normal_vector(0, 0, -1);
   scene::PointLight light(Point(0, 0, -10), Color(1, 1, 1));

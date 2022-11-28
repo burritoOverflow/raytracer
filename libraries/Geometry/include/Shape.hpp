@@ -17,7 +17,7 @@ class Shape {
 public:
   Shape()
       : id_(ID++), transform_(utility::Identity()),
-        material_(material::Material()), parent_(nullptr) {}
+        material_(std::make_shared<material::Material>()), parent_(nullptr) {}
 
   void SetTransform(utility::Matrix transform);
   std::vector<Intersection> Intersect(utility::Ray &ray);
@@ -29,7 +29,7 @@ public:
 
   uint64_t id_;
   utility::Matrix transform_;
-  material::Material material_;
+  std::shared_ptr<material::Material> material_;
   Shape *parent_;
 
 protected:

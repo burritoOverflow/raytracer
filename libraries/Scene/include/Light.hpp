@@ -17,7 +17,7 @@ public:
   utility::Color intensity_;
 };
 
-utility::Color Lighting(material::Material material,
+utility::Color Lighting(std::shared_ptr<material::Material> material,
                         utility::Matrix object_transform, PointLight light,
                         utility::Point point, utility::Vector eye_vector,
                         utility::Vector normal_vector, bool in_shadow);

@@ -3,15 +3,15 @@
 namespace raytracer {
 namespace scene {
 
-utility::Color Lighting(material::Material material,
+utility::Color Lighting(std::shared_ptr<material::Material> material,
                         utility::Matrix object_transform, PointLight light,
                         utility::Point point, utility::Vector eye_vector,
                         utility::Vector normal_vector, bool in_shadow) {
   utility::Color color;
-  if (material.pattern_.has_value()) {
-    color = material.pattern_.value()->PatternAtShape(object_transform, point);
+  if (material->pattern_ != nullptr) {
+    color = material->pattern_->PatternAtShape(object_transform, point);
   } else {
-    color = material.color_;
+    color = material->color_;
   }
 
   // Combine the surface color with the light's color/intensity
@@ -21,7 +21,7 @@ utility::Color Lighting(material::Material material,
   utility::Vector light_vector = (light.position_ - point).Normalize();
 
   // Compute the ambient contribution
-  utility::Color ambient = effective_color * material.ambient_;
+  utility::Color ambient = effective_color * material->ambient_;
 
   // light_dot_normal represents the cosine of the angle between the light
   // vector and the normal vector. A negative number means the light is on the
@@ -33,7 +33,7 @@ utility::Color Lighting(material::Material material,
     specular = utility::Color(0, 0, 0);
   } else {
     // Compute the diffuse contribution
-    diffuse = effective_color * material.diffuse_ * light_dot_normal;
+    diffuse = effective_color * material->diffuse_ * light_dot_normal;
 
     // reflect_dot_eye represents the cosine of the angle between the reflection
     // vector and the eye vector. A negative number means the light reflects
@@ -45,8 +45,8 @@ utility::Color Lighting(material::Material material,
       specular = utility::Color(0, 0, 0);
     } else {
       // Compute the specular contribution
-      double factor = std::pow(reflect_dot_eye, material.shininess_);
-      specular = light.intensity_ * material.specular_ * factor;
+      double factor = std::pow(reflect_dot_eye, material->shininess_);
+      specular = light.intensity_ * material->specular_ * factor;
     }
   }
 

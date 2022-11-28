@@ -139,17 +139,17 @@ TEST(IntersectionTest, FindingN1AndN2AtVariousIntersections) {
   auto A = std::make_shared<raytracer::geometry::Sphere>(
       raytracer::geometry::GlassSphere());
   A->transform_ = Scaling(2, 2, 2);
-  A->material_.refractive_index_ = 1.5;
+  A->material_->refractive_index_ = 1.5;
 
   auto B = std::make_shared<raytracer::geometry::Sphere>(
       raytracer::geometry::GlassSphere());
   B->transform_ = Translation(0, 0, -0.25);
-  B->material_.refractive_index_ = 2.0;
+  B->material_->refractive_index_ = 2.0;
 
   auto C = std::make_shared<raytracer::geometry::Sphere>(
       raytracer::geometry::GlassSphere());
   C->transform_ = Translation(0, 0, 0.25);
-  C->material_.refractive_index_ = 2.5;
+  C->material_->refractive_index_ = 2.5;
 
   Ray ray = Ray(Point(0, 0, -4), Vector(0, 0, 1));
 

@@ -15,8 +15,8 @@ TEST(WorldTest, CreateWorld) {
 TEST(WorldTest, DefaultWorld) {
   scene::PointLight light(Point(-10, 10, -10), Color(1, 1, 1));
   std::shared_ptr<geometry::Sphere> s1 = std::make_shared<geometry::Sphere>();
-  s1->material_ = material::Material(Color(0.8, 1.0, 0.6), std::nullopt, 0.1,
-                                     0.7, 0.2, 200);
+  s1->material_ = std::make_shared<material::Material>(
+      Color(0.8, 1.0, 0.6), nullptr, 0.1, 0.7, 0.2, 200);
   std::shared_ptr<geometry::Sphere> s2 = std::make_shared<geometry::Sphere>();
   s2->transform_ = Scaling(0.5, 0.5, 0.5);
   scene::World w = scene::DefaultWorld();
@@ -85,14 +85,14 @@ TEST(WorldTest, TheColorWithIntersectionBehindTheRay) {
   scene::World w = scene::DefaultWorld();
 
   auto outer = w.objects_.front();
-  outer->material_.ambient_ = 1;
+  outer->material_->ambient_ = 1;
 
   auto inner = w.objects_.at(1);
-  inner->material_.ambient_ = 1;
+  inner->material_->ambient_ = 1;
 
   Ray r(Point(0, 0, 0.75), Vector(0, 0, -1));
   Color c = w.ColorAt(r);
-  EXPECT_TRUE(inner->material_.color_ == c);
+  EXPECT_TRUE(inner->material_->color_ == c);
 }
 
 TEST(WorldTest, ThereIsNoShadowWhenNothingIsCollinearWithPointAndLight) {
@@ -143,7 +143,7 @@ TEST(WorldTest, TheReflectedColorForANonreflectiveMaterial) {
   scene::World world = scene::DefaultWorld();
   Ray r(Point(0, 0, -5), Vector(0, 0, 1));
   auto shape = world.objects_[1];
-  shape->material_.ambient_ = 1;
+  shape->material_->ambient_ = 1;
   geometry::Intersection intersection(1, shape);
 
   geometry::Computations comps = intersection.PrepareComputations(r);
@@ -155,7 +155,7 @@ TEST(WorldTest, TheReflectedColorForANonreflectiveMaterial) {
 TEST(WorldTest, TheReflectedColorForAReflectiveMaterial) {
   scene::World world = scene::DefaultWorld();
   std::shared_ptr<geometry::Plane> shape = std::make_shared<geometry::Plane>();
-  shape->material_.reflective_ = 0.5;
+  shape->material_->reflective_ = 0.5;
   shape->transform_ = Translation(0, -1, 0);
   world.objects_.push_back(shape);
   Ray ray = Ray(Point(0, 0, -3), Vector(0, -sqrt(2) / 2, sqrt(2) / 2));
@@ -171,7 +171,7 @@ TEST(WorldTest, TheReflectedColorForAReflectiveMaterial) {
 TEST(WorldTest, ShadeHitWithAReflectiveMaterial) {
   scene::World world = scene::DefaultWorld();
   std::shared_ptr<geometry::Plane> shape = std::make_shared<geometry::Plane>();
-  shape->material_.reflective_ = 0.5;
+  shape->material_->reflective_ = 0.5;
   shape->transform_ = Translation(0, -1, 0);
   world.objects_.push_back(shape);
   Ray ray = Ray(Point(0, 0, -3), Vector(0, -sqrt(2) / 2, sqrt(2) / 2));
@@ -193,12 +193,12 @@ TEST(WorldTest, ColorAtWithMutuallyReflectiveSurfaces) {
   world.light_sources_.push_back(light);
 
   std::shared_ptr<geometry::Plane> lower = std::make_shared<geometry::Plane>();
-  lower->material_.reflective_ = 1;
+  lower->material_->reflective_ = 1;
   lower->transform_ = Translation(0, -1, 0);
   world.objects_.push_back(lower);
 
   std::shared_ptr<geometry::Plane> upper = std::make_shared<geometry::Plane>();
-  upper->material_.reflective_ = 1;
+  upper->material_->reflective_ = 1;
   upper->transform_ = Translation(0, 1, 0);
   world.objects_.push_back(upper);
 
@@ -210,7 +210,7 @@ TEST(WorldTest, ColorAtWithMutuallyReflectiveSurfaces) {
 TEST(WorldTest, TheReflectedColorAtTheMaximumRecursiveDepth) {
   scene::World world = scene::DefaultWorld();
   std::shared_ptr<geometry::Plane> shape = std::make_shared<geometry::Plane>();
-  shape->material_.reflective_ = 0.5;
+  shape->material_->reflective_ = 0.5;
   shape->transform_ = Translation(0, -1, 0);
   world.objects_.push_back(shape);
   Ray ray = Ray(Point(0, 0, -3), Vector(0, -sqrt(2) / 2, sqrt(2) / 2));
@@ -238,8 +238,8 @@ TEST(WorldTest, TheRefractedColorWithAnOpaqueSurface) {
 TEST(WorldTest, TheRefractedColorAtTheMaximumRecursiveDepth) {
   scene::World world = scene::DefaultWorld();
   auto shape = world.objects_.front();
-  shape->material_.transparency_ = 1.0;
-  shape->material_.refractive_index_ = 1.5;
+  shape->material_->transparency_ = 1.0;
+  shape->material_->refractive_index_ = 1.5;
   Ray ray = Ray(Point(0, 0, -5), Vector(0, 0, 1));
   std::vector<geometry::Intersection> xs = geometry::Intersections(
       {geometry::Intersection(4, shape), geometry::Intersection(6, shape)});
@@ -253,8 +253,8 @@ TEST(WorldTest, TheRefractedColorAtTheMaximumRecursiveDepth) {
 TEST(WorldTest, TheRefractedColorUnderTotalInternalReflection) {
   scene::World world = scene::DefaultWorld();
   auto shape = world.objects_.front();
-  shape->material_.transparency_ = 1.0;
-  shape->material_.refractive_index_ = 1.5;
+  shape->material_->transparency_ = 1.0;
+  shape->material_->refractive_index_ = 1.5;
   Ray ray = Ray(Point(0, 0, sqrt(2) / 2), Vector(0, 1, 0));
   std::vector<geometry::Intersection> xs =
       geometry::Intersections({geometry::Intersection(-sqrt(2) / 2, shape),
@@ -269,11 +269,11 @@ TEST(WorldTest, TheRefractedColorUnderTotalInternalReflection) {
 TEST(WorldTest, TheRefractedColorWithARefractedRay) {
   scene::World world = scene::DefaultWorld();
   auto A = world.objects_[0];
-  A->material_.ambient_ = 1.0;
-  A->material_.pattern_ = std::make_shared<pattern::TestPattern>();
+  A->material_->ambient_ = 1.0;
+  A->material_->pattern_ = std::make_shared<pattern::TestPattern>();
   auto B = world.objects_[1];
-  B->material_.transparency_ = 1.0;
-  B->material_.refractive_index_ = 1.5;
+  B->material_->transparency_ = 1.0;
+  B->material_->refractive_index_ = 1.5;
   Ray ray = Ray(Point(0, 0, 0.1), Vector(0, 1, 0));
   std::vector<geometry::Intersection> xs = geometry::Intersections(
       {geometry::Intersection(-0.9899, A), geometry::Intersection(-0.4899, B),
@@ -288,13 +288,13 @@ TEST(WorldTest, TheRefractedColorWithARefractedRay) {
 TEST(WorldTest, ShadeHitWithATransparentMaterial) {
   scene::World world = scene::DefaultWorld();
   std::shared_ptr<geometry::Plane> floor = std::make_shared<geometry::Plane>();
-  floor->material_.transparency_ = 0.5;
-  floor->material_.refractive_index_ = 1.5;
+  floor->material_->transparency_ = 0.5;
+  floor->material_->refractive_index_ = 1.5;
   floor->transform_ = Translation(0, -1, 0);
   world.objects_.push_back(floor);
   std::shared_ptr<geometry::Sphere> ball = std::make_shared<geometry::Sphere>();
-  ball->material_.color_ = Color(1, 0, 0);
-  ball->material_.ambient_ = 0.5;
+  ball->material_->color_ = Color(1, 0, 0);
+  ball->material_->ambient_ = 0.5;
   ball->transform_ = Translation(0, -3.5, -0.5);
   world.objects_.push_back(ball);
 
@@ -312,14 +312,14 @@ TEST(WorldTest, ShadeHitWithATransparentMaterial) {
 TEST(WorldTest, ShadeHitWithAReflectiveTransparentMaterial) {
   scene::World world = scene::DefaultWorld();
   std::shared_ptr<geometry::Plane> floor = std::make_shared<geometry::Plane>();
-  floor->material_.reflective_ = 0.5;
-  floor->material_.transparency_ = 0.5;
-  floor->material_.refractive_index_ = 1.5;
+  floor->material_->reflective_ = 0.5;
+  floor->material_->transparency_ = 0.5;
+  floor->material_->refractive_index_ = 1.5;
   floor->transform_ = Translation(0, -1, 0);
   world.objects_.push_back(floor);
   std::shared_ptr<geometry::Sphere> ball = std::make_shared<geometry::Sphere>();
-  ball->material_.color_ = Color(1, 0, 0);
-  ball->material_.ambient_ = 0.5;
+  ball->material_->color_ = Color(1, 0, 0);
+  ball->material_->ambient_ = 0.5;
   ball->transform_ = Translation(0, -3.5, -0.5);
   world.objects_.push_back(ball);
 

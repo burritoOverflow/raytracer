@@ -51,7 +51,7 @@ utility::Color World::ShadeHit(geometry::Computations comps, size_t remaining) {
   utility::Color refracted = RefractedColor(comps, remaining);
 
   auto material = comps.object->material_;
-  if (material.reflective_ > 0 && material.transparency_ > 0) {
+  if (material->reflective_ > 0 && material->transparency_ > 0) {
     double reflectance = geometry::Schlick(comps);
     return surface + reflected * reflectance + refracted * (1 - reflectance);
   } else {
@@ -94,7 +94,7 @@ utility::Color World::ReflectedColor(geometry::Computations comps,
     return utility::Color(0, 0, 0);
   }
 
-  if (comps.object->material_.reflective_ == 0) {
+  if (comps.object->material_->reflective_ == 0) {
     return utility::Color(0, 0, 0);
   }
 
@@ -102,7 +102,7 @@ utility::Color World::ReflectedColor(geometry::Computations comps,
       utility::Ray(comps.over_point, comps.reflect_vector);
   utility::Color color = ColorAt(reflect_ray, remaining - 1);
 
-  return color * comps.object->material_.reflective_;
+  return color * comps.object->material_->reflective_;
 }
 
 utility::Color World::RefractedColor(geometry::Computations comps,
@@ -111,7 +111,7 @@ utility::Color World::RefractedColor(geometry::Computations comps,
     return utility::Color(0, 0, 0);
   }
 
-  if (comps.object.get()->material_.transparency_ == 0) {
+  if (comps.object.get()->material_->transparency_ == 0) {
     return utility::Color(0, 0, 0);
   }
 
@@ -128,7 +128,7 @@ utility::Color World::RefractedColor(geometry::Computations comps,
                               comps.eye_vector * n_ratio;
   utility::Ray refract_ray = utility::Ray(comps.under_point, direction);
   return ColorAt(refract_ray, remaining - 1) *
-         comps.object->material_.transparency_;
+         comps.object->material_->transparency_;
 }
 
 World DefaultWorld() {
@@ -137,8 +137,8 @@ World DefaultWorld() {
       std::make_shared<PointLight>(light)};
 
   std::shared_ptr<geometry::Sphere> s1 = std::make_shared<geometry::Sphere>();
-  s1->material_ = material::Material(utility::Color(0.8, 1.0, 0.6),
-                                     std::nullopt, 0.1, 0.7, 0.2, 200);
+  s1->material_ = std::make_shared<material::Material>(
+      utility::Color(0.8, 1.0, 0.6), nullptr, 0.1, 0.7, 0.2, 200);
   std::shared_ptr<geometry::Sphere> s2 = std::make_shared<geometry::Sphere>();
   s2->transform_ = utility::Scaling(0.5, 0.5, 0.5);
   std::vector<std::shared_ptr<geometry::Shape>> objects = {s1, s2};

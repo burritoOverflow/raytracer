@@ -12,11 +12,10 @@ namespace material {
 class Material {
 public:
   Material()
-      : color_(utility::Color(1, 1, 1)), pattern_(std::nullopt), ambient_(0.1),
+      : color_(utility::Color(1, 1, 1)), pattern_(nullptr), ambient_(0.1),
         diffuse_(0.9), specular_(0.9), shininess_(200.0), reflective_(0.0),
         transparency_(0.0), refractive_index_(1.0) {}
-  Material(utility::Color color,
-           std::optional<std::shared_ptr<pattern::Pattern>> pattern,
+  Material(utility::Color color, std::shared_ptr<pattern::Pattern> pattern,
            double ambient = 0.1, double diffuse = 0.9, double specular = 0.9,
            double shininess = 200.0, double reflective = 0.0,
            double transparency = 0.0, double refractive_index = 1.0)
@@ -25,7 +24,7 @@ public:
         transparency_(transparency), refractive_index_(refractive_index) {}
 
   utility::Color color_;
-  std::optional<std::shared_ptr<pattern::Pattern>> pattern_;
+  std::shared_ptr<pattern::Pattern> pattern_;
   double ambient_;
   double diffuse_;
   double specular_;

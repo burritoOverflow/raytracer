@@ -37,7 +37,7 @@ Computations Intersection::PrepareComputations(
       if (containers.empty()) {
         comps.n1 = 1.0;
       } else {
-        comps.n1 = containers.back().get()->material_.refractive_index_;
+        comps.n1 = containers.back().get()->material_->refractive_index_;
       }
     }
 
@@ -55,7 +55,7 @@ Computations Intersection::PrepareComputations(
       if (containers.empty()) {
         comps.n2 = 1.0;
       } else {
-        comps.n2 = containers.back().get()->material_.refractive_index_;
+        comps.n2 = containers.back().get()->material_->refractive_index_;
       }
     }
   }

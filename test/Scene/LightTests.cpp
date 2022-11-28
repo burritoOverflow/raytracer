@@ -8,11 +8,11 @@ using namespace raytracer;
 using namespace utility;
 
 struct LightTests : public ::testing::Test {
-  material::Material m;
+  std::shared_ptr<material::Material> m;
   Point position;
 
   virtual void SetUp() override {
-    m = material::Material();
+    m = std::make_shared<material::Material>();
     position = Point(0, 0, 0);
   }
 };

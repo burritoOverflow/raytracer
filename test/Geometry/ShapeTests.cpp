@@ -24,13 +24,13 @@ TEST(ShapeTest, AssigningATransformation) {
 
 TEST(ShapeTest, TheDefaultMaterial) {
   auto s = std::make_shared<geometry::TestShape>();
-  EXPECT_TRUE(material::Material() == s->material_);
+  EXPECT_TRUE(*std::make_shared<material::Material>() == *s->material_);
 }
 
-TEST(ShapeTest, AddigningAMaterial) {
+TEST(ShapeTest, AddingAMaterial) {
   auto s = std::make_shared<geometry::TestShape>();
-  material::Material m;
-  m.ambient_ = 1;
+  auto m = std::make_shared<material::Material>();
+  m->ambient_ = 1;
   s->material_ = m;
   EXPECT_TRUE(m == s->material_);
 }

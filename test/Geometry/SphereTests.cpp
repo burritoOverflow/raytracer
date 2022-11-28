@@ -91,6 +91,6 @@ TEST(SphereTest, NormalIsNormalizedVector) {
 TEST(SphereTest, AHelperForProducingASphereWithAGlassyMaterial) {
   geometry::Sphere s = geometry::GlassSphere();
   EXPECT_TRUE(Identity() == s.transform_);
-  ASSERT_DOUBLE_EQ(1.0, s.material_.transparency_);
-  ASSERT_DOUBLE_EQ(1.5, s.material_.refractive_index_);
+  ASSERT_DOUBLE_EQ(1.0, s.material_->transparency_);
+  ASSERT_DOUBLE_EQ(1.5, s.material_->refractive_index_);
 }

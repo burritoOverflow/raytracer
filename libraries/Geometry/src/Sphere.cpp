@@ -41,8 +41,8 @@ utility::Vector Sphere::LocalNormalAt(utility::Point &point) {
 Sphere GlassSphere() {
   Sphere sphere;
   sphere.transform_ = utility::Identity();
-  sphere.material_.transparency_ = 1.0;
-  sphere.material_.refractive_index_ = 1.5;
+  sphere.material_->transparency_ = 1.0;
+  sphere.material_->refractive_index_ = 1.5;
   return sphere;
 }
 
