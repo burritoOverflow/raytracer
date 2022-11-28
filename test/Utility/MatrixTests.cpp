@@ -294,6 +294,13 @@ TEST(MatrixTests, RotatePointAroundYAxis) {
   EXPECT_TRUE(Point(1, 0, 0) == full_quarter * point);
 }
 
+TEST(MatrixTests, InverseOfYRotationRotatesInOppositeDirection) {
+  Point point(1, 0, 0);
+  RotationY full_quarter(M_PI / 2);
+  Matrix inverse = full_quarter.Inverse();
+  EXPECT_TRUE(Point(0, 0, 1) == inverse * point);
+}
+
 TEST(MatrixTests, RotatePointAroundZAxis) {
   Point point(0, 1, 0);
   RotationZ half_quarter(M_PI / 4);

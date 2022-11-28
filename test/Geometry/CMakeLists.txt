@@ -4,6 +4,7 @@ target_sources(
     ConeTests.cpp
     CubeTests.cpp
     CylinderTests.cpp
+    GroupTests.cpp
     IntersectionTests.cpp
     PlaneTests.cpp
     ShapeTests.cpp

@@ -6,6 +6,7 @@ target_sources(
   src/Cone.cpp
   src/Cube.cpp
   src/Cylinder.cpp
+  src/Group.cpp
   src/Intersection.cpp
   src/Plane.cpp
   src/Shape.cpp
@@ -14,6 +15,7 @@ target_sources(
     ${CMAKE_CURRENT_LIST_DIR}/include/Cone.hpp
     ${CMAKE_CURRENT_LIST_DIR}/include/Cube.hpp
     ${CMAKE_CURRENT_LIST_DIR}/include/Cylinder.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/include/Group.hpp
     ${CMAKE_CURRENT_LIST_DIR}/include/Intersection.hpp
     ${CMAKE_CURRENT_LIST_DIR}/include/Plane.hpp
     ${CMAKE_CURRENT_LIST_DIR}/include/Shape.hpp

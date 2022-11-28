@@ -116,7 +116,7 @@ public:
     (*this)(0, 0) = cos(radians);
     (*this)(0, 2) = sin(radians);
     (*this)(1, 1) = 1;
-    (*this)(2, 1) = -sin(radians);
+    (*this)(2, 0) = -sin(radians);
     (*this)(2, 2) = cos(radians);
     (*this)(3, 3) = 1;
   }

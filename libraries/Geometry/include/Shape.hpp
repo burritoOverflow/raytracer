@@ -17,17 +17,20 @@ class Shape {
 public:
   Shape()
       : id_(ID++), transform_(utility::Identity()),
-        material_(material::Material()) {}
+        material_(material::Material()), parent_(nullptr) {}
 
   void SetTransform(utility::Matrix transform);
   std::vector<Intersection> Intersect(utility::Ray &ray);
   utility::Vector NormalAt(utility::Point point);
+  utility::Point WorldToObject(utility::Point point);
+  utility::Vector NormalToWorld(utility::Vector normal);
 
   static std::atomic<uint64_t> ID;
 
   uint64_t id_;
   utility::Matrix transform_;
   material::Material material_;
+  Shape *parent_;
 
 protected:
   virtual std::vector<Intersection> LocalIntersect(utility::Ray &ray) = 0;
@@ -37,10 +40,6 @@ protected:
 // TODO: Move to test/ directory
 class TestShape : public Shape {
 public:
-  TestShape()
-      : Shape(), saved_ray_(utility::Ray(utility::Point(), utility::Vector())) {
-  }
-
   std::vector<Intersection> LocalIntersect(utility::Ray &ray) {
     saved_ray_ = ray;
     return {};
@@ -50,7 +49,7 @@ public:
     return utility::Vector(point.x(), point.y(), point.z());
   }
 
-  utility::Ray saved_ray_;
+  utility::Ray saved_ray_ = utility::Ray(utility::Point(), utility::Vector());
 };
 
 } // namespace geometry

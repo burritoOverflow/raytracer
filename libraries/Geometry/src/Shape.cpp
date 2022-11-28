@@ -16,12 +16,26 @@ std::vector<Intersection> Shape::Intersect(utility::Ray &ray) {
 }
 
 utility::Vector Shape::NormalAt(utility::Point world_point) {
-  utility::Point local_point = transform_.Inverse() * world_point;
+  utility::Point local_point = WorldToObject(world_point);
   utility::Vector local_normal = LocalNormalAt(local_point);
-  utility::Vector world_normal =
-      transform_.Inverse().Transpose() * local_normal;
-  world_normal[3] = 0; // Set the w coordinate to zero
-  return world_normal.Normalize();
+  return NormalToWorld(local_normal);
+}
+
+utility::Point Shape::WorldToObject(utility::Point point) {
+  return transform_.Inverse() *
+         (parent_ == nullptr ? point : parent_->WorldToObject(point));
+}
+
+utility::Vector Shape::NormalToWorld(utility::Vector normal) {
+  normal = transform_.Inverse().Transpose() * normal;
+  normal[3] = 0; // Set the w coordinate to zero
+  normal = normal.Normalize();
+
+  if (parent_ != nullptr) {
+    normal = parent_->NormalToWorld(normal);
+  }
+
+  return normal;
 }
 
 } // namespace geometry

@@ -40,12 +40,11 @@ Matrix Matrix::Submatrix(size_t row, size_t column) {
       continue;
     }
     for (size_t c = 0; c < columns_; ++c) {
-      if (c == column) {
-        continue;
+      if (c != column) {
+        size_t row_index = r >= row ? r - 1 : r;
+        size_t column_index = c >= column ? c - 1 : c;
+        result(row_index, column_index) = GetElement(r, c);
       }
-      size_t row_index = r >= row ? r - 1 : r;
-      size_t column_index = c >= column ? c - 1 : c;
-      result(row_index, column_index) = GetElement(r, c);
     }
   }
   return result;

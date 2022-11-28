@@ -5,6 +5,9 @@
 
 #include <gtest/gtest.h>
 
+#include "Group.hpp"
+#include "Sphere.hpp"
+
 using namespace raytracer;
 using namespace utility;
 
@@ -63,4 +66,54 @@ TEST(ShapeTest, ComputingTheNormalOnATransformedShape) {
   s->SetTransform(m);
   Vector n = s->NormalAt(Point(0, sqrt(2) / 2, -sqrt(2) / 2));
   EXPECT_TRUE(Vector(0, 0.97014250014533188, -0.24253562503633294) == n);
+}
+
+TEST(ShapeTest, AShapeHasAParentAttribute) {
+  auto s = std::make_shared<geometry::TestShape>();
+  EXPECT_EQ(nullptr, s->parent_);
+}
+
+TEST(ShapeTest, ConvertingAPointFromWorldToObjectSpace) {
+  auto group1 = std::make_shared<geometry::Group>();
+  group1->SetTransform(RotationY(M_PI_2));
+  auto group2 = std::make_shared<geometry::Group>();
+  group2->SetTransform(Scaling(2, 2, 2));
+  group1->AddChild(group2);
+  auto sphere = std::make_shared<geometry::Sphere>();
+  sphere->SetTransform(Translation(5, 0, 0));
+  group2->AddChild(sphere);
+
+  auto point = sphere->WorldToObject(Point(-2, 0, -10));
+  EXPECT_TRUE(Point(0, 0, -1) == point);
+}
+
+TEST(ShapeTest, ConvertingANormalFromObjectToWorldSpace) {
+  auto group1 = std::make_shared<geometry::Group>();
+  group1->SetTransform(RotationY(M_PI_2));
+  auto group2 = std::make_shared<geometry::Group>();
+  group2->SetTransform(Scaling(1, 2, 3));
+  group1->AddChild(group2);
+  auto sphere = std::make_shared<geometry::Sphere>();
+  sphere->SetTransform(Translation(5, 0, 0));
+  group2->AddChild(sphere);
+
+  auto normal =
+      sphere->NormalToWorld(Vector(sqrt(3) / 3, sqrt(3) / 3, sqrt(3) / 3));
+  EXPECT_TRUE(Vector(0.28571428571428575, 0.42857142857142855,
+                     -0.85714285714285710) == normal);
+}
+
+TEST(ShapeTest, FindingTheNormalOnAChildObject) {
+  auto group1 = std::make_shared<geometry::Group>();
+  group1->SetTransform(RotationY(M_PI_2));
+  auto group2 = std::make_shared<geometry::Group>();
+  group2->SetTransform(Scaling(1, 2, 3));
+  group1->AddChild(group2);
+  auto sphere = std::make_shared<geometry::Sphere>();
+  sphere->SetTransform(Translation(5, 0, 0));
+  group2->AddChild(sphere);
+
+  auto normal = sphere->NormalAt(Point(1.7321, 1.1547, -5.5774));
+  EXPECT_TRUE(Vector(0.28570368184140726, 0.42854315178114105,
+                     -0.85716052944810173) == normal);
 }
