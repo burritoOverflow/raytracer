@@ -6,6 +6,7 @@ namespace raytracer {
 namespace geometry {
 
 void Group::AddChild(std::shared_ptr<Shape> child) {
+  ExtendBounds(child);
   child->parent_ = this;
   children_.push_back(child);
 }
