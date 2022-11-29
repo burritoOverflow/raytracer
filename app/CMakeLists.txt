@@ -4,6 +4,8 @@ target_sources(
   ${PROJECT_NAME}
   PRIVATE
     main.cpp
+  PUBLIC
+    ${CMAKE_CURRENT_LIST_DIR}/CreateWorld.hpp
 )
 
 target_link_libraries(
