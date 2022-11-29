@@ -33,23 +33,8 @@ utility::Vector Cube::LocalNormalAt(utility::Point &point) {
   return utility::Vector(0, 0, point.z());
 }
 
-std::tuple<double, double> Cube::CheckAxis(double origin, double direction) {
-  auto tmin_numerator = -1 - origin;
-  auto tmax_numerator = 1 - origin;
-
-  double tmin, tmax;
-  if (std::abs(direction) >= EPSILON) {
-    tmin = tmin_numerator / direction;
-    tmax = tmax_numerator / direction;
-  } else {
-    tmin = tmin_numerator * std::numeric_limits<double>::infinity();
-    tmax = tmax_numerator * std::numeric_limits<double>::infinity();
-  }
-
-  if (tmin > tmax) {
-    return {tmax, tmin};
-  }
-  return {tmin, tmax};
+Bounds Cube::ComputeBounds() {
+  return Bounds(utility::Point(-1, -1, -1), utility::Point(1, 1, 1));
 }
 
 } // namespace geometry

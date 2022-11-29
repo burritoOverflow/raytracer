@@ -67,6 +67,11 @@ utility::Vector Cone::LocalNormalAt(utility::Point &point) {
   }
 }
 
+Bounds Cone::ComputeBounds() {
+  return Bounds(utility::Point(minimum_, minimum_, minimum_),
+                utility::Point(maximum_, maximum_, maximum_));
+}
+
 bool Cone::CheckCap(const utility::Ray ray, double t, double radius) {
   double x = ray.origin_.x() + t * ray.direction_.x();
   double z = ray.origin_.z() + t * ray.direction_.z();

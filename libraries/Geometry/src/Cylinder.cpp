@@ -56,6 +56,11 @@ utility::Vector Cylinder::LocalNormalAt(utility::Point &point) {
   }
 }
 
+Bounds Cylinder::ComputeBounds() {
+  return Bounds(utility::Point(-1, minimum_, -1),
+                utility::Point(1, maximum_, 1));
+}
+
 bool Cylinder::CheckCap(const utility::Ray ray, double t) {
   // A helper function to reduce duplication.
   // Checks to see if the intersection at 't' is within a radius of 1 (the

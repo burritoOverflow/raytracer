@@ -3,15 +3,17 @@ add_library(Geometry STATIC "")
 target_sources(
   Geometry
   PRIVATE
-  src/Cone.cpp
-  src/Cube.cpp
-  src/Cylinder.cpp
-  src/Group.cpp
-  src/Intersection.cpp
-  src/Plane.cpp
-  src/Shape.cpp
-  src/Sphere.cpp
+    src/Bounds.cpp
+    src/Cone.cpp
+    src/Cube.cpp
+    src/Cylinder.cpp
+    src/Group.cpp
+    src/Intersection.cpp
+    src/Plane.cpp
+    src/Shape.cpp
+    src/Sphere.cpp
   PUBLIC
+    ${CMAKE_CURRENT_LIST_DIR}/include/Bounds.hpp
     ${CMAKE_CURRENT_LIST_DIR}/include/Cone.hpp
     ${CMAKE_CURRENT_LIST_DIR}/include/Cube.hpp
     ${CMAKE_CURRENT_LIST_DIR}/include/Cylinder.hpp
@@ -30,7 +32,7 @@ target_include_directories(
 
 target_link_libraries(Geometry
   PRIVATE
-  Utility
+    Utility
   PUBLIC
-  Material
+    Material
 )

@@ -38,6 +38,10 @@ utility::Vector Sphere::LocalNormalAt(utility::Point &point) {
   return point - utility::Point(0, 0, 0);
 }
 
+Bounds Sphere::ComputeBounds() {
+  return Bounds(utility::Point(-1, -1, -1), utility::Point(1, 1, 1));
+}
+
 Sphere GlassSphere() {
   Sphere sphere;
   sphere.transform_ = utility::Identity();

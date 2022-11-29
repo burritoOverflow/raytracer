@@ -38,6 +38,26 @@ utility::Vector Shape::NormalToWorld(utility::Vector normal) {
   return normal;
 }
 
+std::tuple<double, double> CheckAxis(double origin, double direction,
+                                     double minimum, double maximum) {
+  auto tmin_numerator = minimum - origin;
+  auto tmax_numerator = maximum - origin;
+
+  double tmin, tmax;
+  if (std::abs(direction) >= 0.00001) {
+    tmin = tmin_numerator / direction;
+    tmax = tmax_numerator / direction;
+  } else {
+    tmin = tmin_numerator * std::numeric_limits<double>::infinity();
+    tmax = tmax_numerator * std::numeric_limits<double>::infinity();
+  }
+
+  if (tmin > tmax) {
+    return {tmax, tmin};
+  }
+  return {tmin, tmax};
+}
+
 } // namespace geometry
 } // namespace raytracer
 

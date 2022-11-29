@@ -17,5 +17,12 @@ utility::Vector Plane::LocalNormalAt(utility::Point &point) {
   return utility::Vector(0, 1, 0);
 }
 
+Bounds Plane::ComputeBounds() {
+  return Bounds(utility::Point(-std::numeric_limits<double>::infinity(), -0.1,
+                               -std::numeric_limits<double>::infinity()),
+                utility::Point(std::numeric_limits<double>::infinity(), 0.1,
+                               std::numeric_limits<double>::infinity()));
+}
+
 } // namespace geometry
 } // namespace raytracer

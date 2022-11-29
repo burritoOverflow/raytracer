@@ -12,6 +12,7 @@ public:
   double Discriminant(utility::Ray ray);
   std::vector<Intersection> LocalIntersect(utility::Ray &ray);
   utility::Vector LocalNormalAt(utility::Point &point);
+  Bounds ComputeBounds();
 
   utility::Point origin_;
   double radii_;

@@ -2,6 +2,7 @@
 
 #include <atomic>
 
+#include "Bounds.hpp"
 #include "Intersection.hpp"
 #include "Material.hpp"
 #include "Matrix.hpp"
@@ -24,6 +25,7 @@ public:
   utility::Vector NormalAt(utility::Point point);
   utility::Point WorldToObject(utility::Point point);
   utility::Vector NormalToWorld(utility::Vector normal);
+  virtual Bounds ComputeBounds() = 0;
 
   static std::atomic<uint64_t> ID;
 
@@ -49,8 +51,15 @@ public:
     return utility::Vector(point.x(), point.y(), point.z());
   }
 
+  Bounds ComputeBounds() {
+    return Bounds(utility::Point(0, 0, 0), utility::Point(0, 0, 0));
+  }
+
   utility::Ray saved_ray_ = utility::Ray(utility::Point(), utility::Vector());
 };
+
+std::tuple<double, double> CheckAxis(double origin, double direction,
+                                     double minimum = -1, double maximum = 1);
 
 } // namespace geometry
 } // namespace raytracer

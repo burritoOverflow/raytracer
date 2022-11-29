@@ -11,6 +11,7 @@ class Cone : public Shape {
 public:
   std::vector<Intersection> LocalIntersect(utility::Ray &ray);
   utility::Vector LocalNormalAt(utility::Point &point);
+  Bounds ComputeBounds();
 
   double minimum_ = -std::numeric_limits<double>::infinity();
   double maximum_ = std::numeric_limits<double>::infinity();
