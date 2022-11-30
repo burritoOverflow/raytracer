@@ -5,6 +5,7 @@ target_link_libraries(${This} PUBLIC
   gtest_main
   Canvas
   Geometry
+  IO
   Material
   Pattern
   Scene
@@ -13,6 +14,7 @@ target_link_libraries(${This} PUBLIC
 
 add_subdirectory(Canvas)
 add_subdirectory(Geometry)
+add_subdirectory(IO)
 add_subdirectory(Material)
 add_subdirectory(Pattern)
 add_subdirectory(Scene)

@@ -70,5 +70,5 @@ int main(void) {
   // Write the canvas to a file
   write_canvas_to_image(std::filesystem::current_path() / "scene.bmp", canvas);
   std::cout << "\nRender saved to "
-            << std::filesystem::current_path() / "scene.bmp" << std::endl;
+            << std::filesystem::current_path() / "scene.bmp\n";
 }
