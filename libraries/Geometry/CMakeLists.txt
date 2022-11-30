@@ -12,6 +12,7 @@ target_sources(
     src/Plane.cpp
     src/Shape.cpp
     src/Sphere.cpp
+    src/Triangle.cpp
   PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}/include/Bounds.hpp
     ${CMAKE_CURRENT_LIST_DIR}/include/Cone.hpp
@@ -22,6 +23,7 @@ target_sources(
     ${CMAKE_CURRENT_LIST_DIR}/include/Plane.hpp
     ${CMAKE_CURRENT_LIST_DIR}/include/Shape.hpp
     ${CMAKE_CURRENT_LIST_DIR}/include/Sphere.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/include/Triangle.hpp
 )
 
 target_include_directories(

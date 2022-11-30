@@ -44,7 +44,7 @@ std::tuple<double, double> CheckAxis(double origin, double direction,
   auto tmax_numerator = maximum - origin;
 
   double tmin, tmax;
-  if (std::abs(direction) >= 0.00001) {
+  if (std::abs(direction) >= EPSILON) {
     tmin = tmin_numerator / direction;
     tmax = tmax_numerator / direction;
   } else {

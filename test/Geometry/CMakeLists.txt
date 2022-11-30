@@ -10,4 +10,5 @@ target_sources(
     PlaneTests.cpp
     ShapeTests.cpp
     SphereTests.cpp
+    TriangleTests.cpp
 )

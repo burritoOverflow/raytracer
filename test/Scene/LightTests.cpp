@@ -8,17 +8,17 @@ using namespace raytracer;
 using namespace utility;
 
 struct LightTests : public ::testing::Test {
-  std::shared_ptr<material::Material> m;
-  Point position;
-
-  virtual void SetUp() override {
+protected:
+  void SetUp() override {
     m = std::make_shared<material::Material>();
     position = Point(0, 0, 0);
   }
+
+  std::shared_ptr<material::Material> m;
+  Point position;
 };
 
 TEST_F(LightTests, PointLightHasPositionAndIntensity) {
-  Point position(0, 0, 0);
   Color intensity(1, 1, 1);
   scene::PointLight light(position, intensity);
   EXPECT_TRUE(position == light.position_);
