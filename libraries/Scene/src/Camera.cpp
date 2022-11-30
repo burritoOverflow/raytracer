@@ -3,6 +3,8 @@
 #include <execution>
 #include <numeric>
 
+#include "ProgressBar.hpp"
+
 namespace raytracer {
 namespace scene {
 
@@ -30,15 +32,21 @@ utility::Ray Camera::RayForPixel(size_t px, size_t py) {
 Canvas Camera::Render(scene::World world) {
   raytracer::Canvas image(hsize_, vsize_);
 
-  std::vector<size_t> pixels(hsize_ * vsize_);
+  size_t num_pixels = hsize_ * vsize_;
+  std::vector<size_t> pixels(num_pixels);
+  ProgressBar progress_bar(num_pixels);
+
   std::iota(std::begin(pixels), std::end(pixels), 0);
   std::for_each(std::execution::par, pixels.begin(), pixels.end(),
-                [this, &world, &image](auto &&item) {
+                [this, &world, &image, &progress_bar](auto &&item) {
                   size_t x = item % hsize_;
                   size_t y = item / hsize_;
                   utility::Ray ray = RayForPixel(x, y);
                   utility::Color color = world.ColorAt(ray);
                   image.WritePixel(x, y, color);
+
+                  progress_bar.Update(item);
+                  progress_bar.Print();
                 });
 
   return image;

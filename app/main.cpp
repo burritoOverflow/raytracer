@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <filesystem>
 #include <fstream>
+#include <iostream>
 #include <stdexcept>
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
@@ -68,4 +69,6 @@ int main(void) {
 
   // Write the canvas to a file
   write_canvas_to_image(std::filesystem::current_path() / "scene.bmp", canvas);
+  std::cout << "\nRender saved to "
+            << std::filesystem::current_path() / "scene.bmp" << std::endl;
 }
