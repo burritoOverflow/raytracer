@@ -4,7 +4,7 @@ namespace raytracer {
 namespace geometry {
 
 std::vector<Intersection> Plane::LocalIntersect(utility::Ray &ray) {
-  if (abs(ray.direction_.y()) < EPSILON) {
+  if (std::abs(ray.direction_.y()) < EPSILON) {
     return {};
   }
 

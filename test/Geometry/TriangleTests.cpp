@@ -29,9 +29,15 @@ TEST_F(TriangleTest, ConstructingATriangle) {
 }
 
 TEST_F(TriangleTest, FindingTheNormalOnATriangle) {
-  auto n1 = triangle->LocalNormalAt(Point(0, 0.5, 0));
-  auto n2 = triangle->LocalNormalAt(Point(-0.5, 0.75, 0));
-  auto n3 = triangle->LocalNormalAt(Point(0.5, 0.25, 0));
+  utility::Point p1 = Point(0, 0.5, 0);
+  auto n1 = triangle->LocalNormalAt(p1);
+
+  utility::Point p2 = Point(-0.5, 0.75, 0);
+  auto n2 = triangle->LocalNormalAt(p2);
+
+  utility::Point p3 = Point(0.5, 0.25, 0);
+  auto n3 = triangle->LocalNormalAt(p3);
+
   EXPECT_TRUE(n1 == triangle->normal_);
   EXPECT_TRUE(n2 == triangle->normal_);
   EXPECT_TRUE(n3 == triangle->normal_);

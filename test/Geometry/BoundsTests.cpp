@@ -23,7 +23,8 @@ TEST(BoundsTest, MergingTwoBoundsYieldsTheBiggestBoundingBox) {
 
 TEST(BoundsTest, RotationBy45DegreesYieldsUpdatedBounds) {
   auto bounds = geometry::Bounds(Point(-1, -1, -1), Point(1, 1, 1));
-  bounds.Transform(RotationY(M_PI_4));
+  RotationY r = RotationY(M_PI_4);
+  bounds.Transform(r);
 
   EXPECT_TRUE(geometry::Bounds(Point(-sqrt(2), -1, -sqrt(2)),
                                Point(sqrt(2), 1, sqrt(2))) == bounds);

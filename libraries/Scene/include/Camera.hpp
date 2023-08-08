@@ -15,6 +15,7 @@ public:
   Camera(size_t hsize, size_t vsize, double field_of_view)
       : hsize_(hsize), vsize_(vsize), field_of_view_(field_of_view),
         transform_(utility::Identity()) {
+
     // Compute the pixel size
     double half_view = tan(field_of_view_ / 2);
     double aspect = hsize_ / (double)vsize_;
